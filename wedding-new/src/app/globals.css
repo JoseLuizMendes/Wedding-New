@@ -1,0 +1,161 @@
+/*
+ * -----------------------------------------------------------------------
+ * I. CONFIGURAÇÃO BASE (TAILWIND E ANIMAÇÕES)
+ * -----------------------------------------------------------------------
+ */
+@import "tailwindcss";
+
+/*
+ * -----------------------------------------------------------------------
+ * II. DEFINIÇÃO DE FONTES (Next.js Local Fonts)
+ * -----------------------------------------------------------------------
+ * Nota: É altamente recomendado usar a API 'next/font/local' no seu 
+ * 'app/layout.tsx' e definir as variáveis CSS lá. Mantive o @font-face
+ * aqui para carregar os arquivos de fonte local (/public/fonts).
+ */
+@font-face {
+  font-family: 'The Seasons';
+  src: url('/fonts/TheSeasons.woff2') format('woff2'),
+       url('/fonts/TheSeasons.woff') format('woff'),
+       url('/fonts/TheSeasons.ttf') format('truetype'),
+       url('/fonts/TheSeasons.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'The Seasons';
+  src: url('/fonts/TheSeasons-Bold.woff2') format('woff2'),
+       url('/fonts/TheSeasons-Bold.woff') format('woff'),
+       url('/fonts/TheSeasons-Bold.ttf') format('truetype'),
+       url('/fonts/TheSeasons-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+ * -----------------------------------------------------------------------
+ * III. VARIÁVEIS DE COR E DESIGN SYSTEM (Shadcn UI HSL)
+ * -----------------------------------------------------------------------
+ * As cores HSL do seu projeto Vite foram mapeadas para o padrão Shadcn.
+ */
+@layer base {
+  :root {
+    --background: 30 20% 94%;
+    --foreground: 25 5% 25%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 25 5% 25%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 25 5% 25%;
+
+    --primary: 214 14% 59%; /* Cor principal do tema (ex: coração, botões de ação) */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 30 20% 88%; /* Cor de fundo suave */
+    --secondary-foreground: 25 5% 25%;
+
+    --muted: 30 20% 90%;
+    --muted-foreground: 214 14% 59%;
+
+    --accent: 214 14% 59%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 30 20% 88%;
+    --input: 30 20% 90%;
+    --ring: 214 14% 59%;
+
+    --radius: 0.75rem;
+
+    /* Cores específicas do seu projeto (Mantidas para reutilização) */
+    --wedding-dark: 25 5% 25%;
+    --wedding-soft: 30 20% 88%;
+    --wedding-accent: 214 14% 59%;
+    --wedding-warm: 30 20% 94%;
+
+    /* Definições de Gradiente e Sombra (Usar @apply no Tailwind) */
+    /* --gradient-romantic: linear-gradient(135deg, hsl(30 20% 88% / 0.5), hsl(214 14% 59% / 0.2)); */
+    /* --gradient-hero: linear-gradient(180deg, hsl(214 14% 59% / 0.6), hsl(214 14% 59% / 0.2)); */
+    /* --shadow-romantic: 0 10px 40px -10px hsl(214 14% 59% / 0.3); */
+    /* --shadow-soft: 0 4px 20px -4px hsl(30 20% 88% / 0.8); */
+    /* --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+  }
+
+  .dark {
+    --background: 25 5% 15%;
+    --foreground: 30 20% 94%;
+
+    --card: 25 5% 20%;
+    --card-foreground: 30 20% 94%;
+
+    --popover: 25 5% 15%;
+    --popover-foreground: 30 20% 94%;
+
+    --primary: 214 14% 59%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 25 5% 25%;
+    --secondary-foreground: 30 20% 94%;
+
+    --muted: 25 5% 25%;
+    --muted-foreground: 214 14% 70%;
+
+    --accent: 214 14% 59%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 25 5% 25%;
+    --input: 25 5% 25%;
+    --ring: 214 14% 59%;
+  }
+}
+
+/*
+ * -----------------------------------------------------------------------
+ * IV. ESTILOS BASE E UTILITÁRIOS CUSTOMIZADOS
+ * -----------------------------------------------------------------------
+ */
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer utilities {
+  /* Hover Scale Animation */
+  .hover-scale {
+    transition-property: transform;
+    transition-duration: 200ms;
+  }
+  
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Image lazy loading optimization */
+  img {
+    transition-property: opacity;
+    transition-duration: 300ms;
+  }
+  
+  img[loading="lazy"] {
+    opacity: 0;
+  }
+  
+  img[loading="lazy"].loaded {
+    opacity: 1;
+  }
+}
