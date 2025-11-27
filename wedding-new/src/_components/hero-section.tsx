@@ -1,4 +1,4 @@
-import heroImage from "@/assets/nois.png";
+import heroImage from "../../public/assets/nois.png";
 import heroImage2 from "@/assets/Valentines.jpg";
 import heroImage3 from "@/assets/Wedding.png";
 import { motion } from "framer-motion";
