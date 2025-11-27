@@ -1,9 +1,10 @@
 import Image from "next/image";
+import { Home } from "@/pages/Home";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <main>
-      <h1>Welcome to the Wedding Website</h1>
-    </main>
+    <div>
+      <Home />
+    </div>
   );
 }
