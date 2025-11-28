@@ -9,7 +9,7 @@ import {
 } from "@/_components/ui/card";
 import { RSVPForm } from "@/_components/forms/RSVPForm";
 import { GiftList } from "@/_components/gifts/GiftList";
-import chaImage from "@/assets/cha-de-panela-bg.jpg";
+import chaImage from "../../../public/assets/cha-de-panela-bg.jpg";
 import Link from "next/link";
 
 const chaDetails = [
