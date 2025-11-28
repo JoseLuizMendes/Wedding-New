@@ -101,7 +101,7 @@ export const Navigation = () => {
       className={`fixed top-0 left-0 right-0 z-50 h-20 transition-all duration-300 ${
         isOverlayTop
           ? "bg-transparent supports-[backdrop-filter]:backdrop-blur-md "
-          : "bg-background/95 backdrop-blur-md "
+          : "bg-background/95 backdrop-blur-md shadow-sm"
       }`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
