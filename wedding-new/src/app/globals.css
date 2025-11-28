@@ -1,21 +1,15 @@
-/*
- * -----------------------------------------------------------------------
- * I. CONFIGURAÇÃO BASE (IMPORTS)
- * -----------------------------------------------------------------------
- */
-@import "tailwindcss";
-@import "tw-animate-css";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,400&family=Allura&family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-/* Aplica as diretivas do Tailwind para injetar as classes de utilidade */
-/* Nota: O @tailwind base/components/utilities foi substituído pelo @import "tailwindcss" */
-/* no v4, mas mantive o tw-animate-css como importação padrão. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,400&family=Allura&family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-/*
- * -----------------------------------------------------------------------
- * II. DEFINIÇÃO DE FONTES (Next.js Local Fonts)
- * -----------------------------------------------------------------------
- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
   font-family: 'The Seasons';
   src: url('/fonts/TheSeasons.woff2') format('woff2'),
@@ -38,11 +32,6 @@
   font-display: swap;
 }
 
-/*
- * -----------------------------------------------------------------------
- * III. VARIÁVEIS DE COR E DESIGN SYSTEM (Shadcn UI HSL)
- * -----------------------------------------------------------------------
- */
 @layer base {
   :root {
     --background: 30 20% 94%;
@@ -75,11 +64,22 @@
 
     --radius: 0.75rem;
 
-    /* Cores específicas do seu projeto (Mantidas para reutilização) */
+    /* Wedding specific colors */
     --wedding-dark: 25 5% 25%;
     --wedding-soft: 30 20% 88%;
     --wedding-accent: 214 14% 59%;
     --wedding-warm: 30 20% 94%;
+
+    /* Gradients */
+    --gradient-romantic: linear-gradient(135deg, hsl(30 20% 88% / 0.5), hsl(214 14% 59% / 0.2));
+    --gradient-hero: linear-gradient(180deg, hsl(214 14% 59% / 0.6), hsl(214 14% 59% / 0.2));
+
+    /* Shadows */
+    --shadow-romantic: 0 10px 40px -10px hsl(214 14% 59% / 0.3);
+    --shadow-soft: 0 4px 20px -4px hsl(30 20% 88% / 0.8);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
@@ -113,46 +113,32 @@
   }
 }
 
-/*
- * -----------------------------------------------------------------------
- * IV. ESTILOS BASE E UTILITÁRIOS CUSTOMIZADOS (CORREÇÃO DE SINTAXE V4)
- * -----------------------------------------------------------------------
- */
 @layer base {
-  /* Substitui @apply por CSS puro usando as variáveis HSL */
   * {
-    /* Define a cor de borda de todos os elementos usando a variável CSS */
-    border-color: hsl(var(--border)); 
+    @apply border-border;
   }
 
   body {
-    /* Define o fundo e a cor do texto do body usando as variáveis CSS */
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+    @apply bg-background text-foreground;
   }
 }
 
 @layer utilities {
-  /* Substitui @apply por CSS puro onde possível, ou usa o @utility para novas classes */
-
-  /* Hover Scale Animation (Mantido com @apply, se houver falha, deve ser reescrito em CSS puro) */
+  /* Hover Scale Animation */
   .hover-scale {
-    transition: transform 0.2s; /* CSS Puro */
-  }
-  .hover-scale:hover {
-    transform: scale(1.05); /* CSS Puro */
+    @apply transition-transform duration-200 hover:scale-105;
   }
   
   /* Image lazy loading optimization */
   img {
-    transition: opacity 0.3s;
+    @apply transition-opacity duration-300;
   }
   
   img[loading="lazy"] {
-    opacity: 0;
+    @apply opacity-0;
   }
   
   img[loading="lazy"].loaded {
-    opacity: 1;
+    @apply opacity-100;
   }
 }
