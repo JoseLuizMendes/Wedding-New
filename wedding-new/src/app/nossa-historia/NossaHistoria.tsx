@@ -72,7 +72,7 @@ export const NossaHistoria = () => {
         <div className="max-w-4xl mx-auto">
           {timeline.map((event, index) => (
             <motion.div
-              key={event.year}
+              key={`timeline-${index}`}
               initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
