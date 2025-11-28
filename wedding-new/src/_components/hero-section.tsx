@@ -70,7 +70,8 @@ export const HeroSection = () => {
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
             style={{ backgroundImage: `url(/assets/Wedding.png)` }}
           />
-          <div className="absolute inset-0 bg-linear-to-b from-foreground/70 via-primary/40 to-background/90" />
+          {/* Gradiente escuro no topo para dar contraste com navegação */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-background/90" />
           {/* Content (ensure above overlay) */}
           <div className="relative z-10 container mx-auto px-4 text-center mb-16">
             <motion.div
@@ -94,7 +95,8 @@ export const HeroSection = () => {
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
             style={{ backgroundImage: `url(/assets/cha-de-panela-bg.jpg)` }}
           />
-          <div className="absolute inset-0 bg-linear-to-b from-foreground/70 via-primary/40 to-background/90" />
+          {/* Gradiente escuro no topo para dar contraste com navegação */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-background/90" />
           {/* Content */}
           <div className="relative z-10 container mx-auto px-4 text-center mb-16">
             <motion.div
@@ -118,7 +120,8 @@ export const HeroSection = () => {
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
             style={{ backgroundImage: `url(/assets/Valentines.jpg)` }}
           />
-          <div className="absolute inset-0 bg-linear-to-b from-foreground/70 via-primary/40 to-background/90" />
+          {/* Gradiente escuro no topo para dar contraste com navegação */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-background/90" />
 
           <div className="relative z-10 container mx-auto px-4 text-center">
             <motion.div

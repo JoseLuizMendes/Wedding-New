@@ -9,7 +9,7 @@ import {
 } from "@/_components/ui/card";
 import { RSVPForm } from "@/_components/forms/RSVPForm";
 import { GiftList } from "@/_components/gifts/GiftList";
-import chaImage from "../../../public/assets/cha-de-panela-bg.jpg";
+
 import Link from "next/link";
 
 const chaDetails = [
@@ -40,8 +40,9 @@ export const ChaDePanela = () => {
       <section className="relative py-20 mb-12 overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${chaImage})` }}>
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/60 to-background/95" />
+          style={{ backgroundImage: "url(/assets/cha-de-panela-bg.jpg)" }}>
+          {/* Gradiente escuro no topo para dar contraste com navegação */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-background/90" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 text-center">
