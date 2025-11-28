@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/_components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, Menu, X } from "lucide-react";
@@ -21,7 +23,8 @@ const overlayRoutes = [
   "/nossa-historia",
   "/cha-de-panela",
   "/casamento",
-
+  "/galeria",
+  "/contato",
 ];
 
 export const Navigation = () => {
@@ -31,12 +34,11 @@ export const Navigation = () => {
   const navRef = useRef<HTMLElement | null>(null);
 
   // Check if current route should have overlay behavior
-  const isOverlayRoute = overlayRoutes.includes(location.pathname);
+  const isOverlayRoute = overlayRoutes.includes(path as string);
   const isOverlayTop = isOverlayRoute && !scrolled;
 
   useEffect(() => {
-    setIsOpen(false);
-  }, [location]);
+  }, [path]);
 
   // Scroll detection
   useEffect(() => {
@@ -125,7 +127,7 @@ export const Navigation = () => {
                 key={item.path}
                 href={item.path}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group ${
-                  location.pathname === item.path
+                  path === item.path
                     ? isOverlayTop
                       ? "text-white"
                       : "text-primary"
@@ -134,7 +136,7 @@ export const Navigation = () => {
                     : "text-foreground/70 hover:text-primary"
                 }`}>
                 {item.name}
-                {location.pathname === item.path && (
+                {path === item.path && (
                   <motion.div
                     layoutId="activeNav"
                     className={`absolute bottom-0 left-0 right-0 h-0.5 ${
@@ -186,7 +188,7 @@ export const Navigation = () => {
                       key={item.path}
                       href={item.path}
                       className={`block px-4 py-3 rounded-md text-sm font-medium transition-all duration-300 ${
-                        location.pathname === item.path
+                        path === item.path
                           ? "bg-primary text-primary-foreground"
                           : "text-foreground/70 hover:bg-secondary hover:text-primary"
                       }`}>
