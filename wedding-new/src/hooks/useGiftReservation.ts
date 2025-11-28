@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+"use client";
+
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { apiClient } from "@/lib/api-client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -19,12 +21,26 @@ export const useGiftReservation = ({
 }: UseGiftReservationProps) => {
   const { toast } = useToast();
   const [timeRemaining, setTimeRemaining] = useState<string>("");
-  const [isExpired, setIsExpired] = useState(false);
+
+  // Derive isExpired from reservedUntil instead of using state
+  const isExpired = useMemo(() => {
+    if (!reservedUntil || isBought) return false;
+    return new Date(reservedUntil).getTime() <= new Date().getTime();
+  }, [reservedUntil, isBought]);
+
+  const clearReservation = useCallback(async () => {
+    try {
+      // This would need to be called from the server side or with proper authentication
+      // For now, we'll just trigger a refresh
+      onReservationChange();
+    } catch (error) {
+      console.error('Erro ao limpar reserva:', error);
+    }
+  }, [onReservationChange]);
 
   // Calculate time remaining
   useEffect(() => {
     if (!reservedUntil || isBought) {
-      setIsExpired(false);
       return;
     }
 
@@ -34,7 +50,6 @@ export const useGiftReservation = ({
       const diff = until - now;
 
       if (diff <= 0) {
-        setIsExpired(true);
         setTimeRemaining("");
         return;
       }
@@ -43,7 +58,6 @@ export const useGiftReservation = ({
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       
       setTimeRemaining(`${hours}h ${minutes}m`);
-      setIsExpired(false);
     };
 
     calculateTimeRemaining();
@@ -57,7 +71,7 @@ export const useGiftReservation = ({
     if (isExpired && reservedUntil && !isBought) {
       clearReservation();
     }
-  }, [isExpired]);
+  }, [isExpired, reservedUntil, isBought, clearReservation]);
 
   const reserveGift = async (name: string, phone: string) => {
     try {
@@ -82,16 +96,6 @@ export const useGiftReservation = ({
         variant: "destructive",
       });
       throw error;
-    }
-  };
-
-  const clearReservation = async () => {
-    try {
-      // This would need to be called from the server side or with proper authentication
-      // For now, we'll just trigger a refresh
-      onReservationChange();
-    } catch (error) {
-      console.error('Erro ao limpar reserva:', error);
     }
   };
 
