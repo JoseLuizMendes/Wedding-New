@@ -1,8 +1,11 @@
+"use client";
+
 import heroImage from "../../public/assets/nois.png";
-import heroImage2 from "@/assets/Valentines.jpg";
-import heroImage3 from "@/assets/Wedding.png";
+import heroImage2 from "../../public/assets/Valentines.jpg";
+import heroImage3 from "../../public/assets/Wedding.png";
 import { motion } from "framer-motion";
 import { ArrowDown, Heart } from "lucide-react";
+
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

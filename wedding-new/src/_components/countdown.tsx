@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+"use client"
+
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/_components/ui/card";
 
@@ -10,7 +12,7 @@ interface TimeLeft {
 }
 
 export const Countdown = () => {
-  const weddingDate = new Date("2026-09-07T16:11:00").getTime();
+  const weddingDate = useMemo(() => new Date("2026-09-07T16:11:00").getTime(), []);
   
   const calculateTimeLeft = useCallback((): TimeLeft => {
     const difference = weddingDate - new Date().getTime();
@@ -27,7 +29,8 @@ export const Countdown = () => {
     return { days: 0, hours: 0, minutes: 0, seconds: 0 };
   }, [weddingDate]);
 
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft);
+  const [isMounted, setIsMounted] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -35,7 +38,7 @@ export const Countdown = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [calculateTimeLeft]);
 
   const timeUnits = [
     { label: "Dias", value: timeLeft.days },
@@ -43,6 +46,23 @@ export const Countdown = () => {
     { label: "Minutos", value: timeLeft.minutes },
     { label: "Segundos", value: timeLeft.seconds },
   ];
+
+  if (!isMounted) {
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+        {timeUnits.map((unit) => (
+          <Card key={unit.label} className="p-6 text-center bg-card/80 backdrop-blur-sm border-primary/20 shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-romantic)] transition-all duration-300">
+            <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
+              00
+            </div>
+            <div className="text-sm md:text-base text-muted-foreground font-medium">
+              {unit.label}
+            </div>
+          </Card>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">

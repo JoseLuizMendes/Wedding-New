@@ -1,3 +1,5 @@
+"use client"
+
 import { motion } from "framer-motion";
 import { Button } from "@/_components/ui/button";
 import { Countdown } from "@/_components/countdown";
