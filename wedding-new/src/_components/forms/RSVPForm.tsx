@@ -1,10 +1,11 @@
+"use client";
+
 import { useState } from "react";
 import { z } from "zod";
 import { Button } from "@/_components/ui/button";
 import { Input } from "@/_components/ui/input";
 import { Textarea } from "@/_components/ui/textarea";
 import { Label } from "@/_components/ui/label";
-import { Toaster } from "@/_components/ui/sonner";
 import { apiClient } from "../../lib/api-client";
 import { shouldShowInviteAfterRSVP, getSuccessMessage } from "../../config/inviteConfig";
 import { openAndDownloadInvite } from "../../utils/inviteUtils";
@@ -52,8 +53,8 @@ export const RSVPForm = ({ tipo, onSuccess }: RSVPFormProps) => {
       }
 
       // Mensagem de sucesso (customizada se convite estiver habilitado)
-      const successMessage = shouldShowInviteAfterRSVP() 
-        ? getSuccessMessage()
+      const successMessage = shouldShowInviteAfterRSVP(tipo) 
+        ? getSuccessMessage(tipo)
         : tipo === "casamento"
           ? "Obrigado por confirmar sua presença! Mal podemos esperar para celebrar com você."
           : "🎉 Obrigado por confirmar presença no nosso chá de panela!";
@@ -68,7 +69,7 @@ export const RSVPForm = ({ tipo, onSuccess }: RSVPFormProps) => {
       setStatus("confirmed");
 
       // 🎉 SISTEMA DE CONVITES - Abre convite em nova página
-      if (shouldShowInviteAfterRSVP()) {
+      if (shouldShowInviteAfterRSVP(tipo)) {
         // Aguarda um pouco para o usuário ver a mensagem de sucesso
         setTimeout(() => {
           openAndDownloadInvite(validatedData.nome_completo, tipo);
