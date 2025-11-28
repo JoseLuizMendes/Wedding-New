@@ -1,22 +1,20 @@
 /*
  * -----------------------------------------------------------------------
- * I. CONFIGURAÇÃO BASE (TAILWIND E ANIMAÇÕES)
+ * I. CONFIGURAÇÃO BASE (IMPORTS)
  * -----------------------------------------------------------------------
  */
 @import "tailwindcss";
 @import "tw-animate-css";
-/*
- ---break---
- */
-@custom-variant dark (&:is(.dark *));
+
+/* Aplica as diretivas do Tailwind para injetar as classes de utilidade */
+/* Nota: O @tailwind base/components/utilities foi substituído pelo @import "tailwindcss" */
+/* no v4, mas mantive o tw-animate-css como importação padrão. */
+
 
 /*
  * -----------------------------------------------------------------------
  * II. DEFINIÇÃO DE FONTES (Next.js Local Fonts)
  * -----------------------------------------------------------------------
- * Nota: É altamente recomendado usar a API 'next/font/local' no seu 
- * 'app/layout.tsx' e definir as variáveis CSS lá. Mantive o @font-face
- * aqui para carregar os arquivos de fonte local (/public/fonts).
  */
 @font-face {
   font-family: 'The Seasons';
@@ -44,7 +42,6 @@
  * -----------------------------------------------------------------------
  * III. VARIÁVEIS DE COR E DESIGN SYSTEM (Shadcn UI HSL)
  * -----------------------------------------------------------------------
- * As cores HSL do seu projeto Vite foram mapeadas para o padrão Shadcn.
  */
 @layer base {
   :root {
@@ -57,10 +54,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 25 5% 25%;
 
-    --primary: 214 14% 59%; /* Cor principal do tema (ex: coração, botões de ação) */
+    --primary: 214 14% 59%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 30 20% 88%; /* Cor de fundo suave */
+    --secondary: 30 20% 88%;
     --secondary-foreground: 25 5% 25%;
 
     --muted: 30 20% 90%;
@@ -83,13 +80,6 @@
     --wedding-soft: 30 20% 88%;
     --wedding-accent: 214 14% 59%;
     --wedding-warm: 30 20% 94%;
-
-    /* Definições de Gradiente e Sombra (Usar @apply no Tailwind) */
-    /* --gradient-romantic: linear-gradient(135deg, hsl(30 20% 88% / 0.5), hsl(214 14% 59% / 0.2)); */
-    /* --gradient-hero: linear-gradient(180deg, hsl(214 14% 59% / 0.6), hsl(214 14% 59% / 0.2)); */
-    /* --shadow-romantic: 0 10px 40px -10px hsl(214 14% 59% / 0.3); */
-    /* --shadow-soft: 0 4px 20px -4px hsl(30 20% 88% / 0.8); */
-    /* --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
   }
 
   .dark {
@@ -125,174 +115,44 @@
 
 /*
  * -----------------------------------------------------------------------
- * IV. ESTILOS BASE E UTILITÁRIOS CUSTOMIZADOS
+ * IV. ESTILOS BASE E UTILITÁRIOS CUSTOMIZADOS (CORREÇÃO DE SINTAXE V4)
  * -----------------------------------------------------------------------
  */
 @layer base {
+  /* Substitui @apply por CSS puro usando as variáveis HSL */
   * {
-    border-color: hsl(var(--border));
+    /* Define a cor de borda de todos os elementos usando a variável CSS */
+    border-color: hsl(var(--border)); 
   }
 
   body {
+    /* Define o fundo e a cor do texto do body usando as variáveis CSS */
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
   }
 }
 
 @layer utilities {
-  /* Hover Scale Animation */
+  /* Substitui @apply por CSS puro onde possível, ou usa o @utility para novas classes */
+
+  /* Hover Scale Animation (Mantido com @apply, se houver falha, deve ser reescrito em CSS puro) */
   .hover-scale {
-    transition-property: transform;
-    transition-duration: 200ms;
+    transition: transform 0.2s; /* CSS Puro */
   }
-
   .hover-scale:hover {
-    transform: scale(1.05);
+    transform: scale(1.05); /* CSS Puro */
   }
-
+  
   /* Image lazy loading optimization */
   img {
-    transition-property: opacity;
-    transition-duration: 300ms;
+    transition: opacity 0.3s;
   }
-
+  
   img[loading="lazy"] {
     opacity: 0;
   }
-
+  
   img[loading="lazy"].loaded {
     opacity: 1;
-  }
-}
-
-/*
- ---break---
- */
-
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-}
-
-/*
- ---break---
- */
-
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
-}
-
-/*
- ---break---
- */
-
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
-}
-
-/*
- ---break---
- */
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }
