@@ -51,14 +51,25 @@ export const apiClient = {
 
   // Gift endpoints
   async getGifts(tipo: 'casamento' | 'cha-panela') {
-    const response = await fetch(`/api/gifts/${tipo}`);
+    try {
+      const response = await fetch(`/api/gifts/${tipo}`);
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Erro ao buscar presentes');
+      if (!response.ok) {
+        // Check if response is JSON before parsing
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const error = await response.json();
+          throw new Error(error.error || 'Erro ao buscar presentes');
+        } else {
+          throw new Error('Erro ao buscar presentes - API não disponível');
+        }
+      }
+
+      return response.json();
+    } catch (error) {
+      console.error('Erro ao buscar presentes:', error);
+      return []; // Return empty array instead of throwing
     }
-
-    return response.json();
   },
 
   async reserveGift(data: ReserveGiftData) {
