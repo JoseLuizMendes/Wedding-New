@@ -24,7 +24,7 @@ export const Contato = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-16 p-20"
         >
           <Phone className="w-16 h-16 text-primary mx-auto mb-6" />
           <h1 className="font-serif text-5xl md:text-6xl font-bold mb-4 text-foreground">

@@ -111,7 +111,7 @@ export const Navigation = () => {
               }`}
             />
             <span
-              className={`font-serif text-xl md:text-2xl font-bold transition-colors duration-300 ${
+              className={`playfair-custom text-xl md:text-2xl font-bold transition-colors duration-300 ${
                 isOverlayTop ? "text-white" : "text-foreground"
               }`}>
               José & Márjorie
