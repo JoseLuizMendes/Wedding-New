@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Heart, Sparkles, CircleDot, Calendar, Plane, HeartHandshake, Gem } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/_components/ui/card";
-//import BackgroundMusic from "@/_components/BackgroundMusic";
+import BackgroundMusic from "@/_components/bg-music";
 import { HeroSection } from "@/_components/hero-section";
 
 const timeline = [
@@ -127,7 +127,7 @@ export const NossaHistoria = () => {
 
         </motion.div>
       </div>
-       {/*<BackgroundMusic />*/}
+       <BackgroundMusic />
     </div>
   );
 };
