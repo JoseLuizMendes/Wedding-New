@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Calendar, Clock, MapPin, Gift, UtensilsCrossed } from "lucide-react";
+import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -38,9 +39,15 @@ export const ChaDePanela = () => {
     <div className="min-h-screen pb-12">
       {/* Hero Section */}
       <section className="relative py-20 mb-12 overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url(/assets/cha-de-panela-bg.jpg)" }}>
+        <div className="absolute inset-0">
+          <Image
+            src="/assets/cha-de-panela-bg.jpg"
+            alt="Chá de Panela Background"
+            fill
+            priority
+            className="object-cover object-center"
+            quality={90}
+          />
           {/* Gradiente escuro no topo para dar contraste com navegação */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-background/90" />
         </div>
@@ -51,7 +58,7 @@ export const ChaDePanela = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}>
             <UtensilsCrossed className="w-16 h-16 text-accent mx-auto mb-6" />
-            <h1 className="font-serif text-5xl md:text-6xl font-bold mb-4 text-background">
+            <h1 className="playfair-custom text-5xl md:text-7xl lg:text-8xl mb-4 text-background">
               Chá de Panela
             </h1>
             <div className="w-24 h-1 bg-accent mx-auto mb-6" />
@@ -124,7 +131,7 @@ export const ChaDePanela = () => {
           className="mb-20">
           <div className="text-center mb-12">
             <Gift className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h2 className="font-serif text-4xl font-bold mb-4 text-foreground">
+            <h2 className="playfair-custom text-4xl md:text-5xl mb-4 text-foreground">
               Sugestões de Presentes
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -145,7 +152,7 @@ export const ChaDePanela = () => {
           className="max-w-2xl mx-auto">
           <Card className="shadow-[var(--shadow-romantic)] border-primary/20">
             <CardHeader className="text-center">
-              <CardTitle className="font-serif text-3xl">
+              <CardTitle className="playfair-custom text-4xl md:text-5xl">
                 Confirmação de Presença
               </CardTitle>
               <CardDescription className="text-base">

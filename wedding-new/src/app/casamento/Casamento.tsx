@@ -97,7 +97,7 @@ export const Casamento = () => {
           className="mb-20">
           <div className="text-center mb-12">
             <Gift className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h2 className="font-serif text-4xl font-bold mb-4 text-foreground">
+            <h2 className="playfair-custom text-4xl md:text-5xl mb-4 text-foreground">
               Sugestões de Presentes
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -118,7 +118,7 @@ export const Casamento = () => {
           className="max-w-2xl mx-auto">
           <Card className="shadow-[var(--shadow-romantic)] border-primary/20">
             <CardHeader className="text-center">
-              <CardTitle className="font-serif text-3xl">
+              <CardTitle className="playfair-custom text-4xl md:text-5xl">
                 Confirmação de Presença
               </CardTitle>
               <CardDescription className="text-base">

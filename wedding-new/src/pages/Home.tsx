@@ -24,7 +24,7 @@ export const Home = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="font-serif text-4xl md:text-5xl font-bold mb-4 text-foreground">
+            <h2 className="playfair-custom text-5xl md:text-6xl mb-4 text-foreground">
               Faltam apenas...
             </h2>
             <p className="text-lg text-muted-foreground">
@@ -54,7 +54,7 @@ export const Home = () => {
             className="max-w-3xl mx-auto text-center"
           >
             <Heart className="w-12 h-12 text-primary mx-auto mb-6" />
-            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-6 text-foreground">
+            <h2 className="playfair-custom text-5xl md:text-6xl mb-6 text-foreground">
               Você está Convidado!
             </h2>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">

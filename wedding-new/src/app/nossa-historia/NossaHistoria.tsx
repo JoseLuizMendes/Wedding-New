@@ -89,7 +89,7 @@ export const NossaHistoria = () => {
                       <div className={`text-sm font-bold ${event.color} mb-1`}>
                         {event.year}
                       </div>
-                      <CardTitle className="text-2xl md:text-3xl">
+                      <CardTitle className="playfair-custom text-2xl md:text-3xl">
                         {event.title}
                       </CardTitle>
                     </div>
@@ -119,7 +119,7 @@ export const NossaHistoria = () => {
               <p className="text-xl md:text-2xl font-serif text-foreground mb-4 leading-relaxed">
                 "E agora, estamos prontos para escrever o próximo capítulo da nossa história... juntos, para sempre."
               </p>
-              <p className="text-lg text-muted-foreground font-medium">
+              <p className="text-lg playfair-custom text-muted-foreground font-medium">
                 - José Luiz & Márjorie
               </p>
             </CardContent>

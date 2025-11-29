@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowDown, Heart } from "lucide-react";
+import Image from "next/image";
 
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -13,9 +14,15 @@ export const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {pathname === "/" ? (
         <>
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(/assets/nois.png)` }}>
+          <div className="absolute inset-0">
+            <Image
+              src="/assets/nois.png"
+              alt="Casal"
+              fill
+              priority
+              className="object-cover object-center"
+              quality={90}
+            />
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
           </div>
 
@@ -27,7 +34,7 @@ export const HeroSection = () => {
               transition={{ duration: 0.8 }}>
               <Heart className="w-16 h-16 text-accent mx-auto mb-6 fill-accent animate-pulse" />
 
-              <h1 className="playfair-custom md:text-7xl lg:text-8xl mb-4 text-background">
+              <h1 className="playfair-custom text-5xl md:text-7xl lg:text-8xl mb-4 text-background">
                 José Luiz & Márjorie
               </h1>
 
@@ -65,9 +72,15 @@ export const HeroSection = () => {
         </>
       ) : pathname === "/casamento" ? (
         <>
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(/assets/Wedding.png)` }}>
+          <div className="absolute inset-0">
+            <Image
+              src="/assets/Wedding.png"
+              alt="Casamento"
+              fill
+              priority
+              className="object-cover object-center"
+              quality={90}
+            />
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
           </div>
           {/* Content (ensure above overlay) */}
@@ -77,7 +90,7 @@ export const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="font-serif text-5xl md:text-6xl font-bold mb-4 text-white">
+              <h1 className="playfair-custom text-5xl md:text-7xl lg:text-8xl mb-4 text-white">
                 Nosso Grande Dia
               </h1>
               <div className="w-24 h-1 bg-white mx-auto mb-6" />
@@ -89,9 +102,15 @@ export const HeroSection = () => {
         </>
       ) : pathname === "/cha-de-panela" ? (
         <>
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(/assets/cha-de-panela-bg.jpg)` }}>
+          <div className="absolute inset-0">
+            <Image
+              src="/assets/cha-de-panela-bg.jpg"
+              alt="Chá de Panela"
+              fill
+              priority
+              className="object-cover object-center"
+              quality={90}
+            />
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
           </div>
           {/* Content */}
@@ -101,7 +120,7 @@ export const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="font-serif text-5xl md:text-6xl font-bold mb-4 text-white">
+              <h1 className="playfair-custom text-5xl md:text-7xl lg:text-8xl mb-4 text-white">
                 Chá de Panela
               </h1>
               <div className="w-24 h-1 bg-white mx-auto mb-6" />
@@ -113,9 +132,15 @@ export const HeroSection = () => {
         </>
       ) : (
         <>
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(/assets/Valentines.jpg)` }}>
+          <div className="absolute inset-0">
+            <Image
+              src="/assets/Valentines.jpg"
+              alt="Nossa História"
+              fill
+              priority
+              className="object-cover object-center"
+              quality={90}
+            />
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
           </div>
 
@@ -126,7 +151,7 @@ export const HeroSection = () => {
               transition={{ duration: 0.8 }}>
               <Heart className="w-16 h-16 text-white mx-auto mb-6 fill-white animate-pulse" />
 
-              <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-4 text-background">
+              <h1 className="playfair-custom text-5xl md:text-7xl lg:text-8xl mb-4 text-background">
                 Nossa História
               </h1>
 

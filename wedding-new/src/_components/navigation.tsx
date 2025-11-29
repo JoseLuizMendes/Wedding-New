@@ -23,8 +23,6 @@ const overlayRoutes = [
   "/nossa-historia",
   "/cha-de-panela",
   "/casamento",
-  "/galeria",
-  "/contato",
 ];
 
 export const Navigation = () => {
