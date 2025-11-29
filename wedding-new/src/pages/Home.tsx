@@ -62,7 +62,7 @@ export const Home = () => {
               Sua presença é o maior presente que poderíamos receber.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/casamento">
+              <Link href="/casamento#rsvp-form">
                 <Button variant="default" size="lg">
                   Confirmar Presença
                 </Button>
