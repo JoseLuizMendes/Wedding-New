@@ -1,8 +1,7 @@
 import type { Config } from "tailwindcss";
-import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
-  darkMode: "class",
+  darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
@@ -15,17 +14,18 @@ export default {
     },
     extend: {
       fontFamily: {
-        // Fonte principal: The Seasons (do Canva)
-        'seasons': ['"The Seasons"', 'Bodoni Moda', 'serif'],
-        
+        // Fonte principal: Playfair Display (escolhida pelo usuário)
+        'playfair': ['"Playfair Display"', 'serif'],
+        'seasons': ['"Playfair Display"', 'serif'], // Mantendo alias para compatibilidade
+
         // Fontes alternativas (Google Fonts)
-        'bodoni': ['Bodoni Moda', 'Playfair Display', 'serif'],
+        'bodoni': ['Bodoni Moda', 'serif'],
         'allura': ['Allura', 'cursive'],
         'cinzel': ['Cinzel', 'serif'],
         'montserrat': ['Montserrat', 'sans-serif'],
-        
-        // Aliases compatíveis
-        serif: ['"The Seasons"', 'Bodoni Moda', 'Playfair Display', 'serif'],
+
+        // Aliases compatíveis - Playfair Display como serif padrão
+        serif: ['"Playfair Display"', 'serif'],
         sans: ['Montserrat', 'Inter', 'sans-serif'],
         cursive: ['Allura', 'cursive'],
       },
@@ -93,5 +93,5 @@ export default {
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config;

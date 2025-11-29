@@ -14,11 +14,10 @@ export const HeroSection = () => {
       {pathname === "/" ? (
         <>
           <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-            style={{ backgroundImage: `url(/assets/nois.png)` }}
-          />
-          {/* Gradiente escuro no topo para dar contraste com navegação */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-background/90" />
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(/assets/nois.png)` }}>
+            <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
+          </div>
 
           {/* Content */}
           <div className="relative z-10 container mx-auto px-4 text-center">
@@ -26,9 +25,9 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}>
-              <Heart className="w-16 h-16 text-white mx-auto mb-6 fill-white animate-pulse" />
+              <Heart className="w-16 h-16 text-accent mx-auto mb-6 fill-accent animate-pulse" />
 
-              <h1 className="font-bodoni text-5xl md:text-7xl lg:text-8xl font-bold mb-4 text-white">
+              <h1 className="playfair-custom md:text-7xl lg:text-8xl mb-4 text-background">
                 José Luiz & Márjorie
               </h1>
 
@@ -36,14 +35,14 @@ export const HeroSection = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.8 }}
-                className="w-24 h-1 bg-white mx-auto mb-8"
+                className="w-24 h-1 bg-accent mx-auto mb-8"
               />
 
-              <p className="text-xl md:text-2xl text-white mb-4 font-light">
+              <p className="text-xl md:text-2xl text-background/90 mb-4 font-light">
                 Nós vamos casar!
               </p>
 
-              <p className="text-lg md:text-xl text-white/90 mb-12 max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-background/80 mb-12 max-w-2xl mx-auto">
                 Convidamos você para celebrar conosco este momento especial das
                 nossas vidas
               </p>
@@ -60,18 +59,17 @@ export const HeroSection = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
               className="absolute bottom-10 left-1/2 -translate-x-1/2">
-              <ArrowDown className="w-8 h-8 text-white animate-bounce" />
+              <ArrowDown className="w-8 h-8 text-background animate-bounce" />
             </motion.div>
           </div>
         </>
       ) : pathname === "/casamento" ? (
         <>
           <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-            style={{ backgroundImage: `url(/assets/Wedding.png)` }}
-          />
-          {/* Gradiente escuro no topo para dar contraste com navegação */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-background/90" />
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(/assets/Wedding.png)` }}>
+            <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
+          </div>
           {/* Content (ensure above overlay) */}
           <div className="relative z-10 container mx-auto px-4 text-center mb-16">
             <motion.div
@@ -92,11 +90,10 @@ export const HeroSection = () => {
       ) : pathname === "/cha-de-panela" ? (
         <>
           <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-            style={{ backgroundImage: `url(/assets/cha-de-panela-bg.jpg)` }}
-          />
-          {/* Gradiente escuro no topo para dar contraste com navegação */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-background/90" />
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(/assets/cha-de-panela-bg.jpg)` }}>
+            <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
+          </div>
           {/* Content */}
           <div className="relative z-10 container mx-auto px-4 text-center mb-16">
             <motion.div
@@ -117,11 +114,10 @@ export const HeroSection = () => {
       ) : (
         <>
           <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-            style={{ backgroundImage: `url(/assets/Valentines.jpg)` }}
-          />
-          {/* Gradiente escuro no topo para dar contraste com navegação */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-background/90" />
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(/assets/Valentines.jpg)` }}>
+            <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
+          </div>
 
           <div className="relative z-10 container mx-auto px-4 text-center">
             <motion.div

@@ -1,0 +1,17 @@
+IMPORTANTE:
+
+Para que a fonte "The Seasons" funcione corretamente no site, você precisa copiar os arquivos de fonte do seu projeto antigo para esta pasta (public/fonts).
+
+Os arquivos necessários são:
+
+1. TheSeasons.woff2
+2. TheSeasons.woff
+3. TheSeasons.ttf
+4. TheSeasons.otf
+
+5. TheSeasons-Bold.woff2
+6. TheSeasons-Bold.woff
+7. TheSeasons-Bold.ttf
+8. TheSeasons-Bold.otf
+
+Assim que você colar esses arquivos aqui, o site atualizará automaticamente para usar a fonte correta.

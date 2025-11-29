@@ -1,30 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,400&family=Allura&family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,400&family=Allura&family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'Playfair Custom';
+  src: url('/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-  font-family: 'The Seasons';
-  src: url('/fonts/TheSeasons.woff2') format('woff2'),
-       url('/fonts/TheSeasons.woff') format('woff'),
-       url('/fonts/TheSeasons.ttf') format('truetype'),
-       url('/fonts/TheSeasons.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'The Seasons';
-  src: url('/fonts/TheSeasons-Bold.woff2') format('woff2'),
-       url('/fonts/TheSeasons-Bold.woff') format('woff'),
-       url('/fonts/TheSeasons-Bold.ttf') format('truetype'),
-       url('/fonts/TheSeasons-Bold.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
 
 @layer base {
   :root {
@@ -118,21 +104,29 @@
 }
 
 @layer utilities {
+
   /* Hover Scale Animation */
   .hover-scale {
     @apply transition-transform duration-200 hover:scale-105;
   }
-  
+
   /* Image lazy loading optimization */
   img {
     @apply transition-opacity duration-300;
   }
-  
+
   img[loading="lazy"] {
     @apply opacity-0;
   }
-  
+
   img[loading="lazy"].loaded {
     @apply opacity-100;
   }
+}
+
+/* Custom class to force Playfair Display */
+.playfair-custom {
+  font-family: 'Playfair Custom', serif !important;
+  font-optical-sizing: auto;
+  font-style: normal !important;
 }
