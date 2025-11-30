@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// RSVP models
+model RsvpCasamento {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome_completo      String   @db.Text
+  contato            String   @db.Text
+  mensagem           String?  @db.Text
+  created_at         DateTime @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+
+  @@map("rsvp_casamento")
+}
+
+model RsvpChaPanela {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome_completo      String   @db.Text
+  contato            String   @db.Text
+  mensagem           String?  @db.Text
+  created_at         DateTime @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+
+  @@map("rsvp_cha_panela")
+}
+
+// Gift models
+model PresentesCasamento {
+  id                     String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome                   String    @db.Text
+  descricao              String?   @db.Text
+  link_externo           String    @db.Text
+  reservado              Boolean   @default(false)
+  ordem                  Int       @default(1)
+  created_at             DateTime  @default(now()) @db.Timestamptz(6)
+  reserved_until         DateTime? @db.Timestamptz(6)
+  is_bought              Boolean   @default(false)
+  reserved_by            String?   @db.VarChar(255)
+  reserved_phone_hash    String?   @db.VarChar(64)
+  reserved_phone_display String?   @db.VarChar(20)
+  reserved_at            DateTime? @db.Timestamptz(6)
+  purchased_at           DateTime? @db.Timestamptz(6)
+  telefone_contato       String?   @db.VarChar(20)
+  imagem                 String?   @db.Text      // <-- Adicionado aqui!
+
+  @@map("presentes_casamento")
+}
+
+model PresentesChaPanela {
+  id                     String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome                   String    @db.Text
+  descricao              String?   @db.Text
+  link_externo           String    @db.Text
+  reservado              Boolean   @default(false)
+  ordem                  Int       @default(1)
+  created_at             DateTime  @default(now()) @db.Timestamptz(6)
+  reserved_until         DateTime? @db.Timestamptz(6)
+  is_bought              Boolean   @default(false)
+  reserved_by            String?   @db.VarChar(255)
+  reserved_phone_hash    String?   @db.VarChar(64)
+  reserved_phone_display String?   @db.VarChar(20)
+  reserved_at            DateTime? @db.Timestamptz(6)
+  purchased_at           DateTime? @db.Timestamptz(6)
+  telefone_contato       String?   @db.VarChar(20)
+  imagem                 String?   @db.Text      // <-- Adicionado aqui!
+
+  @@map("presentes_cha_panela")
+}
+// Code validation attempts for rate limiting
+model CodeValidationAttempts {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  gift_id      String    @db.Uuid
+  ip_address   String?   @db.VarChar(45)
+  attempt_time DateTime  @default(now()) @db.Timestamptz(6)
+  successful   Boolean   @default(false)
+
+  @@index([gift_id, attempt_time], map: "idx_code_validation_attempts_gift_time")
+  @@map("code_validation_attempts")
+}
