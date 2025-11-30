@@ -79,7 +79,7 @@ export const Countdown = () => {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.3 }}
-              className="text-4xl md:text-5xl font-bold text-primary mb-2"
+              className="text-4xl md:text-5xl playfair-custom text-primary mb-2"
             >
               {unit.value.toString().padStart(2, "0")}
             </motion.div>
