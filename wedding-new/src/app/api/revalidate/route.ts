@@ -10,6 +10,10 @@ interface RevalidateRequest {
  * API route for on-demand cache revalidation
  * POST /api/revalidate
  * Body: { tag: string, secret: string }
+ * 
+ * Note: Next.js 16 introduced a new cacheLife system where revalidateTag
+ * requires a second parameter for the cache profile. Using 'default'
+ * applies standard revalidation behavior.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -32,7 +36,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Revalidate the cache tag with default profile
+    // Revalidate the cache tag with default profile (Next.js 16 API)
     revalidateTag(tag, 'default');
 
     return NextResponse.json({

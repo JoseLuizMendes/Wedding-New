@@ -3,6 +3,14 @@
 import Image, { ImageProps } from "next/image";
 import { useState } from "react";
 
+/**
+ * Default responsive breakpoints for image sizing
+ * - Mobile (< 640px): 100vw (full width)
+ * - Tablet (< 1024px): 50vw (half width)
+ * - Desktop: 33vw (third width)
+ */
+const DEFAULT_RESPONSIVE_SIZES = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
+
 interface OptimizedImageProps extends Omit<ImageProps, 'placeholder'> {
   /** Image quality (1-100), default is 85 */
   quality?: number;
@@ -32,8 +40,8 @@ export const OptimizedImage = ({
 }: OptimizedImageProps) => {
   const [hasError, setHasError] = useState(false);
 
-  // Default responsive sizes if not provided
-  const defaultSizes = sizes || "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
+  // Use provided sizes or fall back to default responsive sizes
+  const responsiveSizes = sizes || DEFAULT_RESPONSIVE_SIZES;
 
   if (hasError && fallback) {
     return <>{fallback}</>;
@@ -52,7 +60,7 @@ export const OptimizedImage = ({
       src={src}
       alt={alt}
       quality={quality}
-      sizes={defaultSizes}
+      sizes={responsiveSizes}
       priority={priority}
       className={className}
       onError={() => setHasError(true)}
