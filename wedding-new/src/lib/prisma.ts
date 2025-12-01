@@ -1,26 +1,19 @@
-
 import { PrismaClient } from '@/generated/prisma/client';
-import { env } from 'process';
+
+declare global {
+  var prisma: PrismaClient | undefined;
+}
 
 let prisma: PrismaClient;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createPrismaClient = () => new PrismaClient({} as any);
+
 if (process.env.NODE_ENV === 'production') {
-  prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: env.DATABASE_URL,
-      },
-    },
-  });
+  prisma = createPrismaClient();
 } else {
   if (!global.prisma) {
-    global.prisma = new PrismaClient({
-      datasources: {
-        db: {
-          url: env.DATABASE_URL,
-        },
-      },
-    });
+    global.prisma = createPrismaClient();
   }
   prisma = global.prisma;
 }
