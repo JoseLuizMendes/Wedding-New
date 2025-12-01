@@ -1,6 +1,5 @@
 package com.wedding.api.controller;
 
-import com.wedding.api.model.dto.ApiResponse;
 import com.wedding.api.model.dto.RSVPRequest;
 import com.wedding.api.model.dto.RSVPResponse;
 import com.wedding.api.model.enums.EventType;
@@ -25,26 +24,14 @@ public class RSVPController {
     @PostMapping("/casamento")
     @Operation(summary = "Confirmar presença no casamento")
     public ResponseEntity<RSVPResponse> confirmWedding(@Valid @RequestBody RSVPRequest request) {
-        RSVPRequest weddingRequest = new RSVPRequest(
-            request.nomeCompleto(),
-            request.contato(),
-            request.mensagem(),
-            EventType.CASAMENTO
-        );
-        RSVPResponse response = rsvpService.confirmPresence(weddingRequest);
+        RSVPResponse response = rsvpService.confirmPresence(request, EventType.CASAMENTO);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/cha-panela")
     @Operation(summary = "Confirmar presença no chá de panela")
     public ResponseEntity<RSVPResponse> confirmBridalShower(@Valid @RequestBody RSVPRequest request) {
-        RSVPRequest showerRequest = new RSVPRequest(
-            request.nomeCompleto(),
-            request.contato(),
-            request.mensagem(),
-            EventType.CHA_PANELA
-        );
-        RSVPResponse response = rsvpService.confirmPresence(showerRequest);
+        RSVPResponse response = rsvpService.confirmPresence(request, EventType.CHA_PANELA);
         return ResponseEntity.ok(response);
     }
 

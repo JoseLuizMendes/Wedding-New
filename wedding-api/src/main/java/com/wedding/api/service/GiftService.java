@@ -23,6 +23,7 @@ public class GiftService {
 
     private static final String ALPHANUMERIC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int CODE_LENGTH = 6;
+    // Using SecureRandom for unpredictable reservation codes (thread-safe)
     private static final SecureRandom RANDOM = new SecureRandom();
 
     private final GiftRepository giftRepository;

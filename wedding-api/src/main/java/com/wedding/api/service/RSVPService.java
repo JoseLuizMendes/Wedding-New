@@ -22,20 +22,20 @@ public class RSVPService {
     private final GuestRepository guestRepository;
 
     @Transactional
-    public RSVPResponse confirmPresence(RSVPRequest request) {
+    public RSVPResponse confirmPresence(RSVPRequest request, EventType eventType) {
         // Find or create guest
         Guest guest = guestRepository.findByPhone(request.contato())
             .orElseGet(() -> createGuest(request));
 
         // Check if already confirmed for this event
-        if (rsvpRepository.existsByGuestIdAndEventType(guest.getId(), request.eventType())) {
+        if (rsvpRepository.existsByGuestIdAndEventType(guest.getId(), eventType)) {
             throw new BusinessException("Você já confirmou presença para este evento.");
         }
 
         // Create RSVP
         RSVP rsvp = RSVP.builder()
             .guest(guest)
-            .eventType(request.eventType())
+            .eventType(eventType)
             .attending(true)
             .guestsCount(1)
             .message(request.mensagem())
