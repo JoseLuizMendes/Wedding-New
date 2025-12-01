@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import { ArrowDown, Heart } from "lucide-react";
-import Image from "next/image";
 
 import { Button } from "./ui/button";
+import { OptimizedImage } from "./ui/OptimizedImage";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -15,13 +15,14 @@ export const HeroSection = () => {
       {pathname === "/" ? (
         <>
           <div className="absolute inset-0">
-            <Image
+            <OptimizedImage
               src="/assets/nois.png"
               alt="Casal"
               fill
               priority
               className="object-cover object-center"
               quality={90}
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
           </div>
@@ -73,13 +74,14 @@ export const HeroSection = () => {
       ) : pathname === "/casamento" ? (
         <>
           <div className="absolute inset-0">
-            <Image
+            <OptimizedImage
               src="/assets/Wedding.png"
               alt="Casamento"
               fill
               priority
               className="object-cover object-center"
               quality={90}
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
           </div>
@@ -103,13 +105,14 @@ export const HeroSection = () => {
       ) : pathname === "/cha-de-panela" ? (
         <>
           <div className="absolute inset-0">
-            <Image
+            <OptimizedImage
               src="/assets/cha-de-panela-bg.jpg"
               alt="Chá de Panela"
               fill
               priority
               className="object-cover object-center"
               quality={90}
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
           </div>
@@ -133,13 +136,14 @@ export const HeroSection = () => {
       ) : (
         <>
           <div className="absolute inset-0">
-            <Image
+            <OptimizedImage
               src="/assets/Valentines.jpg"
               alt="Nossa História"
               fill
               priority
               className="object-cover object-center"
               quality={90}
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
           </div>

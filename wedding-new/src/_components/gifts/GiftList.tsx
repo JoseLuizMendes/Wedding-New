@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/_components/ui/card";
 import { Button } from "@/_components/ui/button";
 import { ExternalLink, Gift as GiftIcon, Clock, ShoppingCart, AlertCircle, X } from "lucide-react";
@@ -14,6 +14,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/_components/ui/tabs"
 import { GiftListSkeleton } from "./GiftListSkeleton";
 import { IdentificationDialog } from "./IdentificationDialog";
 import { CodeValidationDialog } from "./CodeValidationDialog";
+import { OptimizedImage } from "@/_components/ui/OptimizedImage";
+import { Skeleton } from "@/_components/ui/skeleton";
 
 interface Gift {
   id: string;
@@ -40,11 +42,7 @@ export const GiftList = ({ tipo }: GiftListProps) => {
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState<'all' | 'available' | 'reserved' | 'bought'>('all');
 
-  useEffect(() => {
-    fetchGifts();
-  }, [tipo]);
-
-  const fetchGifts = async () => {
+  const fetchGifts = useCallback(async () => {
     try {
       const data = await apiClient.getGifts(tipo);
       setGifts(data || []);
@@ -53,7 +51,11 @@ export const GiftList = ({ tipo }: GiftListProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [tipo]);
+
+  useEffect(() => {
+    fetchGifts();
+  }, [fetchGifts]);
 
   if (loading) {
     return <GiftListSkeleton />;
@@ -154,7 +156,6 @@ const GiftCard = ({ gift, status, tipo, index, onUpdate }: GiftCardProps) => {
   const [showIdentificationDialog, setShowIdentificationDialog] = useState(false);
   const [showMarkPurchasedDialog, setShowMarkPurchasedDialog] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
-  const [imageLoadError, setImageLoadError] = useState(false);
 
   const { 
     reserveGift, 
@@ -220,13 +221,16 @@ const GiftCard = ({ gift, status, tipo, index, onUpdate }: GiftCardProps) => {
       >
         <Card className={`h-full hover:shadow-romantic transition-all duration-300 ${config.cardClass}`}>
           <CardHeader>
-            {gift.imagem?.trim() && !imageLoadError && (
-              <div className="mb-4 -mx-6 -mt-6">
-                <img 
+            {gift.imagem?.trim() && (
+              <div className="mb-4 -mx-6 -mt-6 relative h-48">
+                <OptimizedImage 
                   src={gift.imagem} 
                   alt={gift.nome}
-                  className="w-full h-48 object-cover rounded-t-lg"
-                  onError={() => setImageLoadError(true)}
+                  fill
+                  className="object-cover rounded-t-lg"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  quality={80}
+                  fallback={<Skeleton className="w-full h-48 rounded-t-lg" />}
                 />
               </div>
             )}

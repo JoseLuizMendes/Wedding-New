@@ -1,5 +1,5 @@
 // app/layout.tsx
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 // Componentes de Layout e Contexto (Serão criados ou migrados)
@@ -17,6 +17,14 @@ export const metadata: Metadata = {
   // Use o objeto de metadados para configurar OpenGraph e SEO avançado.
 };
 
+// Viewport configuration for better mobile experience
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#ffffff',
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,6 +32,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
+      <head>
+        {/* Preconnect to external domains for faster resource loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body
         className="antialiased"
       >
