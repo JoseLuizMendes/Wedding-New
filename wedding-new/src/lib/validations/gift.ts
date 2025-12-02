@@ -14,7 +14,7 @@ export const giftActionSchema = z.object({
   giftId: z.string().min(1, 'ID do presente é obrigatório'),
   code: z
     .string()
-    .length(4, 'Código deve ter 4 dígitos'),
+    .length(6, 'Código deve ter 6 caracteres'),
 });
 
 export type ReserveGiftFormData = z.infer<typeof reserveGiftSchema>;

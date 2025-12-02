@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { giftsApi } from "@/lib/api/gifts";
+import { giftsApi, EventType } from "@/lib/api/gifts";
 import { useToast } from "@/hooks/use-toast";
 
 interface UseGiftReservationProps {
   giftId: string;
-  tipo: 'casamento' | 'cha-panela';
+  tipo: EventType;
   reservedUntil: string | null;
   isBought: boolean;
   onReservationChange: () => void;
