@@ -1,16 +1,34 @@
-import prisma from "@/lib/prisma";
+import { Pool, neonConfig } from '@neondatabase/serverless';
+import { PrismaNeon } from '@prisma/adapter-neon';
+import { PrismaClient } from '../src/generated/prisma/client';
+import ws from 'ws';
 import "dotenv/config";
 
+// Configure WebSocket for Node.js environment
+neonConfig.webSocketConstructor = ws;
+
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  console.error('❌ DATABASE_URL não está definida no .env');
+  process.exit(1);
+}
+
+const pool = new Pool({ connectionString });
+const adapter = new PrismaNeon(pool);
+const prisma = new PrismaClient({ adapter });
+
 async function main() {
-  console.log('Iniciando seed do banco de dados...');
+  console.log('🚀 Iniciando seed do banco de dados...');
+  console.log('📡 Conectando ao banco Neon...');
   
-  // Limpar dados existentes antes de popular
-  // NOTA: Isso remove todos os registros das tabelas de presentes.
-  // Adequado para desenvolvimento/testes. Em produção, ajuste conforme necessário.
+  // Limpar dados existentes
+  console.log('🧹 Limpando dados existentes...');
   await prisma.presentesCasamento.deleteMany();
   await prisma.presentesChaPanela.deleteMany();
   
   // Presentes de Casamento
+  console.log('🎁 Inserindo presentes de casamento...');
   await prisma.presentesCasamento.createMany({
     data: [
       {
@@ -58,8 +76,9 @@ async function main() {
     ],
     skipDuplicates: true,
   });
-
+  
   // Presentes de Chá de Panela
+  console.log('🍳 Inserindo presentes de chá de panela...');
   await prisma.presentesChaPanela.createMany({
     data: [
       {
@@ -111,9 +130,10 @@ async function main() {
   const countCasamento = await prisma.presentesCasamento.count();
   const countChaPanela = await prisma.presentesChaPanela.count();
   
-  console.log(`✅ Seed concluído!`);
-  console.log(`   - Presentes Casamento: ${countCasamento}`);
-  console.log(`   - Presentes Chá de Panela: ${countChaPanela}`);
+  console.log('');
+  console.log('✅ Seed concluído com sucesso!');
+  console.log(`   📦 Presentes Casamento: ${countCasamento}`);
+  console.log(`   🍳 Presentes Chá de Panela: ${countChaPanela}`);
 }
 
 main()
@@ -123,4 +143,9 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
+    try {
+      await pool.end();
+    } catch (error) {
+      console.error('⚠️  Erro ao fechar pool de conexões:', error);
+    }
   });
