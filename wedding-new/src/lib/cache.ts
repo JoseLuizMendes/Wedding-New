@@ -1,5 +1,5 @@
 import { unstable_cache } from 'next/cache';
-import { apiClient } from './api-client';
+import { giftsApi } from './api/gifts';
 
 /**
  * Cached function to fetch gifts by type
@@ -7,7 +7,7 @@ import { apiClient } from './api-client';
  */
 export const getGiftsCached = unstable_cache(
   async (tipo: 'casamento' | 'cha-panela') => {
-    return apiClient.getGifts(tipo);
+    return giftsApi.getByEvent(tipo);
   },
   ['gifts'],
   {

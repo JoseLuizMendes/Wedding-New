@@ -6,7 +6,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/_components/ui/card";
 import { Button } from "@/_components/ui/button";
 import { ExternalLink, Gift as GiftIcon, Clock, ShoppingCart, AlertCircle, X } from "lucide-react";
-import { apiClient } from "../../lib/api-client";
+import { giftsApi, Gift } from "@/lib/api/gifts";
 import { motion } from "framer-motion";
 import { useGiftReservation } from "../../hooks/useGiftReservation";
 import { Badge } from "@/_components/ui/badge";
@@ -16,22 +16,6 @@ import { IdentificationDialog } from "./IdentificationDialog";
 import { CodeValidationDialog } from "./CodeValidationDialog";
 import { OptimizedImage } from "@/_components/ui/OptimizedImage";
 import { Skeleton } from "@/_components/ui/skeleton";
-
-interface Gift {
-  id: string;
-  nome: string;
-  descricao: string | null;
-  link_externo: string;
-  reservado: boolean;
-  ordem: number;
-  reserved_until: string | null;
-  is_bought: boolean;
-  reserved_by: string | null;
-  reserved_phone_display: string | null;
-  reserved_at: string | null;
-  purchased_at: string | null;
-  imagem: string | null;
-}
 
 interface GiftListProps {
   tipo: 'casamento' | 'cha-panela';
@@ -44,7 +28,7 @@ export const GiftList = ({ tipo }: GiftListProps) => {
 
   const fetchGifts = useCallback(async () => {
     try {
-      const data = await apiClient.getGifts(tipo);
+      const data = await giftsApi.getByEvent(tipo);
       setGifts(data || []);
     } catch (error) {
       console.error('Erro ao carregar presentes:', error);
