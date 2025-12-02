@@ -1,0 +1,17 @@
+package com.wedding.api.repository;
+
+import com.wedding.api.model.entity.Guest;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface GuestRepository extends JpaRepository<Guest, Long> {
+
+    Optional<Guest> findByInviteCode(String inviteCode);
+
+    Optional<Guest> findByPhone(String phone);
+
+    Optional<Guest> findByEmail(String email);
+}

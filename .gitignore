@@ -23,6 +23,10 @@
 hs_err_pid*
 replay_pid*
 
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
 # Node.js
 node_modules/
 .pnp
