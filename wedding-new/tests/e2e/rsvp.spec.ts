@@ -41,11 +41,10 @@ test.describe('RSVP Form E2E', () => {
     // Submit form
     await page.getByRole('button', { name: /confirmar presença/i }).click();
     
-    // Wait for error toast or validation message
-    await page.waitForTimeout(1000);
-    
-    // Form should still be visible (submission failed)
+    // Wait for form to process - check that form is still visible (validation failed)
     await expect(page.getByLabel(/nome completo/i)).toBeVisible();
+    // The button should still be enabled (not in loading state since validation failed)
+    await expect(page.getByRole('button', { name: /confirmar presença/i })).toBeEnabled();
   });
 
   test('should successfully submit RSVP form', async ({ page }) => {

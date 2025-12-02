@@ -7,8 +7,8 @@ test.describe('Gift Reservation E2E', () => {
     // Wait for the page to load
     await expect(page.locator('h1, h2').filter({ hasText: /sugestões de presentes/i })).toBeVisible({ timeout: 10000 });
     
-    // Wait for gift list to load (or loading skeleton)
-    await page.waitForTimeout(2000);
+    // Wait for tabs to become visible (indicates gift list has loaded)
+    await expect(page.getByRole('tab', { name: /todos/i })).toBeVisible({ timeout: 10000 });
     
     // Check for gift stats or tabs
     const tabs = page.getByRole('tab');
@@ -76,8 +76,8 @@ test.describe('Gift Reservation E2E', () => {
     
     await page.goto('/casamento');
     
-    // Wait for gift list to load
-    await page.waitForTimeout(3000);
+    // Wait for tabs to become visible (indicates gift list has loaded)
+    await expect(page.getByRole('tab', { name: /todos/i })).toBeVisible({ timeout: 10000 });
     
     // Try to find and click a "Quero Presentear" button
     const reserveButton = page.getByRole('button', { name: /quero presentear/i }).first();

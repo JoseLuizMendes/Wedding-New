@@ -2,6 +2,9 @@ import { http, HttpResponse } from 'msw';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
+// Constants
+export const MOCK_RESERVATION_CODE = MOCK_RESERVATION_CODE;
+
 // Mock data
 export const mockGifts = [
   {
@@ -104,7 +107,7 @@ export const handlers = [
     return HttpResponse.json({
       success: true,
       message: 'Presente reservado com sucesso!',
-      data: { reservationCode: 'ABC123' },
+      data: { reservationCode: MOCK_RESERVATION_CODE },
     });
   }),
 
@@ -121,7 +124,7 @@ export const handlers = [
       );
     }
     
-    if (body.code !== 'ABC123') {
+    if (body.code !== MOCK_RESERVATION_CODE) {
       return HttpResponse.json(
         { success: false, message: 'Código de reserva inválido.' },
         { status: 400 }
@@ -147,7 +150,7 @@ export const handlers = [
       );
     }
     
-    if (body.code !== 'ABC123') {
+    if (body.code !== MOCK_RESERVATION_CODE) {
       return HttpResponse.json(
         { success: false, message: 'Código de reserva inválido.' },
         { status: 400 }
