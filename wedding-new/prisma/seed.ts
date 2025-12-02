@@ -1,8 +1,8 @@
-import { Pool, neonConfig } from '@neondatabase/serverless';
+import { neonConfig } from '@neondatabase/serverless';
 import { PrismaNeon } from '@prisma/adapter-neon';
-import { PrismaClient } from '../src/generated/prisma/client';
+import { PrismaClient } from '../src/generated/prisma';
 import ws from 'ws';
-import "dotenv/config";
+import 'dotenv/config';
 
 // Configure WebSocket for Node.js environment
 neonConfig.webSocketConstructor = ws;
@@ -14,13 +14,13 @@ if (!connectionString) {
   process.exit(1);
 }
 
-const pool = new Pool({ connectionString });
-const adapter = new PrismaNeon(pool);
+console.log('📡 Conectando ao banco Neon...');
+
+const adapter = new PrismaNeon({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log('🚀 Iniciando seed do banco de dados...');
-  console.log('📡 Conectando ao banco Neon...');
   
   // Limpar dados existentes
   console.log('🧹 Limpando dados existentes...');
@@ -59,24 +59,10 @@ async function main() {
         ordem: 4,
         imagem: '',
       },
-      {
-        nome: 'Air Fryer Mondial',
-        descricao: 'Fritadeira elétrica 4L digital',
-        link_externo: 'https://www.magazineluiza.com.br',
-        ordem: 5,
-        imagem: '',
-      },
-      {
-        nome: 'Jogo de Cama Queen',
-        descricao: 'Lençol 400 fios 100% algodão',
-        link_externo: 'https://www.amazon.com.br',
-        ordem: 6,
-        imagem: '',
-      },
     ],
     skipDuplicates: true,
   });
-  
+
   // Presentes de Chá de Panela
   console.log('🍳 Inserindo presentes de chá de panela...');
   await prisma.presentesChaPanela.createMany({
@@ -109,20 +95,6 @@ async function main() {
         ordem: 4,
         imagem: '',
       },
-      {
-        nome: 'Conjunto de Potes Herméticos',
-        descricao: 'Kit 10 potes para armazenamento',
-        link_externo: 'https://www.amazon.com.br',
-        ordem: 5,
-        imagem: '',
-      },
-      {
-        nome: 'Escorredor de Louças',
-        descricao: 'Escorredor inox com bandeja',
-        link_externo: 'https://www.shopee.com.br',
-        ordem: 6,
-        imagem: '',
-      },
     ],
     skipDuplicates: true,
   });
@@ -143,9 +115,4 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-    try {
-      await pool.end();
-    } catch (error) {
-      console.error('⚠️  Erro ao fechar pool de conexões:', error);
-    }
   });
