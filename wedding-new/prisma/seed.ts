@@ -4,7 +4,9 @@ import "dotenv/config";
 async function main() {
   console.log('Iniciando seed do banco de dados...');
   
-  // Limpar dados existentes (opcional - para dev)
+  // Limpar dados existentes antes de popular
+  // NOTA: Isso remove todos os registros das tabelas de presentes.
+  // Adequado para desenvolvimento/testes. Em produção, ajuste conforme necessário.
   await prisma.presentesCasamento.deleteMany();
   await prisma.presentesChaPanela.deleteMany();
   
