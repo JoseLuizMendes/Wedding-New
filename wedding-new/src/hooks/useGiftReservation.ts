@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { apiClient } from "@/lib/api-client";
+import { giftsApi } from "@/lib/api/gifts";
 import { useToast } from "@/hooks/use-toast";
 
 interface UseGiftReservationProps {
@@ -75,7 +75,7 @@ export const useGiftReservation = ({
 
   const reserveGift = async (name: string, phone: string) => {
     try {
-      const response = await apiClient.reserveGift({ giftId, tipo, name, phone });
+      const response = await giftsApi.reserve({ giftId, tipo, name, phone });
 
       toast({
         title: "Presente reservado!",
@@ -101,7 +101,7 @@ export const useGiftReservation = ({
 
   const markAsBought = async (code: string): Promise<boolean> => {
     try {
-      await apiClient.markGiftPurchased({ giftId, tipo, code });
+      await giftsApi.markAsPurchased({ giftId, tipo, code });
 
       toast({
         title: "Presente comprado!",
@@ -123,7 +123,7 @@ export const useGiftReservation = ({
 
   const cancelReservation = async (code: string): Promise<boolean> => {
     try {
-      await apiClient.cancelReservation({ giftId, tipo, code });
+      await giftsApi.cancelReservation({ giftId, tipo, code });
 
       toast({
         title: "Reserva cancelada!",

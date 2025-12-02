@@ -6,7 +6,8 @@ import { Button } from "@/_components/ui/button";
 import { Input } from "@/_components/ui/input";
 import { Textarea } from "@/_components/ui/textarea";
 import { Label } from "@/_components/ui/label";
-import { apiClient } from "../../lib/api-client";
+import { rsvpApi } from "@/lib/api/rsvp";
+import { ApiError } from "@/lib/api/errors";
 import { shouldShowInviteAfterRSVP, getSuccessMessage } from "../../config/inviteConfig";
 import { openAndDownloadInvite } from "../../utils/inviteUtils";
 import { toast } from "sonner";
@@ -47,9 +48,9 @@ export const RSVPForm = ({ tipo, onSuccess }: RSVPFormProps) => {
       const validatedData = rsvpSchema.parse(formData);
 
       if (tipo === "casamento") {
-        await apiClient.submitRSVPCasamento(validatedData);
+        await rsvpApi.confirmWedding(validatedData);
       } else {
-        await apiClient.submitRSVPChaPanela(validatedData);
+        await rsvpApi.confirmBridalShower(validatedData);
       }
 
       // Mensagem de sucesso (customizada se convite estiver habilitado)
@@ -86,6 +87,8 @@ export const RSVPForm = ({ tipo, onSuccess }: RSVPFormProps) => {
       let errorMessage = "Por favor, tente novamente mais tarde.";
       if (error instanceof z.ZodError) {
         errorMessage = error.issues[0].message;
+      } else if (error instanceof ApiError) {
+        errorMessage = `Erro ${error.status}: ${error.statusText}`;
       }
       
       toast("Erro ao confirmar presença", {
