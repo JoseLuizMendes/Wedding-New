@@ -131,7 +131,7 @@ export const IdentificationDialog = ({
               <p className="text-sm text-red-500">{errors.phone}</p>
             )}
             <p className="text-xs text-muted-foreground">
-              Os últimos 4 dígitos serão seu código de acesso
+              Você receberá um código de 6 caracteres para gerenciar sua reserva
             </p>
           </div>
 

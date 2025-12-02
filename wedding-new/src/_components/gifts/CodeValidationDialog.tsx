@@ -30,8 +30,8 @@ export const CodeValidationDialog = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (code.length !== 4) {
-      setError("Digite os 4 dígitos do código");
+    if (code.length !== 6) {
+      setError("Digite os 6 caracteres do código");
       return;
     }
 
@@ -77,7 +77,7 @@ export const CodeValidationDialog = ({
           <div className="space-y-2">
             <div className="flex justify-center">
               <InputOTP
-                maxLength={4}
+                maxLength={6}
                 value={code}
                 onChange={(value) => {
                   setCode(value);
@@ -90,12 +90,14 @@ export const CodeValidationDialog = ({
                   <InputOTPSlot index={1} />
                   <InputOTPSlot index={2} />
                   <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
                 </InputOTPGroup>
               </InputOTP>
             </div>
             
             <p className="text-center text-sm text-muted-foreground">
-              Digite os últimos 4 dígitos do seu telefone
+              Digite o código de 6 caracteres recebido na reserva
             </p>
 
             {error && (
@@ -118,7 +120,7 @@ export const CodeValidationDialog = ({
             </Button>
             <Button
               type="submit"
-              disabled={loading || code.length !== 4}
+              disabled={loading || code.length !== 6}
               className="flex-1"
             >
               {loading ? (
