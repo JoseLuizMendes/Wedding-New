@@ -39,12 +39,19 @@ export interface GiftActionResponse {
 }
 
 export const giftsApi = {
+  /**
+   * Fetch gifts by event type.
+   * Returns an empty array on error to prevent UI breakage.
+   * Errors are logged to console for debugging.
+   */
   async getByEvent(tipo: EventType): Promise<Gift[]> {
     try {
       return await api.get<Gift[]>(`/api/gifts/${tipo}`);
     } catch (error) {
+      // Log error for debugging but return empty array to prevent UI breakage
+      // This matches the original behavior in api-client.ts
       console.error('Erro ao buscar presentes:', error);
-      return []; // Return empty array instead of throwing
+      return [];
     }
   },
 

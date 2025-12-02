@@ -8,23 +8,10 @@ import { Textarea } from "@/_components/ui/textarea";
 import { Label } from "@/_components/ui/label";
 import { rsvpApi } from "@/lib/api/rsvp";
 import { ApiError } from "@/lib/api/errors";
+import { rsvpSchema } from "@/lib/validations/rsvp";
 import { shouldShowInviteAfterRSVP, getSuccessMessage } from "../../config/inviteConfig";
 import { openAndDownloadInvite } from "../../utils/inviteUtils";
 import { toast } from "sonner";
-
-const rsvpSchema = z.object({
-  nome_completo: z.string()
-    .trim()
-    .min(3, "Nome deve ter no mínimo 3 caracteres")
-    .max(100, "Nome deve ter no máximo 100 caracteres"),
-  contato: z.string()
-    .trim()
-    .min(10, "Telefone inválido")
-    .max(20, "Telefone inválido"),
-  mensagem: z.string()
-    .max(500, "Mensagem deve ter no máximo 500 caracteres")
-    .optional(),
-});
 
 interface RSVPFormProps {
   tipo: "casamento" | "cha-panela";
