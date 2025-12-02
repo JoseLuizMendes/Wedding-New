@@ -15,10 +15,18 @@ if (!connectionString) {
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
   pool: Pool | undefined;
+  adapter: PrismaNeon | undefined;
 };
 
-const pool = globalForPrisma.pool ?? new Pool({ connectionString });
-const adapter = new PrismaNeon(pool);
+if (!globalForPrisma.pool) {
+  globalForPrisma.pool = new Pool({ connectionString });
+}
+if (!globalForPrisma.adapter) {
+  globalForPrisma.adapter = new PrismaNeon(globalForPrisma.pool);
+}
+
+const pool = globalForPrisma.pool;
+const adapter = globalForPrisma.adapter;
 
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({ 
   adapter,
@@ -27,7 +35,6 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({
 
 if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma;
-  globalForPrisma.pool = pool;
 }
 
 export default prisma;
