@@ -12,9 +12,8 @@ if (!connectionString) {
   throw new Error('DATABASE_URL environment variable is not set');
 }
 
-// Create pool and adapter
-const pool = new Pool({ connectionString });
-const adapter = new PrismaNeon(pool);
+// Create adapter with connection string
+const adapter = new PrismaNeon({ connectionString });
 
 // Singleton pattern to avoid multiple instances in dev
 const globalForPrisma = globalThis as unknown as {
