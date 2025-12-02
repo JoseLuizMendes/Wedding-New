@@ -5,27 +5,15 @@ import {
   ApiResponse,
   ReservationData,
   mapEventTypeToApi,
+  mapGiftDTOToLegacy,
+  Gift,
 } from '@/types/api';
 
 export type EventType = FrontendEventType;
 export type GiftStatus = 'available' | 'reserved' | 'bought';
 
-// Legacy Gift interface for backward compatibility with existing components
-export interface Gift {
-  id: string;
-  nome: string;
-  descricao: string | null;
-  link_externo: string;
-  reservado: boolean;
-  ordem: number;
-  reserved_until: string | null;
-  is_bought: boolean;
-  reserved_by: string | null;
-  reserved_phone_display: string | null;
-  reserved_at: string | null;
-  purchased_at: string | null;
-  imagem: string | null;
-}
+// Re-export Gift type for backward compatibility
+export type { Gift };
 
 export interface ReserveGiftRequest {
   giftId: string;
@@ -44,25 +32,6 @@ export interface GiftActionResponse {
   success: boolean;
   message: string;
   accessCode?: string;
-}
-
-// Helper function to map GiftDTO to legacy Gift format
-function mapGiftDTOToLegacy(dto: GiftDTO): Gift {
-  return {
-    id: String(dto.id),
-    nome: dto.name,
-    descricao: dto.description,
-    link_externo: '', // Not provided by new API
-    reservado: dto.status === 'RESERVED',
-    ordem: 0, // Not provided by new API
-    reserved_until: null, // Not provided by new API
-    is_bought: dto.status === 'PURCHASED',
-    reserved_by: null, // Not provided by new API
-    reserved_phone_display: null, // Not provided by new API
-    reserved_at: null, // Not provided by new API
-    purchased_at: null, // Not provided by new API
-    imagem: dto.imageUrl,
-  };
 }
 
 export const giftsApi = {
