@@ -7,7 +7,7 @@ import "dotenv/config";
 // Configure WebSocket for Node.js environment
 neonConfig.webSocketConstructor = ws;
 
-const connectionString = process.env.DATABASE_URL!;
+const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
   console.error('❌ DATABASE_URL não está definida no .env');
@@ -20,7 +20,7 @@ const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log('🚀 Iniciando seed do banco de dados...');
-  console.log(`📡 Conectando ao banco: ${connectionString.split('@')[1]?.split('/')[0] || 'Neon'}`);
+  console.log('📡 Conectando ao banco Neon...');
   
   // Limpar dados existentes
   console.log('🧹 Limpando dados existentes...');
