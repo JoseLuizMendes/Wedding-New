@@ -6,6 +6,6 @@ export default defineConfig({
   
   // Configuration for migrations and db push
   datasource: {
-    url: process.env.DATABASE_URL!,
+    url: process.env.DATABASE_URL || '',
   },
 });
