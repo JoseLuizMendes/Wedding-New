@@ -1,6 +1,6 @@
 import { Pool, neonConfig } from '@neondatabase/serverless';
 import { PrismaNeon } from '@prisma/adapter-neon';
-import { PrismaClient } from '../src/generated/prisma';
+import { PrismaClient } from '../src/generated/prisma/client';
 import ws from 'ws';
 import "dotenv/config";
 
@@ -143,5 +143,9 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-    await pool.end();
+    try {
+      await pool.end();
+    } catch (error) {
+      console.error('⚠️  Erro ao fechar pool de conexões:', error);
+    }
   });
