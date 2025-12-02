@@ -20,6 +20,53 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## 🗄️ Configuração do Banco de Dados
+
+### Pré-requisitos
+- Node.js 18+
+- pnpm instalado
+- Conta no Neon (https://neon.tech) ou PostgreSQL local
+
+### Setup Inicial
+
+1. Copie o arquivo de ambiente:
+```bash
+cp .env.example .env
+```
+
+2. Configure a variável `DATABASE_URL` no `.env` com sua connection string do Neon:
+```
+DATABASE_URL="postgresql://user:password@host.neon.tech/database?sslmode=require"
+```
+
+3. Execute o setup do banco:
+```bash
+# Gerar o Prisma Client
+pnpm db:generate
+
+# Criar as tabelas no banco
+pnpm db:push
+
+# Popular com dados iniciais
+pnpm db:seed
+```
+
+Ou execute tudo de uma vez:
+```bash
+pnpm db:setup
+```
+
+### Comandos úteis
+
+| Comando | Descrição |
+|---------|-----------|
+| `pnpm db:generate` | Gera o Prisma Client |
+| `pnpm db:push` | Sincroniza schema com o banco |
+| `pnpm db:seed` | Popula o banco com dados iniciais |
+| `pnpm db:studio` | Abre o Prisma Studio (GUI) |
+| `pnpm db:reset` | Reseta o banco e re-executa migrations |
+| `pnpm db:setup` | Executa generate + push + seed |
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

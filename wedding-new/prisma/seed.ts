@@ -2,6 +2,14 @@ import prisma from "@/lib/prisma";
 import "dotenv/config";
 
 async function main() {
+  console.log('Iniciando seed do banco de dados...');
+  
+  // Limpar dados existentes antes de popular
+  // NOTA: Isso remove todos os registros das tabelas de presentes.
+  // Adequado para desenvolvimento/testes. Em produção, ajuste conforme necessário.
+  await prisma.presentesCasamento.deleteMany();
+  await prisma.presentesChaPanela.deleteMany();
+  
   // Presentes de Casamento
   await prisma.presentesCasamento.createMany({
     data: [
@@ -10,7 +18,7 @@ async function main() {
         descricao: 'Conjunto de panelas antiaderentes 5 peças',
         link_externo: 'https://www.amazon.com.br',
         ordem: 1,
-        imagem: '', // imagem vazia
+        imagem: '',
       },
       {
         nome: 'Jogo de Toalhas Buddemeyer',
@@ -31,6 +39,20 @@ async function main() {
         descricao: 'Liquidificador 800W com 5 velocidades',
         link_externo: 'https://www.amazon.com.br',
         ordem: 4,
+        imagem: '',
+      },
+      {
+        nome: 'Air Fryer Mondial',
+        descricao: 'Fritadeira elétrica 4L digital',
+        link_externo: 'https://www.magazineluiza.com.br',
+        ordem: 5,
+        imagem: '',
+      },
+      {
+        nome: 'Jogo de Cama Queen',
+        descricao: 'Lençol 400 fios 100% algodão',
+        link_externo: 'https://www.amazon.com.br',
+        ordem: 6,
         imagem: '',
       },
     ],
@@ -68,15 +90,37 @@ async function main() {
         ordem: 4,
         imagem: '',
       },
+      {
+        nome: 'Conjunto de Potes Herméticos',
+        descricao: 'Kit 10 potes para armazenamento',
+        link_externo: 'https://www.amazon.com.br',
+        ordem: 5,
+        imagem: '',
+      },
+      {
+        nome: 'Escorredor de Louças',
+        descricao: 'Escorredor inox com bandeja',
+        link_externo: 'https://www.shopee.com.br',
+        ordem: 6,
+        imagem: '',
+      },
     ],
     skipDuplicates: true,
   });
 
-  console.log('Seed concluído!');
+  const countCasamento = await prisma.presentesCasamento.count();
+  const countChaPanela = await prisma.presentesChaPanela.count();
+  
+  console.log(`✅ Seed concluído!`);
+  console.log(`   - Presentes Casamento: ${countCasamento}`);
+  console.log(`   - Presentes Chá de Panela: ${countChaPanela}`);
 }
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error('❌ Erro no seed:', e);
     process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });
