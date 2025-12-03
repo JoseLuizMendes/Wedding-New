@@ -1,11 +1,5 @@
-import { api } from './index';
 import {
   FrontendEventType,
-  GiftDTO,
-  ApiResponse,
-  ReservationData,
-  mapEventTypeToApi,
-  mapGiftDTOToLegacy,
   Gift,
 } from '@/types/api';
 
@@ -36,18 +30,18 @@ export interface GiftActionResponse {
 
 export const giftsApi = {
   /**
-   * Fetch gifts by event type.
+   * Fetch gifts by event type using Next.js internal API routes.
    * Returns an empty array on error to prevent UI breakage.
    * Errors are logged to console for debugging.
    */
   async getByEvent(tipo: EventType): Promise<Gift[]> {
     try {
-      const eventType = mapEventTypeToApi(tipo);
-      const dtos = await api.get<GiftDTO[]>(`/api/v1/gifts/${eventType}`);
-      return dtos.map(mapGiftDTOToLegacy);
+      // Use internal Next.js API route
+      const response = await fetch(`/api/gifts/${tipo}`);
+      if (!response.ok) throw new Error('Erro ao buscar presentes');
+      return response.json();
     } catch (error) {
       // Log error for debugging but return empty array to prevent UI breakage
-      // This matches the original behavior in api-client.ts
       console.error('Erro ao buscar presentes:', error);
       return [];
     }
@@ -55,42 +49,57 @@ export const giftsApi = {
 
   async reserve(data: ReserveGiftRequest): Promise<GiftActionResponse> {
     const request = {
-      giftId: parseInt(data.giftId, 10),
-      tipo: mapEventTypeToApi(data.tipo),
+      giftId: data.giftId,
+      tipo: data.tipo,
       name: data.name,
       phone: data.phone,
     };
-    const response = await api.post<ApiResponse<ReservationData>>('/api/v1/gifts/reserve', request);
+    const response = await fetch('/api/gifts/reserve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(request),
+    });
+    const result = await response.json();
     return {
-      success: response.success,
-      message: response.message,
-      accessCode: response.data?.reservationCode,
+      success: result.success,
+      message: result.message,
+      accessCode: result.data?.reservationCode,
     };
   },
 
   async markAsPurchased(data: GiftActionRequest): Promise<GiftActionResponse> {
     const request = {
-      giftId: parseInt(data.giftId, 10),
-      tipo: mapEventTypeToApi(data.tipo),
+      giftId: data.giftId,
+      tipo: data.tipo,
       code: data.code,
     };
-    const response = await api.post<ApiResponse>('/api/v1/gifts/mark-purchased', request);
+    const response = await fetch('/api/gifts/mark-purchased', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(request),
+    });
+    const result = await response.json();
     return {
-      success: response.success,
-      message: response.message,
+      success: result.success,
+      message: result.message,
     };
   },
 
   async cancelReservation(data: GiftActionRequest): Promise<GiftActionResponse> {
     const request = {
-      giftId: parseInt(data.giftId, 10),
-      tipo: mapEventTypeToApi(data.tipo),
+      giftId: data.giftId,
+      tipo: data.tipo,
       code: data.code,
     };
-    const response = await api.post<ApiResponse>('/api/v1/gifts/cancel-reservation', request);
+    const response = await fetch('/api/gifts/cancel-reservation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(request),
+    });
+    const result = await response.json();
     return {
-      success: response.success,
-      message: response.message,
+      success: result.success,
+      message: result.message,
     };
   },
 };

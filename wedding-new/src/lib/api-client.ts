@@ -2,19 +2,16 @@ import {
   RSVPRequest,
   RSVPResponse,
   GiftDTO,
-  ReserveGiftRequest,
-  GiftActionRequest,
   ApiResponse,
   ReservationData,
   FrontendEventType,
-  mapEventTypeToApi,
 } from '@/types/api';
 
-// API Base URL from environment variable
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
+// API Base URL is no longer needed for internal routes
+// const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
-// Helper function to build full URL
-const buildUrl = (endpoint: string): string => `${API_BASE_URL}${endpoint}`;
+// Helper function to build full URL - no longer needed for internal routes
+// const buildUrl = (endpoint: string): string => `${API_BASE_URL}${endpoint}`;
 
 // Helper function to handle API errors
 async function handleResponse<T>(response: Response): Promise<T> {
@@ -30,14 +27,14 @@ async function handleResponse<T>(response: Response): Promise<T> {
 }
 
 export const apiClient = {
-  // RSVP endpoints
+  // RSVP endpoints - now using internal Next.js API routes
   async submitRSVPCasamento(data: { nome_completo: string; contato: string; mensagem?: string }): Promise<RSVPResponse> {
     const request: RSVPRequest = {
       nomeCompleto: data.nome_completo,
       contato: data.contato,
       mensagem: data.mensagem,
     };
-    const response = await fetch(buildUrl('/api/v1/rsvp/casamento'), {
+    const response = await fetch('/api/rsvp/casamento', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request),
@@ -51,7 +48,7 @@ export const apiClient = {
       contato: data.contato,
       mensagem: data.mensagem,
     };
-    const response = await fetch(buildUrl('/api/v1/rsvp/cha-panela'), {
+    const response = await fetch('/api/rsvp/cha-panela', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request),
@@ -59,11 +56,10 @@ export const apiClient = {
     return handleResponse<RSVPResponse>(response);
   },
 
-  // Gift endpoints
+  // Gift endpoints - now using internal Next.js API routes
   async getGifts(tipo: FrontendEventType): Promise<GiftDTO[]> {
     try {
-      const eventType = mapEventTypeToApi(tipo);
-      const response = await fetch(buildUrl(`/api/v1/gifts/${eventType}`));
+      const response = await fetch(`/api/gifts/${tipo}`);
       return handleResponse<GiftDTO[]>(response);
     } catch (error) {
       console.error('Erro ao buscar presentes:', error);
@@ -77,13 +73,13 @@ export const apiClient = {
     name: string;
     phone: string;
   }): Promise<ApiResponse<ReservationData>> {
-    const request: ReserveGiftRequest = {
-      giftId: parseInt(data.giftId, 10),
-      tipo: mapEventTypeToApi(data.tipo),
+    const request = {
+      giftId: data.giftId,
+      tipo: data.tipo,
       name: data.name,
       phone: data.phone,
     };
-    const response = await fetch(buildUrl('/api/v1/gifts/reserve'), {
+    const response = await fetch('/api/gifts/reserve', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request),
@@ -96,12 +92,12 @@ export const apiClient = {
     tipo: FrontendEventType;
     code: string;
   }): Promise<ApiResponse> {
-    const request: GiftActionRequest = {
-      giftId: parseInt(data.giftId, 10),
-      tipo: mapEventTypeToApi(data.tipo),
+    const request = {
+      giftId: data.giftId,
+      tipo: data.tipo,
       code: data.code,
     };
-    const response = await fetch(buildUrl('/api/v1/gifts/mark-purchased'), {
+    const response = await fetch('/api/gifts/mark-purchased', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request),
@@ -114,12 +110,12 @@ export const apiClient = {
     tipo: FrontendEventType;
     code: string;
   }): Promise<ApiResponse> {
-    const request: GiftActionRequest = {
-      giftId: parseInt(data.giftId, 10),
-      tipo: mapEventTypeToApi(data.tipo),
+    const request = {
+      giftId: data.giftId,
+      tipo: data.tipo,
       code: data.code,
     };
-    const response = await fetch(buildUrl('/api/v1/gifts/cancel-reservation'), {
+    const response = await fetch('/api/gifts/cancel-reservation', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request),
