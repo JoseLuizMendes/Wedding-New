@@ -9,36 +9,36 @@ export async function GET(
   
   try {
     const { tipo } = await context.params;
-    console.log(`[API /gifts/${tipo}] Request received`);
-    
-    // Normalize tipo to lowercase for comparison
     const normalizedTipo = tipo?.toLowerCase();
     
+    console.log(`[API /gifts/${normalizedTipo || 'undefined'}] Request received`);
+    
+    // Normalize tipo to lowercase for comparison
     if (!normalizedTipo) {
-      console.error(`[API /gifts/${tipo}] Missing tipo parameter`);
+      console.error(`[API /gifts] Missing tipo parameter`);
       return NextResponse.json(
         { error: 'Parâmetro tipo é obrigatório' }, 
         { status: 400 }
       );
     }
     
-    console.log(`[API /gifts/${tipo}] Normalized to: ${normalizedTipo}`);
+    console.log(`[API /gifts/${normalizedTipo}] Normalized tipo: ${normalizedTipo}`);
     
     let gifts;
     
     try {
       if (normalizedTipo === 'casamento') {
-        console.log(`[API /gifts/${tipo}] Querying presentesCasamento table`);
+        console.log(`[API /gifts/${normalizedTipo}] Querying presentesCasamento table`);
         gifts = await prisma.presentesCasamento.findMany({
           orderBy: { ordem: 'asc' },
         });
       } else if (normalizedTipo === 'cha-panela') {
-        console.log(`[API /gifts/${tipo}] Querying presentesChaPanela table`);
+        console.log(`[API /gifts/${normalizedTipo}] Querying presentesChaPanela table`);
         gifts = await prisma.presentesChaPanela.findMany({
           orderBy: { ordem: 'asc' },
         });
       } else {
-        console.error(`[API /gifts/${tipo}] Invalid tipo: ${normalizedTipo}`);
+        console.error(`[API /gifts/${normalizedTipo}] Invalid tipo: ${normalizedTipo}`);
         return NextResponse.json(
           { 
             error: `Tipo inválido. Use "casamento" ou "cha-panela"` 
@@ -47,9 +47,9 @@ export async function GET(
         );
       }
       
-      console.log(`[API /gifts/${tipo}] Found ${gifts.length} gifts`);
+      console.log(`[API /gifts/${normalizedTipo}] Found ${gifts.length} gifts`);
     } catch (prismaError) {
-      console.error(`[API /gifts/${tipo}] Prisma query error:`, {
+      console.error(`[API /gifts/${normalizedTipo}] Prisma query error:`, {
         error: prismaError instanceof Error ? {
           message: prismaError.message,
           stack: prismaError.stack,
@@ -79,7 +79,7 @@ export async function GET(
     }));
     
     const duration = Date.now() - startTime;
-    console.log(`[API /gifts/${tipo}] Request completed in ${duration}ms`);
+    console.log(`[API /gifts/${normalizedTipo}] Request completed in ${duration}ms`);
     
     return NextResponse.json(mappedGifts);
   } catch (error) {

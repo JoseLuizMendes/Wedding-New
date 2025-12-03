@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { version as prismaVersion } from '@prisma/client/package.json';
 
 export async function GET() {
   try {
@@ -11,7 +10,10 @@ export async function GET() {
       status: 'healthy',
       database: 'connected',
       timestamp: new Date().toISOString(),
-      prismaVersion
+      prisma: {
+        version: '7.0.1',
+        adapter: 'neon'
+      }
     });
   } catch (error) {
     console.error('[Health Check] Database connection failed:', error);
