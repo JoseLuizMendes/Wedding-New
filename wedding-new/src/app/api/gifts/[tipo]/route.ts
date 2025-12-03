@@ -5,36 +5,60 @@ export async function GET(
   request: NextRequest,
   context: { params: Promise<{ tipo: string }> }
 ) {
+  const startTime = Date.now();
+  
   try {
     const { tipo } = await context.params;
+    console.log(`[API /gifts/${tipo}] Request received`);
     
     // Normalize tipo to lowercase for comparison
     const normalizedTipo = tipo?.toLowerCase();
     
     if (!normalizedTipo) {
+      console.error(`[API /gifts/${tipo}] Missing tipo parameter`);
       return NextResponse.json(
         { error: 'Parâmetro tipo é obrigatório' }, 
         { status: 400 }
       );
     }
     
+    console.log(`[API /gifts/${tipo}] Normalized to: ${normalizedTipo}`);
+    
     let gifts;
     
-    if (normalizedTipo === 'casamento') {
-      gifts = await prisma.presentesCasamento.findMany({
-        orderBy: { ordem: 'asc' },
+    try {
+      if (normalizedTipo === 'casamento') {
+        console.log(`[API /gifts/${tipo}] Querying presentesCasamento table`);
+        gifts = await prisma.presentesCasamento.findMany({
+          orderBy: { ordem: 'asc' },
+        });
+      } else if (normalizedTipo === 'cha-panela') {
+        console.log(`[API /gifts/${tipo}] Querying presentesChaPanela table`);
+        gifts = await prisma.presentesChaPanela.findMany({
+          orderBy: { ordem: 'asc' },
+        });
+      } else {
+        console.error(`[API /gifts/${tipo}] Invalid tipo: ${normalizedTipo}`);
+        return NextResponse.json(
+          { 
+            error: `Tipo inválido. Use "casamento" ou "cha-panela"` 
+          }, 
+          { status: 400 }
+        );
+      }
+      
+      console.log(`[API /gifts/${tipo}] Found ${gifts.length} gifts`);
+    } catch (prismaError) {
+      console.error(`[API /gifts/${tipo}] Prisma query error:`, {
+        error: prismaError instanceof Error ? {
+          message: prismaError.message,
+          stack: prismaError.stack,
+          name: prismaError.name
+        } : String(prismaError),
+        normalizedTipo,
+        databaseUrl: process.env.DATABASE_URL ? 'SET (hidden)' : 'NOT SET'
       });
-    } else if (normalizedTipo === 'cha-panela') {
-      gifts = await prisma.presentesChaPanela.findMany({
-        orderBy: { ordem: 'asc' },
-      });
-    } else {
-      return NextResponse.json(
-        { 
-          error: 'Tipo inválido. Use "casamento" ou "cha-panela"' 
-        }, 
-        { status: 400 }
-      );
+      throw prismaError;
     }
     
     // Mapear para formato esperado pelo frontend (não expor hash do telefone)
@@ -54,14 +78,24 @@ export async function GET(
       imagem: gift.imagem,
     }));
     
+    const duration = Date.now() - startTime;
+    console.log(`[API /gifts/${tipo}] Request completed in ${duration}ms`);
+    
     return NextResponse.json(mappedGifts);
   } catch (error) {
-    console.error('Erro ao buscar presentes:', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
+    const duration = Date.now() - startTime;
+    console.error(`[API /gifts] Request failed after ${duration}ms:`, {
+      error: error instanceof Error ? {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      } : String(error),
+      prismaClientExists: typeof prisma !== 'undefined',
+      nodeEnv: process.env.NODE_ENV
     });
+    
     return NextResponse.json(
-      { error: 'Erro interno ao buscar presentes' }, 
+      { error: 'Erro interno ao buscar presentes. Verifique os logs do servidor.' }, 
       { status: 500 }
     );
   }
