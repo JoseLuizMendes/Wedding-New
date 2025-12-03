@@ -9,6 +9,9 @@ export type GiftStatus = 'available' | 'reserved' | 'bought';
 // Re-export Gift type for backward compatibility
 export type { Gift };
 
+// Maximum length of response body to log (to avoid logging huge responses)
+const MAX_RESPONSE_LOG_LENGTH = 500;
+
 export interface ReserveGiftRequest {
   giftId: string;
   tipo: EventType;
@@ -63,7 +66,7 @@ export const giftsApi = {
         } catch (parseError) {
           console.error(`[GiftsAPI] Failed to parse error response as JSON:`, {
             parseError: parseError instanceof Error ? parseError.message : String(parseError),
-            responseBody: responseBody.substring(0, 500), // First 500 chars
+            responseBody: responseBody.substring(0, MAX_RESPONSE_LOG_LENGTH),
             contentType: response.headers.get('content-type')
           });
         }

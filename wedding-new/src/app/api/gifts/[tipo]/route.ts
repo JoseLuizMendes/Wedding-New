@@ -95,7 +95,7 @@ export async function GET(
     });
     
     return NextResponse.json(
-      { error: 'Erro interno ao buscar presentes. Verifique os logs do servidor.' }, 
+      { error: 'Erro interno no servidor. Tente novamente mais tarde.' }, 
       { status: 500 }
     );
   }
