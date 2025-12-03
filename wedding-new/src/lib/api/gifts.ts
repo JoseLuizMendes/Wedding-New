@@ -9,6 +9,9 @@ export type GiftStatus = 'available' | 'reserved' | 'bought';
 // Re-export Gift type for backward compatibility
 export type { Gift };
 
+// Maximum length of response body to log (to avoid logging huge responses)
+const MAX_RESPONSE_LOG_LENGTH = 500;
+
 export interface ReserveGiftRequest {
   giftId: string;
   tipo: EventType;
@@ -38,30 +41,63 @@ export const giftsApi = {
     try {
       // Normalize tipo to lowercase for consistency
       const normalizedTipo = tipo.toLowerCase();
+      const apiUrl = `/api/gifts/${normalizedTipo}`;
+      
+      console.log(`[GiftsAPI] Fetching gifts for tipo: ${tipo} (normalized: ${normalizedTipo})`);
       
       // Use internal Next.js API route
-      const response = await fetch(`/api/gifts/${normalizedTipo}`);
+      const response = await fetch(apiUrl);
+      
+      console.log(`[GiftsAPI] Response status: ${response.status} ${response.statusText}`);
       
       if (!response.ok) {
         // Try to get error message from response
         let errorMessage = 'Erro ao buscar presentes';
+        let responseBody = '';
+        
         try {
-          const errorData = await response.json();
+          // First, try to read as text to see what we got
+          responseBody = await response.text();
+          console.log(`[GiftsAPI] Response body (text):`, responseBody);
+          
+          // Then try to parse as JSON
+          const errorData = JSON.parse(responseBody);
           errorMessage = errorData.error || errorData.message || errorMessage;
-        } catch {
-          // If JSON parse fails, use default message
+        } catch (parseError) {
+          console.error(`[GiftsAPI] Failed to parse error response as JSON:`, {
+            parseError: parseError instanceof Error ? parseError.message : String(parseError),
+            responseBody: responseBody.substring(0, Math.min(responseBody.length, MAX_RESPONSE_LOG_LENGTH)),
+            contentType: response.headers.get('content-type')
+          });
         }
         
-        throw new Error(`${errorMessage} (Status: ${response.status})`);
+        const detailedError = new Error(`${errorMessage} (Status: ${response.status})`);
+        console.error(`[GiftsAPI] Request failed:`, {
+          url: apiUrl,
+          tipo,
+          normalizedTipo,
+          status: response.status,
+          statusText: response.statusText,
+          contentType: response.headers.get('content-type'),
+          errorMessage
+        });
+        
+        throw detailedError;
       }
       
-      return response.json();
+      const gifts = await response.json();
+      console.log(`[GiftsAPI] Successfully fetched ${gifts.length} gifts for tipo: ${tipo}`);
+      return gifts;
     } catch (error) {
       // Log detailed error for debugging but return empty array to prevent UI breakage
-      console.error('Erro ao buscar presentes:', {
+      console.error('[GiftsAPI] Error in getByEvent:', {
         tipo,
-        error: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined
+        error: error instanceof Error ? {
+          message: error.message,
+          stack: error.stack,
+          name: error.name
+        } : String(error),
+        timestamp: new Date().toISOString()
       });
       return [];
     }
