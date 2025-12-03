@@ -36,13 +36,33 @@ export const giftsApi = {
    */
   async getByEvent(tipo: EventType): Promise<Gift[]> {
     try {
+      // Normalize tipo to lowercase for consistency
+      const normalizedTipo = tipo.toLowerCase();
+      
       // Use internal Next.js API route
-      const response = await fetch(`/api/gifts/${tipo}`);
-      if (!response.ok) throw new Error('Erro ao buscar presentes');
+      const response = await fetch(`/api/gifts/${normalizedTipo}`);
+      
+      if (!response.ok) {
+        // Try to get error message from response
+        let errorMessage = 'Erro ao buscar presentes';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorData.message || errorMessage;
+        } catch {
+          // If JSON parse fails, use default message
+        }
+        
+        throw new Error(`${errorMessage} (Status: ${response.status})`);
+      }
+      
       return response.json();
     } catch (error) {
-      // Log error for debugging but return empty array to prevent UI breakage
-      console.error('Erro ao buscar presentes:', error);
+      // Log detailed error for debugging but return empty array to prevent UI breakage
+      console.error('Erro ao buscar presentes:', {
+        tipo,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
+      });
       return [];
     }
   },

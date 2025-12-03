@@ -8,18 +8,33 @@ export async function GET(
   try {
     const { tipo } = await context.params;
     
+    // Normalize tipo to lowercase for comparison
+    const normalizedTipo = tipo?.toLowerCase();
+    
+    if (!normalizedTipo) {
+      return NextResponse.json(
+        { error: 'Parâmetro tipo é obrigatório' }, 
+        { status: 400 }
+      );
+    }
+    
     let gifts;
     
-    if (tipo === 'casamento' || tipo === 'CASAMENTO') {
+    if (normalizedTipo === 'casamento') {
       gifts = await prisma.presentesCasamento.findMany({
         orderBy: { ordem: 'asc' },
       });
-    } else if (tipo === 'cha-panela' || tipo === 'CHA_PANELA') {
+    } else if (normalizedTipo === 'cha-panela') {
       gifts = await prisma.presentesChaPanela.findMany({
         orderBy: { ordem: 'asc' },
       });
     } else {
-      return NextResponse.json({ error: 'Tipo inválido' }, { status: 400 });
+      return NextResponse.json(
+        { 
+          error: 'Tipo inválido. Use "casamento" ou "cha-panela"' 
+        }, 
+        { status: 400 }
+      );
     }
     
     // Mapear para formato esperado pelo frontend (não expor hash do telefone)
@@ -41,7 +56,13 @@ export async function GET(
     
     return NextResponse.json(mappedGifts);
   } catch (error) {
-    console.error('Erro ao buscar presentes:', error);
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 });
+    console.error('Erro ao buscar presentes:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
+    });
+    return NextResponse.json(
+      { error: 'Erro interno ao buscar presentes' }, 
+      { status: 500 }
+    );
   }
 }
