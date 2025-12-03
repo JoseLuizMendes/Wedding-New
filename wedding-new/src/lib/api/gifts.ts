@@ -66,7 +66,7 @@ export const giftsApi = {
         } catch (parseError) {
           console.error(`[GiftsAPI] Failed to parse error response as JSON:`, {
             parseError: parseError instanceof Error ? parseError.message : String(parseError),
-            responseBody: responseBody.substring(0, MAX_RESPONSE_LOG_LENGTH),
+            responseBody: responseBody.substring(0, Math.min(responseBody.length, MAX_RESPONSE_LOG_LENGTH)),
             contentType: response.headers.get('content-type')
           });
         }

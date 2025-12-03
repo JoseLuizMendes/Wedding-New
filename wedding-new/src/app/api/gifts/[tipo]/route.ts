@@ -56,7 +56,7 @@ export async function GET(
           name: prismaError.name
         } : String(prismaError),
         normalizedTipo,
-        databaseUrl: process.env.DATABASE_URL ? 'SET (hidden)' : 'NOT SET'
+        databaseUrl: process.env.DATABASE_URL ? 'configured' : 'missing'
       });
       throw prismaError;
     }
