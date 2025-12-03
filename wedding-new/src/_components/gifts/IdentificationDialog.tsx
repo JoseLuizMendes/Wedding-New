@@ -144,22 +144,20 @@ export const IdentificationDialog = ({
               className="flex-1">
               Cancelar
             </Button>
-            <DialogClose>
-              <Button
-                type="submit"
-                variant="default"
-                disabled={loading}
-                className="flex-1">
-                {loading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Confirmando...
-                  </>
-                ) : (
-                  "Confirmar Reserva"
-                )}
-              </Button>
-            </DialogClose>
+            <Button
+              type="submit"
+              variant="default"
+              disabled={loading}
+              className="flex-1">
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Confirmando...
+                </>
+              ) : (
+                "Confirmar Reserva"
+              )}
+            </Button>
           </div>
         </form>
       </DialogContent>
