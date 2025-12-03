@@ -1,15 +1,16 @@
+import { randomInt } from 'crypto';
 import { createHash } from 'crypto';
 
 const ALPHANUMERIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const CODE_LENGTH = 6;
 
 /**
- * Generate a random 6-character reservation code
+ * Generate a random 6-character reservation code using cryptographically secure random numbers
  */
 export function generateReservationCode(): string {
   let code = '';
   for (let i = 0; i < CODE_LENGTH; i++) {
-    const randomIndex = Math.floor(Math.random() * ALPHANUMERIC.length);
+    const randomIndex = randomInt(0, ALPHANUMERIC.length);
     code += ALPHANUMERIC.charAt(randomIndex);
   }
   return code;

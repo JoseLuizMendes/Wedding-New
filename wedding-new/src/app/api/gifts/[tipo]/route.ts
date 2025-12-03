@@ -22,7 +22,7 @@ export async function GET(
       return NextResponse.json({ error: 'Tipo inválido' }, { status: 400 });
     }
     
-    // Mapear para formato esperado pelo frontend
+    // Mapear para formato esperado pelo frontend (não expor hash do telefone)
     const mappedGifts = gifts.map(gift => ({
       id: gift.id,
       nome: gift.nome,
