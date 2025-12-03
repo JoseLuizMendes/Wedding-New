@@ -31,7 +31,7 @@ export async function GET(
     } else {
       return NextResponse.json(
         { 
-          error: `Tipo inválido: "${tipo}". Use "casamento" ou "cha-panela"` 
+          error: `Tipo inválido: "${normalizedTipo}". Use "casamento" ou "cha-panela"` 
         }, 
         { status: 400 }
       );
