@@ -1,18 +1,38 @@
 import { randomInt } from 'crypto';
 import { createHash } from 'crypto';
+import prisma from '@/lib/prisma';
 
-const ALPHANUMERIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const CODE_LENGTH = 6;
 
 /**
- * Generate a random 6-character reservation code using cryptographically secure random numbers
+ * Generate a unique 6-digit numeric reservation code
+ * Ensures the code is not already in use by checking both gift tables
  */
-export function generateReservationCode(): string {
+export async function generateReservationCode(): Promise<string> {
   let code = '';
-  for (let i = 0; i < CODE_LENGTH; i++) {
-    const randomIndex = randomInt(0, ALPHANUMERIC.length);
-    code += ALPHANUMERIC.charAt(randomIndex);
+  let isUnique = false;
+  
+  while (!isUnique) {
+    // Generate 6-digit numeric code
+    code = '';
+    for (let i = 0; i < CODE_LENGTH; i++) {
+      code += randomInt(0, 10).toString();
+    }
+    
+    // Check if code is already in use in both tables
+    const [existingCasamento, existingChaPanela] = await Promise.all([
+      prisma.presentesCasamento.findFirst({
+        where: { telefone_contato: code }
+      }),
+      prisma.presentesChaPanela.findFirst({
+        where: { telefone_contato: code }
+      })
+    ]);
+    
+    // Code is unique if not found in either table
+    isUnique = !existingCasamento && !existingChaPanela;
   }
+  
   return code;
 }
 

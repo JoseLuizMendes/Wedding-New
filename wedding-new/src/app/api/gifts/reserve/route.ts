@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     const isCasamento = tipo === 'casamento' || tipo === 'CASAMENTO';
     
     // Generate reservation details
-    const reservationCode = generateReservationCode();
+    const reservationCode = await generateReservationCode();
     const phoneHash = hashPhoneNumber(normalizedPhone);
     const phoneDisplay = maskPhoneForDisplay(phone);
     const reservedUntil = getReservationExpiry();
