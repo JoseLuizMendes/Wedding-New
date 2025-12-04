@@ -185,6 +185,7 @@ export const Navigation = () => {
                     <Link
                       key={item.path}
                       href={item.path}
+                      onClick={() => setIsOpen(false)}
                       className={`block px-4 py-3 rounded-md text-sm font-medium transition-all duration-300 ${
                         path === item.path
                           ? "bg-primary text-primary-foreground"
