@@ -9,8 +9,7 @@ import { Label } from "@/_components/ui/label";
 import { rsvpApi } from "@/lib/api/rsvp";
 import { ApiError } from "@/lib/api/errors";
 import { rsvpSchema } from "@/lib/validations/rsvp";
-import { shouldShowInviteAfterRSVP, getSuccessMessage } from "../../config/inviteConfig";
-import { openAndDownloadInvite } from "../../utils/inviteUtils";
+import { formatPhoneNumber, isValidPhoneNumber } from "@/lib/phoneUtils";
 import { toast } from "sonner";
 
 interface RSVPFormProps {
@@ -26,6 +25,11 @@ export const RSVPForm = ({ tipo, onSuccess }: RSVPFormProps) => {
     mensagem: "",
   });
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setFormData({ ...formData, contato: formatted });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
@@ -40,29 +44,23 @@ export const RSVPForm = ({ tipo, onSuccess }: RSVPFormProps) => {
         await rsvpApi.confirmBridalShower(validatedData);
       }
 
-      // Mensagem de sucesso (customizada se convite estiver habilitado)
-      const successMessage = shouldShowInviteAfterRSVP(tipo) 
-        ? getSuccessMessage(tipo)
-        : tipo === "casamento"
-          ? "Obrigado por confirmar sua presença! Mal podemos esperar para celebrar com você."
-          : "🎉 Obrigado por confirmar presença no nosso chá de panela!";
+      // Mensagem de sucesso
+      const successMessage = tipo === "casamento"
+        ? "Obrigado por confirmar sua presença! Mal podemos esperar para celebrar com você."
+        : "🎉 Obrigado por confirmar presença no nosso chá de panela!";
 
-      toast("✅ Presença confirmada!", {
+      toast.success("✅ Presença confirmada!", {
         description: successMessage,
-        action: { label: "Fechar", onClick: () => toast.dismiss() },
-        duration: 6000,
+        duration: 5000,
+        style: {
+          background: '#bbf7d0',
+          border: '2px solid #4ade80',
+          color: '#14532d',
+        },
       });
 
       setFormData({ nome_completo: "", contato: "", mensagem: "" });
       setStatus("confirmed");
-
-      // 🎉 SISTEMA DE CONVITES - Abre convite em nova página
-      if (shouldShowInviteAfterRSVP(tipo)) {
-        // Aguarda um pouco para o usuário ver a mensagem de sucesso
-        setTimeout(() => {
-          openAndDownloadInvite(validatedData.nome_completo, tipo);
-        }, 1500);
-      }
 
       // volta para o estado inicial depois de 3 segundos
       setTimeout(() => setStatus("idle"), 3000);
@@ -72,16 +70,31 @@ export const RSVPForm = ({ tipo, onSuccess }: RSVPFormProps) => {
       console.error("Erro ao enviar RSVP:", error);
       
       let errorMessage = "Por favor, tente novamente mais tarde.";
+      let errorTitle = "Erro ao confirmar presença";
+      
       if (error instanceof z.ZodError) {
         errorMessage = error.issues[0].message;
       } else if (error instanceof ApiError) {
-        errorMessage = `Erro ${error.status}: ${error.statusText}`;
+        // Usa mensagem específica da API se disponível
+        if (error.errorMessage) {
+          errorMessage = error.errorMessage;
+        } else if (error.status === 409) {
+          errorMessage = "Já existe uma confirmação com este nome.";
+        } else if (error.status === 400) {
+          errorMessage = "Dados inválidos. Verifique as informações.";
+        } else {
+          errorMessage = `Erro ${error.status}: ${error.statusText}`;
+        }
       }
       
-      toast("Erro ao confirmar presença", {
+      toast.error(errorTitle, {
         description: errorMessage,
-        action: { label: "Fechar", onClick: () => toast.dismiss() },
         duration: 6000,
+        style: {
+          background: '#fecaca',
+          border: '2px solid #f87171',
+          color: '#7f1d1d',
+        },
       });
       setStatus("idle");
     }
@@ -103,15 +116,14 @@ export const RSVPForm = ({ tipo, onSuccess }: RSVPFormProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="contato">Telefone *</Label>
+        <Label htmlFor="contato">Telefone com DDD *</Label>
         <Input
           id="contato"
           value={formData.contato}
-          onChange={(e) =>
-            setFormData({ ...formData, contato: e.target.value })
-          }
+          onChange={handlePhoneChange}
           required
-          placeholder="(00) 00000-0000"
+          placeholder="(XX) XXXXX-XXXX"
+          maxLength={15}
         />
       </div>
 
