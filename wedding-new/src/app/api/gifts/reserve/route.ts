@@ -20,59 +20,65 @@ export async function POST(request: NextRequest) {
     // Determine which table to use
     const isCasamento = tipo === 'casamento' || tipo === 'CASAMENTO';
     
-    // Find the gift
-    const gift = isCasamento
-      ? await prisma.presentesCasamento.findUnique({ where: { id: giftId } })
-      : await prisma.presentesChaPanela.findUnique({ where: { id: giftId } });
-    
-    if (!gift) {
-      return NextResponse.json(
-        { success: false, message: 'Presente não encontrado' },
-        { status: 404 }
-      );
-    }
-    
-    // Check if gift is available
-    if (gift.reservado || gift.is_bought) {
-      return NextResponse.json(
-        { success: false, message: 'Este presente não está mais disponível para reserva.' },
-        { status: 400 }
-      );
-    }
-    
     // Generate reservation details
     const reservationCode = generateReservationCode();
     const phoneHash = hashPhoneNumber(normalizedPhone);
     const phoneDisplay = maskPhoneForDisplay(phone);
     const reservedUntil = getReservationExpiry();
     
-    // Update the gift
-    if (isCasamento) {
-      await prisma.presentesCasamento.update({
-        where: { id: giftId },
-        data: {
-          reservado: true,
-          reserved_by: name,
-          reserved_phone_hash: phoneHash,
-          reserved_phone_display: phoneDisplay,
-          reserved_at: new Date(),
-          reserved_until: reservedUntil,
-          telefone_contato: reservationCode, // Store code in telefone_contato field
-        },
-      });
-    } else {
-      await prisma.presentesChaPanela.update({
-        where: { id: giftId },
-        data: {
-          reservado: true,
-          reserved_by: name,
-          reserved_phone_hash: phoneHash,
-          reserved_phone_display: phoneDisplay,
-          reserved_at: new Date(),
-          reserved_until: reservedUntil,
-          telefone_contato: reservationCode, // Store code in telefone_contato field
-        },
-      });
+    // Use transaction to prevent race conditions (two people reserving same gift)
+    const result = await prisma.$transaction(async (tx) => {
+      // Find and lock the gift for update
+      const gift = isCasamento
+        ? await tx.presentesCasamento.findUnique({ where: { id: giftId } })
+        : await tx.presentesChaPanela.findUnique({ where: { id: giftId } });
+      
+      if (!gift) {
+        throw new Error('GIFT_NOT_FOUND');
+      }
+      
+      // Check if gift is still available
+      if (gift.reservado || gift.is_bought) {
+        throw new Error('GIFT_NOT_AVAILABLE');
+      }
+      
+      // Update the gift atomically
+      if (isCasamento) {
+        await tx.presentesCasamento.update({
+          where: { id: giftId },
+          data: {
+            reservado: true,
+            reserved_by: name,
+            reserved_phone_hash: phoneHash,
+            reserved_phone_display: phoneDisplay,
+            reserved_at: new Date(),
+            reserved_until: reservedUntil,
+            telefone_contato: reservationCode,
+          },
+        });
+      } else {
+        await tx.presentesChaPanela.update({
+          where: { id: giftId },
+          data: {
+            reservado: true,
+            reserved_by: name,
+            reserved_phone_hash: phoneHash,
+            reserved_phone_display: phoneDisplay,
+            reserved_at: new Date(),
+            reserved_until: reservedUntil,
+            telefone_contato: reservationCode,
+          },
+        });
+      }
+      
+      return { success: true };
+    });
+    
+    if (!result.success) {
+      return NextResponse.json(
+        { success: false, message: 'Erro ao reservar presente' },
+        { status: 500 }
+      );
     }
     
     return NextResponse.json({
@@ -84,6 +90,23 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Erro ao reservar presente:', error);
+    
+    // Handle specific transaction errors
+    if (error instanceof Error) {
+      if (error.message === 'GIFT_NOT_FOUND') {
+        return NextResponse.json(
+          { success: false, message: 'Presente não encontrado' },
+          { status: 404 }
+        );
+      }
+      if (error.message === 'GIFT_NOT_AVAILABLE') {
+        return NextResponse.json(
+          { success: false, message: 'Este presente não está mais disponível para reserva.' },
+          { status: 400 }
+        );
+      }
+    }
+    
     return NextResponse.json(
       { success: false, message: 'Erro interno ao reservar presente' },
       { status: 500 }

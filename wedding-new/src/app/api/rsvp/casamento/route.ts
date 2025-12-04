@@ -13,6 +13,23 @@ export async function POST(request: NextRequest) {
       );
     }
     
+    // Check if name already exists (case-insensitive)
+    const existingRsvp = await prisma.rsvpCasamento.findFirst({
+      where: {
+        nome_completo: {
+          equals: nomeCompleto,
+          mode: 'insensitive',
+        },
+      },
+    });
+    
+    if (existingRsvp) {
+      return NextResponse.json(
+        { error: 'Já existe uma confirmação de presença com este nome. Se você precisa atualizar seus dados, entre em contato conosco.' },
+        { status: 409 }
+      );
+    }
+    
     // Create RSVP record
     const rsvp = await prisma.rsvpCasamento.create({
       data: {
