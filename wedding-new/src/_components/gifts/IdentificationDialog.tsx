@@ -83,6 +83,8 @@ export const IdentificationDialog = ({
       setName("");
       setPhone("");
       setErrors({ name: "", phone: "" });
+      // Close dialog automatically after successful submission
+      onOpenChange(false);
     } catch (error) {
       console.error("Error confirming reservation:", error);
     } finally {

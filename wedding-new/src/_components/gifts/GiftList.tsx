@@ -5,7 +5,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/_components/ui/card";
 import { Button } from "@/_components/ui/button";
-import { ExternalLink, Gift as GiftIcon, Clock, ShoppingCart, AlertCircle, X } from "lucide-react";
+import { ExternalLink, Gift as GiftIcon, Clock, ShoppingCart, AlertCircle, X, ChevronDown } from "lucide-react";
 import { giftsApi, Gift } from "@/lib/api/gifts";
 import { motion } from "framer-motion";
 import { useGiftReservation } from "../../hooks/useGiftReservation";
@@ -25,6 +25,8 @@ export const GiftList = ({ tipo }: GiftListProps) => {
   const [gifts, setGifts] = useState<Gift[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState<'all' | 'available' | 'reserved' | 'bought'>('all');
+  const [showAll, setShowAll] = useState(false);
+  const INITIAL_DISPLAY = 8;
 
   const fetchGifts = useCallback(async () => {
     try {
@@ -69,61 +71,50 @@ export const GiftList = ({ tipo }: GiftListProps) => {
 
   return (
     <div className="space-y-6">
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="text-center hover-scale">
-          <CardContent className="pt-6">
-            <p className="text-3xl font-bold text-primary">{giftStats.total}</p>
-            <p className="text-sm text-muted-foreground">Total</p>
-          </CardContent>
-        </Card>
-        <Card className="text-center hover-scale">
-          <CardContent className="pt-6">
-            <p className="text-3xl font-bold text-green-600">{giftStats.available}</p>
-            <p className="text-sm text-muted-foreground">Disponíveis</p>
-          </CardContent>
-        </Card>
-        <Card className="text-center hover-scale">
-          <CardContent className="pt-6">
-            <p className="text-3xl font-bold text-primary">{giftStats.reserved}</p>
-            <p className="text-sm text-muted-foreground">Reservados</p>
-          </CardContent>
-        </Card>
-        <Card className="text-center hover-scale">
-          <CardContent className="pt-6">
-            <p className="text-3xl font-bold text-muted-foreground">{giftStats.bought}</p>
-            <p className="text-sm text-muted-foreground">Comprados</p>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Filters */}
-      <Tabs value={activeFilter} onValueChange={(v) => setActiveFilter(v as never)} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="all">Todos</TabsTrigger>
-          <TabsTrigger value="available">Disponíveis</TabsTrigger>
-          <TabsTrigger value="reserved">Reservados</TabsTrigger>
-          <TabsTrigger value="bought">Comprados</TabsTrigger>
-        </TabsList>
-        <TabsContent value={activeFilter} className="mt-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {filteredGifts.map((gift, index) => {
-              const status = getGiftStatus(gift);
-              
-              return (
-                <GiftCard 
-                  key={gift.id}
-                  gift={gift}
-                  status={status}
-                  tipo={tipo}
-                  index={index}
-                  onUpdate={fetchGifts}
-                />
-              );
-            })}
-          </div>
-        </TabsContent>
-      </Tabs>
+      <div>
+        <Tabs value={activeFilter} onValueChange={(v) => { setActiveFilter(v as never); setShowAll(false); }} className="flex-1">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="all">Todos ({giftStats.total})</TabsTrigger>
+            <TabsTrigger value="available">Disponíveis ({giftStats.available})</TabsTrigger>
+            <TabsTrigger value="reserved">Reservados ({giftStats.reserved})</TabsTrigger>
+            <TabsTrigger value="bought">Comprados ({giftStats.bought})</TabsTrigger>
+          </TabsList>
+          <TabsContent value={activeFilter} className="mt-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              {(showAll ? filteredGifts : filteredGifts.slice(0, INITIAL_DISPLAY)).map((gift, index) => {
+                const status = getGiftStatus(gift);
+                
+                return (
+                  <GiftCard 
+                    key={gift.id}
+                    gift={gift}
+                    status={status}
+                    tipo={tipo}
+                    index={index}
+                    onUpdate={fetchGifts}
+                  />
+                );
+              })}
+            </div>
+            
+            {/* Botão Ver Mais */}
+            {filteredGifts.length > INITIAL_DISPLAY && (
+              <div className="flex justify-center mt-8">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => setShowAll(!showAll)}
+                  className="group"
+                >
+                  {showAll ? 'Ver Menos' : `Ver Mais (${filteredGifts.length - INITIAL_DISPLAY})`}
+                  <ChevronDown className={`w-4 h-4 ml-2 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} />
+                </Button>
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };

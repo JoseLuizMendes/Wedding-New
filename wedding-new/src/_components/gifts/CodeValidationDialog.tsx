@@ -26,32 +26,41 @@ export const CodeValidationDialog = ({
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [validationStatus, setValidationStatus] = useState<"idle" | "success" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (code.length !== 6) {
       setError("Digite os 6 caracteres do código");
+      setValidationStatus("error");
       return;
     }
 
     setLoading(true);
     setError("");
+    setValidationStatus("idle");
 
     try {
       const isValid = await onValidate(code);
       
       if (isValid) {
-        // Reset and close on success
-        setCode("");
-        setError("");
-        onOpenChange(false);
+        setValidationStatus("success");
+        // Reset and close on success after a brief delay to show success state
+        setTimeout(() => {
+          setCode("");
+          setError("");
+          setValidationStatus("idle");
+          onOpenChange(false);
+        }, 800);
       } else {
+        setValidationStatus("error");
         setError("Código inválido. Tente novamente.");
         setCode("");
       }
     } catch (error) {
       console.error("Error validating code:", error);
+      setValidationStatus("error");
       setError("Erro ao validar código. Tente novamente.");
       setCode("");
     } finally {
@@ -62,12 +71,20 @@ export const CodeValidationDialog = ({
   const handleCancel = () => {
     setCode("");
     setError("");
+    setValidationStatus("idle");
     onOpenChange(false);
+  };
+
+  // Get card border color based on validation status
+  const getCardClassName = () => {
+    if (validationStatus === "success") return "border-green-500 border-2";
+    if (validationStatus === "error") return "border-red-500 border-2";
+    return "";
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className={`sm:max-w-md transition-all duration-300 ${getCardClassName()}`}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
@@ -81,7 +98,10 @@ export const CodeValidationDialog = ({
                 value={code}
                 onChange={(value) => {
                   setCode(value);
-                  if (error) setError("");
+                  if (error) {
+                    setError("");
+                    setValidationStatus("idle");
+                  }
                 }}
                 disabled={loading}
               >
@@ -99,6 +119,12 @@ export const CodeValidationDialog = ({
             <p className="text-center text-sm text-muted-foreground">
               Digite o código de 6 caracteres recebido na reserva
             </p>
+
+            {validationStatus === "success" && (
+              <div className="flex items-center gap-2 text-sm text-green-600 justify-center font-medium">
+                <span>✓ Código validado com sucesso!</span>
+              </div>
+            )}
 
             {error && (
               <div className="flex items-center gap-2 text-sm text-red-500 justify-center">
