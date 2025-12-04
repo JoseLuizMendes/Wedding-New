@@ -80,6 +80,7 @@ export const useGiftReservation = ({
       toast({
         title: "Presente reservado!",
         description: `Seu código de acesso: ${response.accessCode || '****'}. Guarde este código para gerenciar sua reserva.`,
+        variant: "success",
       });
 
       // Optionally save name in localStorage for convenience
@@ -101,15 +102,24 @@ export const useGiftReservation = ({
 
   const markAsBought = async (code: string): Promise<boolean> => {
     try {
-      await giftsApi.markAsPurchased({ giftId, tipo, code });
+      const response = await giftsApi.markAsPurchased({ giftId, tipo, code });
 
-      toast({
-        title: "Presente comprado!",
-        description: "Obrigado por presentear os noivos!",
-      });
-
-      onReservationChange();
-      return true;
+      if (response.success) {
+        toast({
+          title: "Presente comprado!",
+          description: "Obrigado por presentear os noivos!",
+          variant: "success",
+        });
+        onReservationChange();
+        return true;
+      } else {
+        toast({
+          title: "Erro ao confirmar compra",
+          description: response.message || "Código inválido.",
+          variant: "destructive",
+        });
+        return false;
+      }
     } catch (error) {
       console.error('Erro ao marcar como comprado:', error);
       toast({
@@ -123,15 +133,24 @@ export const useGiftReservation = ({
 
   const cancelReservation = async (code: string): Promise<boolean> => {
     try {
-      await giftsApi.cancelReservation({ giftId, tipo, code });
+      const response = await giftsApi.cancelReservation({ giftId, tipo, code });
 
-      toast({
-        title: "Reserva cancelada!",
-        description: "O presente está disponível novamente.",
-      });
-
-      onReservationChange();
-      return true;
+      if (response.success) {
+        toast({
+          title: "Reserva cancelada!",
+          description: "O presente está disponível novamente.",
+          variant: "success",
+        });
+        onReservationChange();
+        return true;
+      } else {
+        toast({
+          title: "Erro ao cancelar reserva",
+          description: response.message || "Código inválido.",
+          variant: "destructive",
+        });
+        return false;
+      }
     } catch (error) {
       console.error('Erro ao cancelar reserva:', error);
       toast({
