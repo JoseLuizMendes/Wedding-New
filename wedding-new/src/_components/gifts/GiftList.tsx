@@ -5,7 +5,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/_components/ui/card";
 import { Button } from "@/_components/ui/button";
-import { ExternalLink, Gift as GiftIcon, Clock, ShoppingCart, AlertCircle, X, ChevronDown } from "lucide-react";
+import { ExternalLink, Gift as GiftIcon, Clock, ShoppingCart, AlertCircle, X, ChevronDown, Filter } from "lucide-react";
 import { giftsApi, Gift } from "@/lib/api/gifts";
 import { motion } from "framer-motion";
 import { useGiftReservation } from "../../hooks/useGiftReservation";
@@ -16,6 +16,7 @@ import { IdentificationDialog } from "./IdentificationDialog";
 import { CodeValidationDialog } from "./CodeValidationDialog";
 import { OptimizedImage } from "@/_components/ui/OptimizedImage";
 import { Skeleton } from "@/_components/ui/skeleton";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/_components/ui/dropdown-menu";
 
 interface GiftListProps {
   tipo: 'casamento' | 'cha-panela';
@@ -74,12 +75,40 @@ export const GiftList = ({ tipo }: GiftListProps) => {
       {/* Filters */}
       <div>
         <Tabs value={activeFilter} onValueChange={(v) => { setActiveFilter(v as never); setShowAll(false); }} className="flex-1">
-          <TabsList className="grid w-full grid-cols-4">
+          {/* Desktop - Todos os filtros visíveis */}
+          <TabsList className="hidden md:grid w-full grid-cols-4">
             <TabsTrigger value="all">Todos ({giftStats.total})</TabsTrigger>
             <TabsTrigger value="available">Disponíveis ({giftStats.available})</TabsTrigger>
             <TabsTrigger value="reserved">Reservados ({giftStats.reserved})</TabsTrigger>
             <TabsTrigger value="bought">Comprados ({giftStats.bought})</TabsTrigger>
           </TabsList>
+
+          {/* Mobile - Apenas "Todos" + Dropdown com os outros */}
+          <div className="md:hidden flex items-center gap-2 w-full">
+            <TabsList className="flex-1 grid grid-cols-1">
+              <TabsTrigger value="all">Todos ({giftStats.total})</TabsTrigger>
+            </TabsList>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon" className="shrink-0">
+                  <Filter className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setActiveFilter('available')}>
+                  Disponíveis ({giftStats.available})
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setActiveFilter('reserved')}>
+                  Reservados ({giftStats.reserved})
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setActiveFilter('bought')}>
+                  Comprados ({giftStats.bought})
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
           <TabsContent value={activeFilter} className="mt-6">
             <div className="grid md:grid-cols-2 gap-6">
               {(showAll ? filteredGifts : filteredGifts.slice(0, INITIAL_DISPLAY)).map((gift, index) => {
