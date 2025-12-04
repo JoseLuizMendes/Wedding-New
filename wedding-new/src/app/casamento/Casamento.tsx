@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { RSVPForm } from "@/_components/forms/RSVPForm";
 import { GiftList } from "@/_components/gifts/GiftList";
 import { HeroSection } from "@/_components/hero-section";
@@ -8,9 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/_components/ui/card";
+import { LocationDialog } from "@/_components/ui/LocationDialog";
 import { motion } from "framer-motion";
 import { Calendar, Clock, Gift, MapPin } from "lucide-react";
-import Link from "next/link";
 
 const weddingDetails = [
   {
@@ -34,6 +37,8 @@ const weddingDetails = [
 ];
 
 export const Casamento = () => {
+  const [showLocationDialog, setShowLocationDialog] = useState(false);
+
   return (
     <div className="min-h-screen pb-12">
       <HeroSection />
@@ -47,12 +52,7 @@ export const Casamento = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}>
               {detail.title === "Local" ? (
-                <Link
-                  href="https://maps.app.goo.gl/HZuhizgjnL9YGYyw9"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Abrir ${detail.value} no Google Maps`}
-                  className="block">
+                <div onClick={() => setShowLocationDialog(true)}>
                   <Card className="text-center h-full shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-romantic)] transition-all duration-300 border-primary/10 cursor-pointer">
                     <CardHeader>
                       <detail.icon className="w-12 h-12 text-primary mx-auto mb-4" />
@@ -67,7 +67,7 @@ export const Casamento = () => {
                       </p>
                     </CardContent>
                   </Card>
-                </Link>
+                </div>
               ) : (
                 <Card className="text-center h-full shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-romantic)] transition-all duration-300 border-primary/10">
                   <CardHeader>
@@ -132,6 +132,14 @@ export const Casamento = () => {
           </Card>
         </motion.section>
       </div>
+
+      <LocationDialog
+        isOpen={showLocationDialog}
+        onOpenChange={setShowLocationDialog}
+        locationName="Sítio Pouso do Cristão"
+        locationAddress="Cariacica, ES"
+        googleMapsUrl="https://maps.app.goo.gl/HZuhizgjnL9YGYyw9"
+      />
     </div>
   );
 };

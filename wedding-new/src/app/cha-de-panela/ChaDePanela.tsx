@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, MapPin, Gift, UtensilsCrossed } from "lucide-react";
 import Image from "next/image";
@@ -8,10 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/_components/ui/card";
+import { LocationDialog } from "@/_components/ui/LocationDialog";
 import { RSVPForm } from "@/_components/forms/RSVPForm";
 import { GiftList } from "@/_components/gifts/GiftList";
-
-import Link from "next/link";
 
 const chaDetails = [
   {
@@ -35,6 +37,8 @@ const chaDetails = [
 ];
 
 export const ChaDePanela = () => {
+  const [showLocationDialog, setShowLocationDialog] = useState(false);
+
   return (
     <div className="min-h-screen pb-12">
       {/* Hero Section */}
@@ -81,12 +85,7 @@ export const ChaDePanela = () => {
               transition={{ duration: 0.8, delay: index * 0.1 }}
               viewport={{ once: true }}>
               {detail.title === "Local" ? (
-                <Link
-                  href="https://maps.app.goo.gl/spuKfJPf8RbLWdXE7"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Abrir ${detail.value} no Google Maps`}
-                  className="block">
+                <div onClick={() => setShowLocationDialog(true)}>
                   <Card className="text-center h-full shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-romantic)] transition-all duration-300 border-primary/10 cursor-pointer">
                     <CardHeader>
                       <detail.icon className="w-12 h-12 text-primary mx-auto mb-4" />
@@ -101,7 +100,7 @@ export const ChaDePanela = () => {
                       </p>
                     </CardContent>
                   </Card>
-                </Link>
+                </div>
               ) : (
                 <Card className="text-center h-full shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-romantic)] transition-all duration-300 border-primary/10">
                   <CardHeader>
@@ -165,6 +164,14 @@ export const ChaDePanela = () => {
           </Card>
         </motion.section>
       </div>
+
+      <LocationDialog
+        isOpen={showLocationDialog}
+        onOpenChange={setShowLocationDialog}
+        locationName="Igreja Casa de Oração e Plenitude - COP"
+        locationAddress="Rod. Gov. José Henrique Sette, Cariacica - ES"
+        googleMapsUrl="https://maps.app.goo.gl/spuKfJPf8RbLWdXE7"
+      />
     </div>
   );
 };
