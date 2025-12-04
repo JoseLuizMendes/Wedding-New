@@ -130,3 +130,26 @@
   font-optical-sizing: auto;
   font-style: normal !important;
 }
+
+/* Sonner Toast Custom Styles */
+[data-sonner-toast][data-type="success"] {
+  background: #bbf7d0 !important;
+  border: 2px solid #4ade80 !important;
+  color: #14532d !important;
+}
+
+[data-sonner-toast][data-type="success"] [data-title],
+[data-sonner-toast][data-type="success"] [data-description] {
+  color: #14532d !important;
+}
+
+[data-sonner-toast][data-type="error"] {
+  background: #fecaca !important;
+  border: 2px solid #f87171 !important;
+  color: #7f1d1d !important;
+}
+
+[data-sonner-toast][data-type="error"] [data-title],
+[data-sonner-toast][data-type="error"] [data-description] {
+  color: #7f1d1d !important;
+}
