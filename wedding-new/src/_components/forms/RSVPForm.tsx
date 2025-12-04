@@ -70,7 +70,7 @@ export const RSVPForm = ({ tipo, onSuccess }: RSVPFormProps) => {
       console.error("Erro ao enviar RSVP:", error);
       
       let errorMessage = "Por favor, tente novamente mais tarde.";
-      let errorTitle = "Erro ao confirmar presença";
+      const errorTitle = "Erro ao confirmar presença";
       
       if (error instanceof z.ZodError) {
         errorMessage = error.issues[0].message;
