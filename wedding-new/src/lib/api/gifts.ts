@@ -115,6 +115,15 @@ export const giftsApi = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request),
     });
+    
+    if (!response.ok) {
+      const result = await response.json();
+      return {
+        success: false,
+        message: result.message || 'Erro ao reservar presente',
+      };
+    }
+    
     const result = await response.json();
     return {
       success: result.success,
@@ -134,6 +143,15 @@ export const giftsApi = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request),
     });
+    
+    if (!response.ok) {
+      const result = await response.json();
+      return {
+        success: false,
+        message: result.message || 'Erro ao marcar presente como comprado',
+      };
+    }
+    
     const result = await response.json();
     return {
       success: result.success,
@@ -152,6 +170,15 @@ export const giftsApi = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request),
     });
+    
+    if (!response.ok) {
+      const result = await response.json();
+      return {
+        success: false,
+        message: result.message || 'Erro ao cancelar reserva',
+      };
+    }
+    
     const result = await response.json();
     return {
       success: result.success,

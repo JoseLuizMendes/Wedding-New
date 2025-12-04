@@ -38,13 +38,13 @@ function mapFromApiResponse(response: ApiRSVPResponse): RSVPResponse {
 export const rsvpApi = {
   async confirmWedding(data: RSVPRequest): Promise<RSVPResponse> {
     const apiRequest = mapToApiRequest(data);
-    const response = await api.post<ApiRSVPResponse>('/api/v1/rsvp/casamento', apiRequest);
+    const response = await api.post<ApiRSVPResponse>('/api/rsvp/casamento', apiRequest);
     return mapFromApiResponse(response);
   },
 
   async confirmBridalShower(data: RSVPRequest): Promise<RSVPResponse> {
     const apiRequest = mapToApiRequest(data);
-    const response = await api.post<ApiRSVPResponse>('/api/v1/rsvp/cha-panela', apiRequest);
+    const response = await api.post<ApiRSVPResponse>('/api/rsvp/cha-panela', apiRequest);
     return mapFromApiResponse(response);
   },
 };
