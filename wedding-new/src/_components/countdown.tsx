@@ -29,14 +29,24 @@ const calculateTimeLeft = (): TimeLeft => {
 };
 
 export const Countdown = () => {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft);
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+    setTimeLeft(calculateTimeLeft());
+    
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
     return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const timeUnits = [
@@ -62,8 +72,9 @@ export const Countdown = () => {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.3 }}
               className="text-4xl md:text-5xl playfair-custom text-primary mb-2"
+              suppressHydrationWarning
             >
-              {unit.value.toString().padStart(2, "0")}
+              {isMounted ? unit.value.toString().padStart(2, "0") : "00"}
             </motion.div>
             <div className="text-sm md:text-base text-muted-foreground font-medium">
               {unit.label}
