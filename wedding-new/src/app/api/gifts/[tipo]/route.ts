@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { GiftRepository } from '@/repositories/gifts/GiftRepository';
+import { GiftService } from '@/services/gifts/GiftService';
+import { normalizeEventType, EVENT_TYPE } from '@/types/common';
+import { mapGiftEntityToResponse } from '@/types/gifts/gift.dto';
 
 // Mock data para desenvolvimento quando DATABASE_URL não está configurada
 const MOCK_GIFTS_CASAMENTO = [
@@ -61,20 +65,32 @@ export async function GET(
   
   try {
     const { tipo } = await context.params;
-    const normalizedTipo = tipo?.toLowerCase();
+    const tipoLower = tipo?.toLowerCase();
     
-    console.log(`[API /gifts/${normalizedTipo || 'undefined'}] Request received`);
+    console.log(`[API /gifts/${tipoLower || 'undefined'}] Request received`);
     
-    // Normalize tipo to lowercase for comparison
-    if (!normalizedTipo) {
+    // Validate and normalize tipo
+    if (!tipoLower) {
       console.error(`[API /gifts] Missing tipo parameter`);
       return NextResponse.json(
         { error: 'Parâmetro tipo é obrigatório' }, 
         { status: 400 }
       );
     }
+
+    const eventType = normalizeEventType(tipoLower);
     
-    console.log(`[API /gifts/${normalizedTipo}] Normalized tipo: ${normalizedTipo}`);
+    if (!eventType) {
+      console.error(`[API /gifts/${tipoLower}] Invalid tipo: ${tipoLower}`);
+      return NextResponse.json(
+        { 
+          error: `Tipo inválido. Use "casamento" ou "cha-panela"` 
+        }, 
+        { status: 400 }
+      );
+    }
+    
+    console.log(`[API /gifts/${tipoLower}] Normalized tipo: ${eventType}`);
     
     // Check if database is configured
     const hasDatabase = process.env.DATABASE_URL && 
@@ -84,80 +100,45 @@ export async function GET(
     let gifts;
     
     if (!hasDatabase) {
-      console.warn(`[API /gifts/${normalizedTipo}] Using mock data (DATABASE_URL not configured)`);
-      // Usar dados mock para desenvolvimento
-      if (normalizedTipo === 'casamento') {
+      console.warn(`[API /gifts/${tipoLower}] Using mock data (DATABASE_URL not configured)`);
+      // Use mock data for development
+      if (eventType === EVENT_TYPE.CASAMENTO) {
         gifts = MOCK_GIFTS_CASAMENTO;
-      } else if (normalizedTipo === 'cha-panela') {
-        gifts = MOCK_GIFTS_CHA_PANELA;
       } else {
-        console.error(`[API /gifts/${normalizedTipo}] Invalid tipo: ${normalizedTipo}`);
-        return NextResponse.json(
-          { 
-            error: `Tipo inválido. Use "casamento" ou "cha-panela"` 
-          }, 
-          { status: 400 }
-        );
+        gifts = MOCK_GIFTS_CHA_PANELA;
       }
-      console.log(`[API /gifts/${normalizedTipo}] Returning ${gifts.length} mock gifts`);
+      console.log(`[API /gifts/${tipoLower}] Returning ${gifts.length} mock gifts`);
     } else {
       try {
-        if (normalizedTipo === 'casamento') {
-          console.log(`[API /gifts/${normalizedTipo}] Querying presentesCasamento table`);
-          gifts = await prisma.presentesCasamento.findMany({
-            orderBy: { ordem: 'asc' },
-          });
-        } else if (normalizedTipo === 'cha-panela') {
-          console.log(`[API /gifts/${normalizedTipo}] Querying presentesChaPanela table`);
-          gifts = await prisma.presentesChaPanela.findMany({
-            orderBy: { ordem: 'asc' },
-          });
-        } else {
-          console.error(`[API /gifts/${normalizedTipo}] Invalid tipo: ${normalizedTipo}`);
-          return NextResponse.json(
-            { 
-              error: `Tipo inválido. Use "casamento" ou "cha-panela"` 
-            }, 
-            { status: 400 }
-          );
-        }
+        // Use service layer with dependency injection
+        const giftRepository = new GiftRepository(prisma);
+        const giftService = new GiftService(giftRepository);
         
-        console.log(`[API /gifts/${normalizedTipo}] Found ${gifts.length} gifts`);
+        console.log(`[API /gifts/${tipoLower}] Querying database via service layer`);
+        const giftEntities = await giftService.getGiftsByEventType(eventType);
+        
+        // Map entities to response format
+        gifts = giftEntities.map(mapGiftEntityToResponse);
+        
+        console.log(`[API /gifts/${tipoLower}] Found ${gifts.length} gifts`);
       } catch (prismaError) {
-        console.error(`[API /gifts/${normalizedTipo}] Prisma query error:`, {
+        console.error(`[API /gifts/${tipoLower}] Database query error:`, {
           error: prismaError instanceof Error ? {
             message: prismaError.message,
             stack: prismaError.stack,
             name: prismaError.name
           } : String(prismaError),
-          normalizedTipo,
+          eventType,
           databaseUrl: process.env.DATABASE_URL ? 'configured' : 'missing'
         });
         throw prismaError;
       }
     }
     
-    // Mapear para formato esperado pelo frontend (não expor hash do telefone)
-    const mappedGifts = gifts.map(gift => ({
-      id: gift.id,
-      nome: gift.nome,
-      descricao: gift.descricao,
-      link_externo: gift.link_externo,
-      reservado: gift.reservado,
-      ordem: gift.ordem,
-      reserved_until: gift.reserved_until?.toISOString() || null,
-      is_bought: gift.is_bought,
-      reserved_by: gift.reserved_by,
-      reserved_phone_display: gift.reserved_phone_display,
-      reserved_at: gift.reserved_at?.toISOString() || null,
-      purchased_at: gift.purchased_at?.toISOString() || null,
-      imagem: gift.imagem,
-    }));
-    
     const duration = Date.now() - startTime;
-    console.log(`[API /gifts/${normalizedTipo}] Request completed in ${duration}ms`);
+    console.log(`[API /gifts/${tipoLower}] Request completed in ${duration}ms`);
     
-    return NextResponse.json(mappedGifts);
+    return NextResponse.json(gifts);
   } catch (error) {
     const duration = Date.now() - startTime;
     console.error(`[API /gifts] Request failed after ${duration}ms:`, {

@@ -1,97 +1,65 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { generateReservationCode, hashPhoneNumber, getReservationExpiry, maskPhoneForDisplay } from '@/lib/api/reservation-utils';
+import { GiftRepository } from '@/repositories/gifts/GiftRepository';
+import { GiftService } from '@/services/gifts/GiftService';
+import { ReserveGiftDTOSchema } from '@/types/gifts/gift.dto';
+import { normalizeEventType } from '@/types/common';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { giftId, tipo, name, phone } = body;
     
+    // Basic validation for required fields
     if (!giftId || !tipo || !name || !phone) {
       return NextResponse.json(
         { success: false, message: 'Dados incompletos' },
         { status: 400 }
       );
     }
-    
-    // Normalize phone number
-    const normalizedPhone = phone.replace(/\D/g, '');
-    
-    // Determine which table to use
-    const isCasamento = tipo === 'casamento' || tipo === 'CASAMENTO';
-    
-    // Generate reservation details
-    const reservationCode = await generateReservationCode();
-    const phoneHash = hashPhoneNumber(normalizedPhone);
-    const phoneDisplay = maskPhoneForDisplay(phone);
-    const reservedUntil = getReservationExpiry();
-    
-    // Use transaction to prevent race conditions (two people reserving same gift)
-    const result = await prisma.$transaction(async (tx) => {
-      // Find and lock the gift for update
-      const gift = isCasamento
-        ? await tx.presentesCasamento.findUnique({ where: { id: giftId } })
-        : await tx.presentesChaPanela.findUnique({ where: { id: giftId } });
-      
-      if (!gift) {
-        throw new Error('GIFT_NOT_FOUND');
-      }
-      
-      // Check if gift is still available
-      if (gift.reservado || gift.is_bought) {
-        throw new Error('GIFT_NOT_AVAILABLE');
-      }
-      
-      // Update the gift atomically
-      if (isCasamento) {
-        await tx.presentesCasamento.update({
-          where: { id: giftId },
-          data: {
-            reservado: true,
-            reserved_by: name,
-            reserved_phone_hash: phoneHash,
-            reserved_phone_display: phoneDisplay,
-            reserved_at: new Date(),
-            reserved_until: reservedUntil,
-            telefone_contato: reservationCode,
-          },
-        });
-      } else {
-        await tx.presentesChaPanela.update({
-          where: { id: giftId },
-          data: {
-            reservado: true,
-            reserved_by: name,
-            reserved_phone_hash: phoneHash,
-            reserved_phone_display: phoneDisplay,
-            reserved_at: new Date(),
-            reserved_until: reservedUntil,
-            telefone_contato: reservationCode,
-          },
-        });
-      }
-      
-      return { success: true };
-    });
-    
-    if (!result.success) {
+
+    // Normalize event type
+    const eventType = normalizeEventType(tipo);
+    if (!eventType) {
       return NextResponse.json(
-        { success: false, message: 'Erro ao reservar presente' },
-        { status: 500 }
+        { success: false, message: 'Tipo de evento inválido' },
+        { status: 400 }
       );
     }
-    
+
+    // Validate with Zod schema
+    const validationResult = ReserveGiftDTOSchema.safeParse({
+      giftId,
+      tipo: eventType,
+      name,
+      phone,
+    });
+
+    if (!validationResult.success) {
+      const errors = validationResult.error.issues.map(e => e.message).join(', ');
+      return NextResponse.json(
+        { success: false, message: `Validação falhou: ${errors}` },
+        { status: 400 }
+      );
+    }
+
+    // Use service layer with dependency injection
+    const giftRepository = new GiftRepository(prisma);
+    const giftService = new GiftService(giftRepository);
+
+    const result = await giftService.reserveGift(validationResult.data);
+
     return NextResponse.json({
       success: true,
       message: 'Presente reservado com sucesso!',
       data: {
-        reservationCode,
+        reservationCode: result.reservationCode,
       },
     });
   } catch (error) {
     console.error('Erro ao reservar presente:', error);
     
-    // Handle specific transaction errors
+    // Handle specific business logic errors
     if (error instanceof Error) {
       if (error.message === 'GIFT_NOT_FOUND') {
         return NextResponse.json(
