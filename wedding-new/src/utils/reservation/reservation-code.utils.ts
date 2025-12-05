@@ -30,9 +30,10 @@ export function hashPhoneNumber(phone: string): string {
 
 /**
  * Calculate reservation expiry time (48 hours from now)
+ * @param currentTime - Optional current time (defaults to now, useful for testing)
  */
-export function getReservationExpiry(): Date {
-  const expiry = new Date();
+export function getReservationExpiry(currentTime: Date = new Date()): Date {
+  const expiry = new Date(currentTime);
   expiry.setHours(expiry.getHours() + 48);
   return expiry;
 }

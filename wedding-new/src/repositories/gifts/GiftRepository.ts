@@ -125,6 +125,11 @@ export class GiftRepository implements IGiftRepository {
     }
   }
 
+  /**
+   * Check if a reservation code is unique across all gifts
+   * Note: This performs two separate queries. For larger datasets,
+   * consider optimizing with a single query or dedicated code table.
+   */
   async isCodeUnique(code: string): Promise<boolean> {
     const [existingCasamento, existingChaPanela] = await Promise.all([
       this.prisma.presentesCasamento.findFirst({

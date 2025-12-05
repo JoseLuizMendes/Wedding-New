@@ -107,14 +107,22 @@ export class GiftService implements IGiftService {
   /**
    * Generate a unique reservation code
    * Keeps generating until a unique code is found
+   * Max retries: 100 (prevents infinite loops)
    */
   private async generateUniqueCode(): Promise<string> {
     let code = '';
     let isUnique = false;
+    let attempts = 0;
+    const MAX_ATTEMPTS = 100;
 
-    while (!isUnique) {
+    while (!isUnique && attempts < MAX_ATTEMPTS) {
       code = generateRandomCode();
       isUnique = await this.giftRepository.isCodeUnique(code);
+      attempts++;
+    }
+
+    if (!isUnique) {
+      throw new Error('UNABLE_TO_GENERATE_UNIQUE_CODE');
     }
 
     return code;
