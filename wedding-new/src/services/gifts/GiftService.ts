@@ -1,12 +1,12 @@
-import { EventType } from '@/types/common';
-import {
+import type { EventType } from '@/types/common';
+import type {
   GiftEntity,
   ReserveGiftDTO,
   CancelReservationDTO,
   MarkPurchasedDTO,
 } from '@/types/gifts/gift.dto';
-import { IGiftRepository } from '@/repositories/gifts/IGiftRepository';
-import { IGiftService } from './IGiftService';
+import type { IGiftRepository } from '@/repositories/gifts/IGiftRepository';
+import type { IGiftService } from './IGiftService';
 import {
   generateRandomCode,
   hashPhoneNumber,

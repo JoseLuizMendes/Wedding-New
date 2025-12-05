@@ -1,5 +1,5 @@
-import { EventType } from '@/types/common';
-import {
+import type { EventType } from '@/types/common';
+import type {
   GiftEntity,
   ReserveGiftDTO,
   CancelReservationDTO,

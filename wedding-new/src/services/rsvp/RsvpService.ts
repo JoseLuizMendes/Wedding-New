@@ -1,7 +1,7 @@
-import { EventType } from '@/types/common';
-import { CreateRsvpDTO, RsvpEntity } from '@/types/rsvp/rsvp.dto';
-import { IRsvpRepository } from '@/repositories/rsvp/IRsvpRepository';
-import { IRsvpService } from './IRsvpService';
+import type { EventType } from '@/types/common';
+import type { CreateRsvpDTO, RsvpEntity } from '@/types/rsvp/rsvp.dto';
+import type { IRsvpRepository } from '@/repositories/rsvp/IRsvpRepository';
+import type { IRsvpService } from './IRsvpService';
 
 /**
  * RSVP Service Implementation

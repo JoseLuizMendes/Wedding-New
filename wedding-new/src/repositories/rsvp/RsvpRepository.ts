@@ -1,7 +1,7 @@
 import { PrismaClient } from '@/generated/prisma';
-import { EventType } from '@/types/common';
-import { RsvpEntity } from '@/types/rsvp/rsvp.dto';
-import { IRsvpRepository } from './IRsvpRepository';
+import type { EventType } from '@/types/common';
+import type { RsvpEntity } from '@/types/rsvp/rsvp.dto';
+import type { IRsvpRepository } from './IRsvpRepository';
 
 /**
  * RSVP Repository Implementation using Prisma
@@ -18,7 +18,7 @@ export class RsvpRepository implements IRsvpRepository {
     },
     tipo: EventType
   ): Promise<RsvpEntity> {
-    if (tipo === EventType.CASAMENTO) {
+    if (tipo === 'casamento') {
       return await this.prisma.rsvpCasamento.create({
         data: {
           nome_completo: data.nome_completo,
@@ -38,7 +38,7 @@ export class RsvpRepository implements IRsvpRepository {
   }
 
   async findByName(name: string, tipo: EventType): Promise<RsvpEntity | null> {
-    if (tipo === EventType.CASAMENTO) {
+    if (tipo === 'casamento') {
       return await this.prisma.rsvpCasamento.findFirst({
         where: {
           nome_completo: {

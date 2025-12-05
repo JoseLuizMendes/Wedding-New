@@ -1,7 +1,7 @@
 import { PrismaClient } from '@/generated/prisma';
-import { EventType } from '@/types/common';
-import { GiftEntity } from '@/types/gifts/gift.dto';
-import { IGiftRepository } from './IGiftRepository';
+import type { EventType } from '@/types/common';
+import type { GiftEntity } from '@/types/gifts/gift.dto';
+import type { IGiftRepository } from './IGiftRepository';
 
 /**
  * Gift Repository Implementation using Prisma
@@ -11,7 +11,7 @@ export class GiftRepository implements IGiftRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
   async findByEventType(tipo: EventType): Promise<GiftEntity[]> {
-    if (tipo === EventType.CASAMENTO) {
+    if (tipo === 'casamento') {
       return await this.prisma.presentesCasamento.findMany({
         orderBy: { ordem: 'asc' },
       });
@@ -23,7 +23,7 @@ export class GiftRepository implements IGiftRepository {
   }
 
   async findById(id: string, tipo: EventType): Promise<GiftEntity | null> {
-    if (tipo === EventType.CASAMENTO) {
+    if (tipo === 'casamento') {
       return await this.prisma.presentesCasamento.findUnique({
         where: { id },
       });
@@ -46,7 +46,7 @@ export class GiftRepository implements IGiftRepository {
       telefone_contato: string;
     }
   ): Promise<GiftEntity> {
-    if (tipo === EventType.CASAMENTO) {
+    if (tipo === 'casamento') {
       return await this.prisma.presentesCasamento.update({
         where: { id },
         data: {
@@ -76,7 +76,7 @@ export class GiftRepository implements IGiftRepository {
   }
 
   async cancelReservation(id: string, tipo: EventType): Promise<GiftEntity> {
-    if (tipo === EventType.CASAMENTO) {
+    if (tipo === 'casamento') {
       return await this.prisma.presentesCasamento.update({
         where: { id },
         data: {
@@ -106,7 +106,7 @@ export class GiftRepository implements IGiftRepository {
   }
 
   async markAsPurchased(id: string, tipo: EventType): Promise<GiftEntity> {
-    if (tipo === EventType.CASAMENTO) {
+    if (tipo === 'casamento') {
       return await this.prisma.presentesCasamento.update({
         where: { id },
         data: {

@@ -1,5 +1,5 @@
-import { EventType } from '@/types/common';
-import { GiftEntity } from '@/types/gifts/gift.dto';
+import type { EventType } from '@/types/common';
+import type { GiftEntity } from '@/types/gifts/gift.dto';
 
 /**
  * Gift Repository Interface

@@ -1,5 +1,5 @@
-import { EventType } from '@/types/common';
-import { CreateRsvpDTO, RsvpEntity } from '@/types/rsvp/rsvp.dto';
+import type { EventType } from '@/types/common';
+import type { CreateRsvpDTO, RsvpEntity } from '@/types/rsvp/rsvp.dto';
 
 /**
  * RSVP Service Interface
