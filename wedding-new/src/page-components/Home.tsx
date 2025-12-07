@@ -1,6 +1,5 @@
 "use client"
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/_components/ui/button";
 import { Countdown } from "@/_components/countdown";
@@ -8,23 +7,6 @@ import { Heart } from "lucide-react";
 
 import { HeroSection } from "@/_components/hero-section";
 import Link from "next/link";
-
-const AnimatedDots = () => {
-  const [dots, setDots] = useState("");
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDots((prev) => {
-        if (prev.length >= 3) return "";
-        return prev + ".";
-      });
-    }, 500);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return <span>{dots}</span>;
-};
 
 
 
@@ -43,7 +25,7 @@ export const Home = () => {
             className="text-center mb-12"
           >
             <h2 className="playfair-custom text-5xl md:text-6xl mb-4 text-foreground">
-              Faltam apenas<AnimatedDots />
+              Faltam apenas
             </h2>
             <p className="text-lg text-muted-foreground">
               Contagem regressiva para o nosso grande dia
