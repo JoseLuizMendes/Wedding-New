@@ -2,19 +2,19 @@
 
 import { Button } from "@/_components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
-import { Heart, Menu, X } from "lucide-react";
+import { Heart, Menu, X, Home as HomeIcon, BookHeart, Church, UtensilsCrossed, Image as ImageIcon, Mail } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 
 const navItems = [
-  { name: "Home", path: "/" },
-  { name: "Nossa História", path: "/nossa-historia" },
-  { name: "Casamento", path: "/casamento" },
-  { name: "Chá de Panela", path: "/cha-de-panela" },
-  { name: "Galeria", path: "/galeria" },
-  { name: "Contato", path: "/contato" },
+  { name: "Home", path: "/", icon: HomeIcon },
+  { name: "Nossa História", path: "/nossa-historia", icon: BookHeart },
+  { name: "Casamento", path: "/casamento", icon: Church },
+  { name: "Chá de Panela", path: "/cha-de-panela", icon: UtensilsCrossed },
+  { name: "Galeria", path: "/galeria", icon: ImageIcon },
+  { name: "Contato", path: "/contato", icon: Mail },
 ];
 
 // Routes that should have transparent overlay navigation at top
@@ -96,7 +96,7 @@ export const Navigation = () => {
   return (
     <nav
       ref={navRef}
-      className={`fixed top-0 left-0 right-0 z-50 h-20 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-40 h-20 transition-all duration-300 ${
         isOverlayTop
           ? "bg-transparent"
           : "bg-background/95 backdrop-blur-md shadow-sm"
@@ -160,42 +160,97 @@ export const Navigation = () => {
           </Button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation - Opção 1: Sidebar Slide-in */}
         <AnimatePresence>
           {isOpen && (
             <>
-              {/* Backdrop to cover content behind the mobile menu */}
+              {/* Backdrop */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="fixed inset-0 z-40 bg-background/80 backdrop-blur-md"
+                className="fixed inset-0 bg-black/50 z-[60] md:hidden"
                 onClick={() => setIsOpen(false)}
+                style={{ top: 0 }}
               />
-
+              
+              {/* Sidebar */}
               <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.22 }}
-                className="md:hidden overflow-hidden relative z-50 bg-background/95 backdrop-blur-md">
-                <div className="py-4 space-y-2">
-                  {navItems.map(item => (
-                    <Link
-                      key={item.path}
-                      href={item.path}
-                      onClick={() => setIsOpen(false)}
-                      className={`block px-4 py-3 rounded-md text-sm font-medium transition-all duration-300 ${
-                        path === item.path
-                          ? "bg-primary text-primary-foreground"
-                          : "text-foreground/70 hover:bg-secondary hover:text-primary"
-                      }`}>
-                      {item.name}
-                    </Link>
-                  ))}
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="fixed right-0 w-80 bg-background shadow-2xl md:hidden z-[70] overflow-y-auto border-l border-border"
+                style={{ top: 0, bottom: 0, height: '100dvh' }}
+              >
+                {/* Header fixo com gradiente */}
+                <div className="sticky top-0 pt-6 px-6 pb-6 border-b border-border bg-gradient-to-br from-primary/5 to-accent/5 backdrop-blur-sm z-10">
+                <div className="flex items-center gap-3 mb-1">
+                  <div className="p-2 bg-primary/10 rounded-full">
+                    <Heart className="w-5 h-5 text-primary fill-primary animate-pulse" />
+                  </div>
+                  <div>
+                    <h3 className="playfair-custom text-xl font-semibold text-foreground">
+                      Menu
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Explore nosso site
+                    </p>
+                  </div>
                 </div>
-              </motion.div>
+              </div>
+
+              {/* Nav Items com ícones */}
+              <nav className="p-4 space-y-2 font-sans">
+                {navItems.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <motion.div
+                      key={item.path}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <Link
+                        href={item.path}
+                        onClick={() => setIsOpen(false)}
+                        className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group relative overflow-hidden ${
+                          path === item.path
+                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                            : "text-foreground/70 hover:bg-secondary/80 hover:text-primary"
+                        }`}
+                      >
+                        {/* Background hover effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        
+                        <Icon className="w-5 h-5 transition-transform group-hover:scale-110 relative z-10" />
+                        <span className="font-medium relative z-10">{item.name}</span>
+                        
+                        {path === item.path && (
+                          <motion.div
+                            layoutId="activeMobileIndicator"
+                            className="ml-auto w-2 h-2 rounded-full bg-primary-foreground relative z-10"
+                            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                          />
+                        )}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </nav>
+
+              {/* Footer decorativo */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-border bg-gradient-to-t from-secondary/30 to-transparent playfair-custom">
+                <div className="text-center space-y-2">
+                  <p className="text-sm font-medium text-foreground1">
+                    José Luiz & Márjorie
+                  </p>
+                  <p className="text-xs text-muted-foreground font-bold">
+                    💍 07 de Setembro de 2026
+                  </p>
+                </div>
+              </div>
+            </motion.div>
             </>
           )}
         </AnimatePresence>
