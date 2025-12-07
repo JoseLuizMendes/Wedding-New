@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Camera, Image as ImageIcon } from "lucide-react";
 import { Card } from "@/_components/ui/card";
+import Image from "next/image";
 
 // Placeholder images - these would be replaced with real photos
 const photos = Array.from({ length: 12 }, (_, i) => ({
@@ -61,7 +62,7 @@ export const Galeria = () => {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <ImageIcon className="w-12 h-12 text-muted-foreground/30" />
                   </div>
-                  <img
+                  <Image
                     src={photo.placeholder}
                     alt={photo.alt}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
