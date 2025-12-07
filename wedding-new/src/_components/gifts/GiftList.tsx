@@ -17,6 +17,15 @@ import { CodeValidationDialog } from "./CodeValidationDialog";
 import { OptimizedImage } from "@/_components/ui/OptimizedImage";
 import { Skeleton } from "@/_components/ui/skeleton";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/_components/ui/dropdown-menu";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/_components/ui/pagination";
 
 interface GiftListProps {
   tipo: 'casamento' | 'cha-panela';
@@ -26,8 +35,8 @@ export const GiftList = ({ tipo }: GiftListProps) => {
   const [gifts, setGifts] = useState<Gift[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState<'all' | 'available' | 'reserved' | 'bought'>('all');
-  const [showAll, setShowAll] = useState(false);
-  const INITIAL_DISPLAY = 8;
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 8;
 
   const fetchGifts = useCallback(async () => {
     try {
@@ -74,7 +83,7 @@ export const GiftList = ({ tipo }: GiftListProps) => {
     <div className="space-y-6">
       {/* Filters */}
       <div>
-        <Tabs value={activeFilter} onValueChange={(v) => { setActiveFilter(v as never); setShowAll(false); }} className="flex-1">
+        <Tabs value={activeFilter} onValueChange={(v) => { setActiveFilter(v as never); setCurrentPage(1); }} className="flex-1">
           {/* Desktop - Todos os filtros visíveis */}
           <TabsList className="hidden md:grid w-full grid-cols-4">
             <TabsTrigger value="all">Todos ({giftStats.total})</TabsTrigger>
@@ -111,36 +120,82 @@ export const GiftList = ({ tipo }: GiftListProps) => {
 
           <TabsContent value={activeFilter} className="mt-6">
             <div className="grid md:grid-cols-2 gap-6">
-              {(showAll ? filteredGifts : filteredGifts.slice(0, INITIAL_DISPLAY)).map((gift, index) => {
-                const status = getGiftStatus(gift);
+              {(() => {
+                const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+                const endIndex = startIndex + ITEMS_PER_PAGE;
+                const paginatedGifts = filteredGifts.slice(startIndex, endIndex);
                 
-                return (
-                  <GiftCard 
-                    key={gift.id}
-                    gift={gift}
-                    status={status}
-                    tipo={tipo}
-                    index={index}
-                    onUpdate={fetchGifts}
-                  />
-                );
-              })}
+                return paginatedGifts.map((gift, index) => {
+                  const status = getGiftStatus(gift);
+                  
+                  return (
+                    <GiftCard 
+                      key={gift.id}
+                      gift={gift}
+                      status={status}
+                      tipo={tipo}
+                      index={startIndex + index}
+                      onUpdate={fetchGifts}
+                    />
+                  );
+                });
+              })()}
             </div>
             
-            {/* Botão Ver Mais */}
-            {filteredGifts.length > INITIAL_DISPLAY && (
-              <div className="flex justify-center mt-8">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() => setShowAll(!showAll)}
-                  className="group"
-                >
-                  {showAll ? 'Ver Menos' : `Ver Mais (${filteredGifts.length - INITIAL_DISPLAY})`}
-                  <ChevronDown className={`w-4 h-4 ml-2 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} />
-                </Button>
-              </div>
-            )}
+            {/* Paginação */}
+            {filteredGifts.length > ITEMS_PER_PAGE && (() => {
+              const totalPages = Math.ceil(filteredGifts.length / ITEMS_PER_PAGE);
+              
+              return (
+                <div className="flex justify-center mt-8">
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious 
+                          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                          className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                        />
+                      </PaginationItem>
+                      
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                        // Mostra primeira, última e páginas próximas à atual
+                        if (
+                          page === 1 ||
+                          page === totalPages ||
+                          (page >= currentPage - 1 && page <= currentPage + 1)
+                        ) {
+                          return (
+                            <PaginationItem key={page}>
+                              <PaginationLink
+                                onClick={() => setCurrentPage(page)}
+                                isActive={currentPage === page}
+                                className="cursor-pointer"
+                              >
+                                {page}
+                              </PaginationLink>
+                            </PaginationItem>
+                          );
+                        } else if (page === currentPage - 2 || page === currentPage + 2) {
+                          return (
+                            <PaginationItem key={page}>
+                              <PaginationEllipsis />
+                            </PaginationItem>
+                          );
+                        }
+                        return null;
+                      })}
+                      
+                      <PaginationItem>
+                        <PaginationNext 
+                          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                          className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              );
+            })()}
           </TabsContent>
         </Tabs>
       </div>
