@@ -44,7 +44,7 @@ export const Casamento = () => {
       <HeroSection />
       <div className="container mx-auto px-4 pt-20">
         {/* Wedding Details */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-3 gap-6 mb-12 playfair-custom">
           {weddingDetails.map((detail, index) => (
             <motion.div
               key={detail.title}

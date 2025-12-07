@@ -76,7 +76,7 @@ export const ChaDePanela = () => {
 
       <div className="container mx-auto px-4">
         {/* Event Details */}
-        <div className="grid md:grid-cols-3 gap-6 mb-20">
+        <div className="grid md:grid-cols-3 gap-6 mb-20 playfair-custom">
           {chaDetails.map((detail, index) => (
             <motion.div
               key={detail.title}
