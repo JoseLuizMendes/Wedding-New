@@ -27,14 +27,27 @@ export const LocationDialog = ({
   googleMapsUrl,
 }: LocationDialogProps) => {
   const handleOpenLocation = () => {
-    // Detecta se é mobile
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    // Detecta se é mobile (iOS ou Android)
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isAndroid = /Android/i.test(navigator.userAgent);
     
-    if (isMobile) {
-      // No mobile, usa geo: URL que permite o usuário escolher o app
-      // Extrai coordenadas do link do Google Maps se possível, ou usa o endereço
+    if (isIOS) {
+      // No iOS, tenta abrir o Apple Maps primeiro, depois Google Maps como fallback
+      // Extrai as coordenadas do Google Maps URL se possível
+      const coords = googleMapsUrl.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+      
+      if (coords && coords[1] && coords[2]) {
+        // Se tiver coordenadas, usa Apple Maps com coordenadas
+        window.location.href = `maps://maps.apple.com/?q=${encodeURIComponent(locationName)}&ll=${coords[1]},${coords[2]}`;
+      } else {
+        // Senão, usa busca por endereço
+        const query = encodeURIComponent(`${locationName}, ${locationAddress}`);
+        window.location.href = `maps://maps.apple.com/?q=${query}`;
+      }
+    } else if (isAndroid) {
+      // No Android, usa o intent do Google Maps ou abre no navegador
       const address = encodeURIComponent(`${locationName}, ${locationAddress}`);
-      window.open(`geo:0,0?q=${address}`, '_blank');
+      window.location.href = `geo:0,0?q=${address}`;
     } else {
       // No desktop, abre direto no Google Maps
       window.open(googleMapsUrl, '_blank');
