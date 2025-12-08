@@ -32,22 +32,19 @@ export const LocationDialog = ({
     const isAndroid = /Android/i.test(navigator.userAgent);
     
     if (isIOS) {
-      // No iOS, tenta abrir o Apple Maps primeiro, depois Google Maps como fallback
-      // Extrai as coordenadas do Google Maps URL se possível
-      const coords = googleMapsUrl.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
-      
-      if (coords && coords[1] && coords[2]) {
-        // Se tiver coordenadas, usa Apple Maps com coordenadas
-        window.location.href = `maps://maps.apple.com/?q=${encodeURIComponent(locationName)}&ll=${coords[1]},${coords[2]}`;
-      } else {
-        // Senão, usa busca por endereço
-        const query = encodeURIComponent(`${locationName}, ${locationAddress}`);
-        window.location.href = `maps://maps.apple.com/?q=${query}`;
-      }
+      // No iOS, usa o link do Google Maps que permite escolher o app
+      // O iOS vai perguntar se quer abrir no Apple Maps, Google Maps, Waze, etc
+      window.open(googleMapsUrl, '_blank');
     } else if (isAndroid) {
-      // No Android, usa o intent do Google Maps ou abre no navegador
+      // No Android, usa geo: que mostra a lista de apps de mapas disponíveis
       const address = encodeURIComponent(`${locationName}, ${locationAddress}`);
-      window.location.href = `geo:0,0?q=${address}`;
+      const geoUrl = `geo:0,0?q=${address}`;
+      
+      // Tenta abrir, se não funcionar, abre o Google Maps
+      const opened = window.open(geoUrl, '_blank');
+      if (!opened) {
+        window.open(googleMapsUrl, '_blank');
+      }
     } else {
       // No desktop, abre direto no Google Maps
       window.open(googleMapsUrl, '_blank');
