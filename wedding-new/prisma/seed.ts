@@ -178,6 +178,28 @@ async function main() {
                 ordem: 21,
                 imagem: '',
             },
+            {
+                nome: 'Frigobar EOS 71 Litros Ice Compact Preto 110V',
+                descricao: 'Frigobar compacto de 71 litros, ideal para quartos e escritórios, com design moderno na cor preta.',
+                link_externo: 'https://www.frigelar.com.br/frigobar-eos-71-litros-ice-compact-preto-efb83p-110v/p/kit11985',
+                ordem: 22,
+                imagem: '',
+            },
+            {
+                nome: 'Torradeira Philco 3 funções 7 Níveis de tostagem',
+                descricao: 'Torradeira com 3 funções e 7 níveis de tostagem, ideal para preparar pães e sanduíches.',
+                link_externo: 'https://www.magazineluiza.com.br/torradeira-philco-3-funcoes-7-niveis-de-tostagem-ptr03a/p/ejk0c4hha1/ep/tost/',
+                ordem: 23,
+                imagem: '',
+            },
+            {
+                nome:'Armário Multiuso Organizador 2 Portas Rimo Branco',
+                descricao: 'Armário multiuso com 2 portas, ideal para organizar diversos ambientes da casa, na cor branca.',
+                link_externo: 'https://loja.moveisrimo.com.br/armario-multiuso-organizador-2-portas-rimo-branco',
+                ordem: 24,
+                imagem: '',
+            }
+
         ],
         skipDuplicates: true,
     });
