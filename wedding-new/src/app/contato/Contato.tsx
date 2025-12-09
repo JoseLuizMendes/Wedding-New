@@ -87,7 +87,7 @@ export const Contato = () => {
         </motion.div>
 
          {/* Contact Cards */}
-        <div className="max-w-5xl mx-auto mb-16">
+        <div className="max-w-3xl mx-auto mb-16">
           {contacts.map((contact, index) => (
             <motion.div
               key={contact.title}
