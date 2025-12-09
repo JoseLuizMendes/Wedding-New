@@ -3,27 +3,22 @@ import { Camera, Image as ImageIcon } from "lucide-react";
 import { Card } from "@/_components/ui/card";
 import Image from "next/image";
 
-// Placeholder images - these would be replaced with real photos
-const photos = Array.from({ length: 12 }, (_, i) => ({
-  id: i + 1,
-  alt: `Foto do casal ${i + 1}`,
-  placeholder: `https://images.unsplash.com/photo-${
-    [
-      '1519741497674-611481863552', // couple
-      '1465495976277-4387d4b0b4c6', // wedding
-      '1511285560929-80b456fea0bc', // couple portrait
-      '1529634597168-2f1c6c30e0f8', // wedding details
-      '1606800052428-0c2d0ca97808', // couple outdoor
-      '1522413452208-996ff3a3d8e3', // romantic
-      '1525258090186-0461fc6bbc51', // couple dancing
-      '1510869886599-88aa0e1e3acb', // wedding rings
-      '1532712938310-34e887e93346', // couple laughing
-      '1522673607209-0e37d3db5d4b', // romantic moment
-      '1523438097201-512ae7d59c44', // couple nature
-      '1520854221256-17451cc331bf', // wedding celebration
-    ][i]
-  }?auto=format&fit=crop&w=800&q=80`,
-}));
+// Fotos do casal - adicione suas imagens em public/assetsGaleria
+// Nomeie as imagens como: foto-1.jpg, foto-2.jpg, foto-3.jpg, etc.
+const photos = [
+  { id: 1, src: "/assetsGaleria/foto-1.jpg", alt: "José Luiz e Márjorie - Foto 1" },
+  { id: 2, src: "/assetsGaleria/foto-2.jpg", alt: "José Luiz e Márjorie - Foto 2" },
+  { id: 3, src: "/assetsGaleria/foto-3.jpg", alt: "José Luiz e Márjorie - Foto 3" },
+  { id: 4, src: "/assetsGaleria/foto-4.jpg", alt: "José Luiz e Márjorie - Foto 4" },
+  { id: 5, src: "/assetsGaleria/foto-5.jpg", alt: "José Luiz e Márjorie - Foto 5" },
+  { id: 6, src: "/assetsGaleria/foto-6.jpg", alt: "José Luiz e Márjorie - Foto 6" },
+  { id: 7, src: "/assetsGaleria/foto-7.jpg", alt: "José Luiz e Márjorie - Foto 7" },
+  { id: 8, src: "/assetsGaleria/foto-8.jpg", alt: "José Luiz e Márjorie - Foto 8" },
+  { id: 9, src: "/assetsGaleria/foto-9.jpg", alt: "José Luiz e Márjorie - Foto 9" },
+  { id: 10, src: "/assetsGaleria/foto-10.jpg", alt: "José Luiz e Márjorie - Foto 10" },
+  { id: 11, src: "/assetsGaleria/foto-11.jpg", alt: "José Luiz e Márjorie - Foto 11" },
+  { id: 12, src: "/assetsGaleria/foto-12.jpg", alt: "José Luiz e Márjorie - Foto 12" },
+];
 
 export const Galeria = () => {
   return (
@@ -63,8 +58,10 @@ export const Galeria = () => {
                     <ImageIcon className="w-12 h-12 text-muted-foreground/30" />
                   </div>
                   <Image
-                    src={photo.placeholder}
+                    src={photo.src}
                     alt={photo.alt}
+                    width={800}
+                    height={800}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
