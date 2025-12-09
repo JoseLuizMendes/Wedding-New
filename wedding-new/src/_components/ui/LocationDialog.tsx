@@ -31,22 +31,24 @@ export const LocationDialog = ({
     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
     const isAndroid = /Android/i.test(navigator.userAgent);
     
+    console.log('User Agent:', navigator.userAgent);
+    console.log('isIOS:', isIOS, 'isAndroid:', isAndroid);
+    
     if (isIOS) {
       // No iOS, usa o link do Google Maps que permite escolher o app
-      // O iOS vai perguntar se quer abrir no Apple Maps, Google Maps, Waze, etc
+      console.log('Opening for iOS:', googleMapsUrl);
       window.open(googleMapsUrl, '_blank');
     } else if (isAndroid) {
       // No Android, usa geo: que mostra a lista de apps de mapas disponíveis
       const address = encodeURIComponent(`${locationName}, ${locationAddress}`);
       const geoUrl = `geo:0,0?q=${address}`;
+      console.log('Opening for Android:', geoUrl);
       
       // Tenta abrir, se não funcionar, abre o Google Maps
-      const opened = window.open(geoUrl, '_blank');
-      if (!opened) {
-        window.open(googleMapsUrl, '_blank');
-      }
+      window.location.href = geoUrl;
     } else {
       // No desktop, abre direto no Google Maps
+      console.log('Opening for Desktop:', googleMapsUrl);
       window.open(googleMapsUrl, '_blank');
     }
     
