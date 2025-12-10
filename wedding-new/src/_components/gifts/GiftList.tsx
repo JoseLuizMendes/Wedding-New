@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/_components/ui/card";
 import { Button } from "@/_components/ui/button";
@@ -9,6 +7,7 @@ import { ExternalLink, Gift as GiftIcon, Clock, ShoppingCart, AlertCircle, X, Ch
 import { giftsApi, Gift } from "@/lib/api/gifts";
 import { motion } from "framer-motion";
 import { useGiftReservation } from "../../hooks/useGiftReservation";
+import { useMercadoPago } from "@/hooks/useMercadoPago";
 import { Badge } from "@/_components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/_components/ui/tabs";
 import { GiftListSkeleton } from "./GiftListSkeleton";
@@ -17,6 +16,7 @@ import { CodeValidationDialog } from "./CodeValidationDialog";
 import { OptimizedImage } from "@/_components/ui/OptimizedImage";
 import { Skeleton } from "@/_components/ui/skeleton";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/_components/ui/dropdown-menu";
+import { PixContributionCard } from "./PixContributionCard";
 import {
   Pagination,
   PaginationContent,
@@ -66,11 +66,13 @@ export const GiftList = ({ tipo }: GiftListProps) => {
     return 'available';
   };
 
-  const filteredGifts = gifts.filter(gift => {
-    const status = getGiftStatus(gift);
-    if (activeFilter === 'all') return true;
-    return status === activeFilter;
-  });
+  const filteredGifts = gifts
+    .filter(gift => !gift.nome.includes('Contribuição Pix')) // Filtrar os cards PIX antigos
+    .filter(gift => {
+      const status = getGiftStatus(gift);
+      if (activeFilter === 'all') return true;
+      return status === activeFilter;
+    });
 
   const giftStats = {
     total: gifts.length,
@@ -119,6 +121,11 @@ export const GiftList = ({ tipo }: GiftListProps) => {
           </div>
 
           <TabsContent value={activeFilter} className="mt-6">
+            {/* Card PIX Flexível - Sozinho na linha */}
+            <div className="mb-6">
+              <PixContributionCard tipo={tipo} index={0} />
+            </div>
+            
             <div className="grid md:grid-cols-2 gap-6">
               {(() => {
                 const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -134,7 +141,7 @@ export const GiftList = ({ tipo }: GiftListProps) => {
                       gift={gift}
                       status={status}
                       tipo={tipo}
-                      index={startIndex + index}
+                      index={startIndex + index + 1} // +1 por causa do card PIX
                       onUpdate={fetchGifts}
                     />
                   );
