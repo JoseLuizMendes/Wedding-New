@@ -11,6 +11,15 @@ export async function POST(request: NextRequest) {
   try {
     console.log('[API /mercadopago/preference] Request received');
 
+    // Check if Mercado Pago is configured
+    if (!process.env.MERCADOPAGO_ACCESS_TOKEN) {
+      console.error('[API /mercadopago/preference] MERCADOPAGO_ACCESS_TOKEN not configured');
+      return NextResponse.json(
+        { error: 'Mercado Pago não está configurado. Configure MERCADOPAGO_ACCESS_TOKEN nas variáveis de ambiente.' },
+        { status: 503 }
+      );
+    }
+
     const body = await request.json();
     const { amount, title, gift_id, contributor_name } = body;
 
