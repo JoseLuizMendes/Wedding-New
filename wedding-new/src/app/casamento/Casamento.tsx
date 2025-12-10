@@ -4,6 +4,8 @@ import { useState } from "react";
 import { RSVPForm } from "@/_components/forms/RSVPForm";
 import { GiftList } from "@/_components/gifts/GiftList";
 import { HeroSection } from "@/_components/hero-section";
+import { HoneymoonProgress } from "@/_components/honeymoon/HoneymoonProgress";
+import { HoneymoonContribution } from "@/_components/honeymoon/HoneymoonContribution";
 import {
   Card,
   CardContent,
@@ -87,6 +89,26 @@ export const Casamento = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* Honeymoon Goal Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="mb-20">
+          <HoneymoonProgress />
+        </motion.section>
+
+        {/* Honeymoon Contribution Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="mb-20">
+          <HoneymoonContribution />
+        </motion.section>
 
         {/* Gift Registry */}
         <motion.section
