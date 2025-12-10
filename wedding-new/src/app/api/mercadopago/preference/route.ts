@@ -36,31 +36,43 @@ export async function POST(request: NextRequest) {
       gift_id.startsWith('cota_') || gift_id.startsWith('pix_');
 
     // Create preference
-    const preference = await mercadoPagoPreference.create({
-      body: {
-        items: [
-          {
-            id: gift_id,
-            title: title,
-            quantity: 1,
-            unit_price: parseFloat(amount),
-            currency_id: 'BRL',
-          },
-        ],
-        external_reference: gift_id,
-        metadata: {
-          gift_id,
-          type: isHoneymoon ? 'honeymoon' : 'gift',
-          contributor_name: contributor_name || null,
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL;
+    const isLocalhost = !baseUrl || baseUrl.includes('localhost');
+    
+    console.log('[API /mercadopago/preference] Base URL:', baseUrl || 'localhost (auto_return disabled)');
+    
+    const preferenceBody: any = {
+      items: [
+        {
+          id: gift_id,
+          title: title,
+          quantity: 1,
+          unit_price: parseFloat(amount),
+          currency_id: 'BRL',
         },
-        back_urls: {
-          success: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/casamento?payment=success`,
-          failure: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/casamento?payment=failure`,
-          pending: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/casamento?payment=pending`,
-        },
-        auto_return: 'approved',
-        notification_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/webhooks/mercadopago`,
+      ],
+      external_reference: gift_id,
+      metadata: {
+        gift_id,
+        type: isHoneymoon ? 'honeymoon' : 'gift',
+        contributor_name: contributor_name || null,
       },
+    };
+
+    // Only add back_urls and auto_return if we have a valid public URL
+    // Mercado Pago doesn't accept localhost URLs
+    if (!isLocalhost && baseUrl) {
+      preferenceBody.back_urls = {
+        success: `${baseUrl}/casamento?payment=success`,
+        failure: `${baseUrl}/casamento?payment=failure`,
+        pending: `${baseUrl}/casamento?payment=pending`,
+      };
+      preferenceBody.auto_return = 'approved';
+      preferenceBody.notification_url = `${baseUrl}/api/webhooks/mercadopago`;
+    }
+    
+    const preference = await mercadoPagoPreference.create({
+      body: preferenceBody,
     });
 
     const duration = Date.now() - startTime;
@@ -76,18 +88,20 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     const duration = Date.now() - startTime;
+    
+    // Log detalhado do erro
+    const errorDetails = error instanceof Error 
+      ? {
+          message: error.message,
+          stack: error.stack,
+          name: error.name,
+          cause: (error as any).cause
+        }
+      : error;
+    
     console.error(
       `[API /mercadopago/preference] Request failed after ${duration}ms:`,
-      {
-        error:
-          error instanceof Error
-            ? {
-                message: error.message,
-                stack: error.stack,
-                name: error.name,
-              }
-            : String(error),
-      }
+      JSON.stringify(errorDetails, null, 2)
     );
 
     return NextResponse.json(
