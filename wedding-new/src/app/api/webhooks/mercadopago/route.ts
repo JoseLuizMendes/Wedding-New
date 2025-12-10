@@ -7,7 +7,6 @@ import prisma from '@/lib/prisma';
 import { HoneymoonRepository } from '@/repositories/honeymoon/HoneymoonRepository';
 import { HoneymoonService } from '@/services/honeymoon/HoneymoonService';
 import { GiftRepository } from '@/repositories/gifts/GiftRepository';
-import { GiftService } from '@/services/gifts/GiftService';
 
 /**
  * POST /api/webhooks/mercadopago
@@ -163,23 +162,28 @@ async function handleMercadoPagoPayment(payment: MercadoPagoPaymentData) {
     }
 
     const giftRepository = new GiftRepository(prisma);
-    const giftService = new GiftService(giftRepository);
 
     // Determine event type from external_reference or metadata
     // This assumes the gift_id contains the actual gift UUID
-    // You may need to adjust this based on how gift_id is structured
     const giftId = external_reference;
     const eventTypeRaw = metadata?.event_type || 'casamento';
     const eventType = (eventTypeRaw === 'cha-panela' ? 'cha-panela' : 'casamento') as 'casamento' | 'cha-panela';
+    
+    const contributorName =
+      metadata?.contributor_name ||
+      payer?.first_name ||
+      payer?.email ||
+      'Anonymous';
 
     try {
-      await giftService.markAsPurchased({
+      await giftRepository.markAsPurchasedByTransaction(
         giftId,
-        tipo: eventType,
-        code: transactionId, // Using transaction ID as code
-      });
+        eventType,
+        transactionId,
+        contributorName
+      );
 
-      console.log(`[Webhook] Gift ${giftId} marked as purchased`);
+      console.log(`[Webhook] Gift ${giftId} marked as purchased with transaction ${transactionId}`);
     } catch (error) {
       console.error('[Webhook] Error marking gift as purchased:', error);
       // Don't throw - we've already received the payment

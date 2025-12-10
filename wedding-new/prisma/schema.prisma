@@ -54,7 +54,8 @@ model PresentesCasamento {
   reserved_at            DateTime? @db.Timestamptz(6)
   purchased_at           DateTime? @db.Timestamptz(6)
   telefone_contato       String?   @db.VarChar(20)
-  imagem                 String?   @db.Text      // <-- Adicionado aqui!
+  imagem                 String?   @db.Text
+  transaction_id         String?   @db.VarChar(255)
 
   @@map("presentes_casamento")
 }
@@ -75,7 +76,8 @@ model PresentesChaPanela {
   reserved_at            DateTime? @db.Timestamptz(6)
   purchased_at           DateTime? @db.Timestamptz(6)
   telefone_contato       String?   @db.VarChar(20)
-  imagem                 String?   @db.Text      // <-- Adicionado aqui!
+  imagem                 String?   @db.Text
+  transaction_id         String?   @db.VarChar(255)
 
   @@map("presentes_cha_panela")
 }

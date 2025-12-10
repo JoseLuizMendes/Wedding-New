@@ -126,6 +126,40 @@ export class GiftRepository implements IGiftRepository {
   }
 
   /**
+   * Mark a gift as purchased by transaction ID (from Mercado Pago webhook)
+   * This is used when processing webhook notifications to mark gifts as purchased
+   * without requiring a reservation code
+   */
+  async markAsPurchasedByTransaction(
+    giftId: string,
+    tipo: EventType,
+    transactionId: string,
+    contributorName?: string
+  ): Promise<GiftEntity> {
+    if (tipo === 'casamento') {
+      return await this.prisma.presentesCasamento.update({
+        where: { id: giftId },
+        data: {
+          is_bought: true,
+          purchased_at: new Date(),
+          transaction_id: transactionId,
+          reserved_by: contributorName || null,
+        },
+      });
+    } else {
+      return await this.prisma.presentesChaPanela.update({
+        where: { id: giftId },
+        data: {
+          is_bought: true,
+          purchased_at: new Date(),
+          transaction_id: transactionId,
+          reserved_by: contributorName || null,
+        },
+      });
+    }
+  }
+
+  /**
    * Check if a reservation code is unique across all gifts
    * Note: This performs two separate queries. For larger datasets,
    * consider optimizing with a single query or dedicated code table.
