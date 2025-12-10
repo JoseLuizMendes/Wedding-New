@@ -59,6 +59,21 @@ export interface IGiftRepository {
   markAsPurchased(id: string, tipo: EventType): Promise<GiftEntity>;
 
   /**
+   * Mark a gift as purchased by transaction ID (from Mercado Pago webhook)
+   * @param giftId - Gift ID
+   * @param tipo - Event type
+   * @param transactionId - Mercado Pago transaction ID
+   * @param contributorName - Optional contributor name
+   * @returns Updated gift entity
+   */
+  markAsPurchasedByTransaction(
+    giftId: string,
+    tipo: EventType,
+    transactionId: string,
+    contributorName?: string
+  ): Promise<GiftEntity>;
+
+  /**
    * Check if a reservation code is unique across all gifts
    * @param code - Reservation code to check
    * @returns True if code is unique (not in use), false otherwise
