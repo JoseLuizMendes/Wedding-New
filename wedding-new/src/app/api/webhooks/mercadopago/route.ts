@@ -90,6 +90,21 @@ export async function POST(request: NextRequest) {
 }
 
 /**
+ * Extract contributor name from payment data
+ */
+function getContributorName(
+  metadata?: { contributor_name?: string },
+  payer?: { first_name?: string; email?: string }
+): string {
+  return (
+    metadata?.contributor_name ||
+    payer?.first_name ||
+    payer?.email ||
+    'Anonymous'
+  );
+}
+
+/**
  * Handle payment based on external_reference and metadata
  */
 interface MercadoPagoPaymentData {
@@ -137,11 +152,7 @@ async function handleMercadoPagoPayment(payment: MercadoPagoPaymentData) {
     const honeymoonRepository = new HoneymoonRepository(prisma);
     const honeymoonService = new HoneymoonService(honeymoonRepository);
 
-    const contributorName =
-      metadata?.contributor_name ||
-      payer?.first_name ||
-      payer?.email ||
-      'Anonymous';
+    const contributorName = getContributorName(metadata, payer);
 
     await honeymoonService.processContribution(
       transaction_amount,
@@ -169,11 +180,7 @@ async function handleMercadoPagoPayment(payment: MercadoPagoPaymentData) {
     const eventTypeRaw = metadata?.event_type || 'casamento';
     const eventType = (eventTypeRaw === 'cha-panela' ? 'cha-panela' : 'casamento') as 'casamento' | 'cha-panela';
     
-    const contributorName =
-      metadata?.contributor_name ||
-      payer?.first_name ||
-      payer?.email ||
-      'Anonymous';
+    const contributorName = getContributorName(metadata, payer);
 
     try {
       await giftRepository.markAsPurchasedByTransaction(

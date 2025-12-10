@@ -56,6 +56,7 @@ model PresentesCasamento {
   telefone_contato       String?   @db.VarChar(20)
   imagem                 String?   @db.Text
   transaction_id         String?   @db.VarChar(255)
+  purchased_by           String?   @db.VarChar(255)
 
   @@map("presentes_casamento")
 }
@@ -78,6 +79,7 @@ model PresentesChaPanela {
   telefone_contato       String?   @db.VarChar(20)
   imagem                 String?   @db.Text
   transaction_id         String?   @db.VarChar(255)
+  purchased_by           String?   @db.VarChar(255)
 
   @@map("presentes_cha_panela")
 }

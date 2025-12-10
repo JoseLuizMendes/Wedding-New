@@ -143,7 +143,7 @@ export class GiftRepository implements IGiftRepository {
           is_bought: true,
           purchased_at: new Date(),
           transaction_id: transactionId,
-          reserved_by: contributorName || null,
+          purchased_by: contributorName || null,
         },
       });
     } else {
@@ -153,7 +153,7 @@ export class GiftRepository implements IGiftRepository {
           is_bought: true,
           purchased_at: new Date(),
           transaction_id: transactionId,
-          reserved_by: contributorName || null,
+          purchased_by: contributorName || null,
         },
       });
     }
