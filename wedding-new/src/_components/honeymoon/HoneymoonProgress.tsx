@@ -53,22 +53,22 @@ export function HoneymoonProgress() {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6 bg-gradient-to-br from-pink-50 to-purple-50 rounded-lg shadow-lg">
+    <div className="w-full max-w-8xl mx-auto p-6 bg-gradient-to-br text-foreground bg-white playfair-custom rounded-lg">
       <div className="mb-4">
-        <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-          🌙 Nossa Lua de Mel
+        <h3 className="text-2xl font-semibold mb-2">
+          Nossa Lua de Mel
         </h3>
-        <p className="text-gray-600">
+        <p className="font-bold">
           Ajude-nos a realizar o sonho da nossa viagem!
         </p>
       </div>
 
       <div className="mb-4">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium text-gray-700">
+        <div className="flex justify-between font-semibold items-center mb-2">
+          <span className="text-sm">
             Progresso: {progress.percentage}%
           </span>
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-sm">
             R$ {progress.currentAmount.toFixed(2)} de R${' '}
             {progress.targetAmount.toFixed(2)}
           </span>

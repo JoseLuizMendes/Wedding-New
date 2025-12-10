@@ -46,12 +46,12 @@ export function HoneymoonContribution() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="w-full max-w-8xl mx-auto p-6 text-foreground playfair-custom bg-white rounded-lg shadow-lg">
       <div className="mb-6">
-        <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-          💝 Contribua para Nossa Lua de Mel
+        <h3 className="text-2xl font-semibold mb-2">
+          Contribua para Nossa Lua de Mel
         </h3>
-        <p className="text-gray-600">
+        <p className="font-bold">
           Escolha um valor e nos ajude a realizar o sonho da nossa viagem!
         </p>
       </div>
@@ -82,13 +82,13 @@ export function HoneymoonContribution() {
             key={option.id}
             onClick={() => handleContribute(option)}
             disabled={loading}
-            className="relative p-6 bg-gradient-to-br from-pink-100 to-purple-100 hover:from-pink-200 hover:to-purple-200 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="relative p-6 bg-gradient-to-br from-primary/10 via-secondary/20 to-accent/10 hover:from-primary/20 hover:via-secondary/30 hover:to-accent/20 border-2 border-primary/20 hover:border-primary/40 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
           >
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-800 mb-1">
+              <div className="text-3xl font-bold text-nowrap mb-1">
                 {option.label}
               </div>
-              <div className="text-sm text-gray-600">Contribuir</div>
+              <div className="text-sm text-muted-foreground font-medium">Contribuir</div>
             </div>
           </button>
         ))}
