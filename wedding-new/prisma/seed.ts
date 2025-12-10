@@ -36,7 +36,7 @@ async function main() {
         update: {},
         create: {
             id: 1,
-            targetAmount: 5000.00,
+            targetAmount: 2500.00,
             currentAmount: 0.00,
             isActive: true,
         },
