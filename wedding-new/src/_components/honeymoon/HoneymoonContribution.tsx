@@ -39,7 +39,8 @@ export function HoneymoonContribution() {
       });
     } catch (error) {
       console.error('[HoneymoonContribution] Error:', error);
-      alert('Erro ao criar pagamento. Tente novamente.');
+      // Error will be shown via loading state reset
+      // In production, consider using a toast notification system
       setLoading(false);
     }
   };

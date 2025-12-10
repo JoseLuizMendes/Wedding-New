@@ -40,17 +40,31 @@ export async function verifyMercadoPagoSignature(
     // For production, implement proper signature verification
     // https://www.mercadopago.com.br/developers/en/docs/your-integrations/notifications/webhooks#editor_3
     
-    // For now, we'll check if the webhook secret is configured
+    // TODO: SECURITY - Implement proper HMAC-SHA256 signature verification
+    // Current implementation is simplified for development
+    // WARNING: This MUST be implemented before production deployment
+    
     const webhookSecret = process.env.MERCADOPAGO_WEBHOOK_SECRET;
     
     if (!webhookSecret) {
       console.warn('[MercadoPago] MERCADOPAGO_WEBHOOK_SECRET not configured');
       // In development, allow webhooks without signature verification
+      // IMPORTANT: Never deploy to production with this setting
       return process.env.NODE_ENV === 'development';
     }
 
-    // TODO: Implement proper HMAC signature verification
-    // For now, just check that headers are present
+    // TODO: Implement HMAC verification:
+    // const crypto = require('crypto');
+    // const expectedSignature = crypto
+    //   .createHmac('sha256', webhookSecret)
+    //   .update(requestBody + xRequestId)
+    //   .digest('hex');
+    // return crypto.timingSafeEqual(
+    //   Buffer.from(xSignature),
+    //   Buffer.from(expectedSignature)
+    // );
+    
+    // Temporary: just check that headers are present
     return true;
   } catch (error) {
     console.error('[MercadoPago] Error verifying signature:', error);
