@@ -93,9 +93,29 @@ export async function POST(request: NextRequest) {
 /**
  * Handle payment based on external_reference and metadata
  */
-async function handleMercadoPagoPayment(payment: any) {
+interface MercadoPagoPaymentData {
+  id?: number;
+  external_reference?: string;
+  metadata?: {
+    contributor_name?: string;
+    type?: string;
+    event_type?: string;
+  };
+  transaction_amount?: number;
+  payer?: {
+    first_name?: string;
+    email?: string;
+  };
+}
+
+async function handleMercadoPagoPayment(payment: MercadoPagoPaymentData) {
   const { external_reference, metadata, transaction_amount, payer, id } =
     payment;
+  
+  if (!id || !transaction_amount) {
+    throw new Error('Invalid payment data: missing id or transaction_amount');
+  }
+  
   const transactionId = id.toString();
 
   console.log('[Webhook] Processing payment:', {
@@ -137,6 +157,11 @@ async function handleMercadoPagoPayment(payment: any) {
     // Process physical gift purchase
     console.log('[Webhook] Processing physical gift purchase');
 
+    if (!external_reference) {
+      console.warn('[Webhook] No external_reference for gift purchase, skipping');
+      return;
+    }
+
     const giftRepository = new GiftRepository(prisma);
     const giftService = new GiftService(giftRepository);
 
@@ -144,7 +169,8 @@ async function handleMercadoPagoPayment(payment: any) {
     // This assumes the gift_id contains the actual gift UUID
     // You may need to adjust this based on how gift_id is structured
     const giftId = external_reference;
-    const eventType = metadata?.event_type || 'casamento'; // Default to casamento
+    const eventTypeRaw = metadata?.event_type || 'casamento';
+    const eventType = (eventTypeRaw === 'cha-panela' ? 'cha-panela' : 'casamento') as 'casamento' | 'cha-panela';
 
     try {
       await giftService.markAsPurchased({

@@ -1,6 +1,5 @@
 import type { IHoneymoonRepository } from '@/repositories/honeymoon/IHoneymoonRepository';
 import type { IHoneymoonService } from './IHoneymoonService';
-import { Decimal } from '@prisma/client/runtime/library';
 
 /**
  * Honeymoon Service Implementation
@@ -34,9 +33,9 @@ export class HoneymoonService implements IHoneymoonService {
       (c) => c.honeymoonId === activeGoal.id
     );
 
-    // Convert Decimal to number for calculations
-    const targetAmount = this.decimalToNumber(activeGoal.targetAmount);
-    const currentAmount = this.decimalToNumber(activeGoal.currentAmount);
+    // Convert Prisma Decimal to number for calculations
+    const targetAmount = Number(activeGoal.targetAmount);
+    const currentAmount = Number(activeGoal.currentAmount);
 
     // Calculate percentage, ensuring it doesn't exceed 100%
     let percentage = 0;
@@ -82,12 +81,5 @@ export class HoneymoonService implements IHoneymoonService {
     console.log(
       `[HoneymoonService] Contribution processed: ${amount} from ${contributorName || 'Anonymous'}`
     );
-  }
-
-  /**
-   * Helper method to convert Prisma Decimal to number
-   */
-  private decimalToNumber(decimal: Decimal): number {
-    return parseFloat(decimal.toString());
   }
 }
