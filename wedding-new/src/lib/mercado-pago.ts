@@ -76,5 +76,5 @@ export async function verifyMercadoPagoSignature(
  * Get public key for frontend SDK
  */
 export function getMercadoPagoPublicKey(): string {
-  return process.env.MERCADOPAGO_PUBLIC_KEY || '';
+  return process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY || '';
 }
