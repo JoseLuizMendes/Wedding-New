@@ -90,3 +90,30 @@ model CodeValidationAttempts {
   @@index([gift_id, attempt_time], map: "idx_code_validation_attempts_gift_time")
   @@map("code_validation_attempts")
 }
+
+// Honeymoon Goal models
+model HoneymoonGoal {
+  id            Int            @id @default(autoincrement())
+  targetAmount  Decimal        @db.Decimal(10, 2)
+  currentAmount Decimal        @default(0.00) @db.Decimal(10, 2)
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  contributions Contribution[]
+
+  @@map("honeymoon_goals")
+}
+
+model Contribution {
+  id              String        @id @default(uuid())
+  honeymoonId     Int
+  honeymoon       HoneymoonGoal @relation(fields: [honeymoonId], references: [id])
+  amount          Decimal       @db.Decimal(10, 2)
+  contributorName String?
+  transactionId   String        @unique
+  paymentStatus   String        @default("pending")
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("contributions")
+}
