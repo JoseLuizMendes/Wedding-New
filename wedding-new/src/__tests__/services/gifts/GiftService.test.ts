@@ -9,6 +9,7 @@ const mockGiftRepository: jest.Mocked<IGiftRepository> = {
   reserve: jest.fn(),
   cancelReservation: jest.fn(),
   markAsPurchased: jest.fn(),
+  markAsPurchasedByTransaction: jest.fn(),
   isCodeUnique: jest.fn(),
 };
 
