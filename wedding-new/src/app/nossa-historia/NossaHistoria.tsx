@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Heart, Sparkles, CircleDot, Calendar, Plane, HeartHandshake, Gem } from "lucide-react";
+import { Heart, Sparkles, Rose, Calendar, Plane, HeartHandshake, Gem, Flame } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/_components/ui/card";
 import BackgroundMusic from "@/_components/bg-music";
 import { HeroSection } from "@/_components/hero-section";
@@ -16,8 +16,15 @@ const timeline = [
     icon: Heart,
     year: "2024",
     title: "O Reencontro na Praia",
-    description: "Um mês depois, nos vimos novamente em outro evento, dessa vez na praia. Apesar da distância, aquele dia marcou mais um passo na nossa história.",
+    description: "Um mês depois, nos vimos novamente em outro evento, dessa vez na praia. Apesar da distância, começamos a perceber sutilmente alguns pontos em comum entre nós.",
     color: "text-accent",
+  },
+  {
+    icon: Flame,
+    year: "2024",
+    title: "Adorando Lado a Lado",
+    description: "Nosso primeiro encontro oficial foi em um culto de jovens. Durante um momento de adoração a Deus, sentimos uma conexão inegável e a certeza de que era bom estar lado a lado. Ali, na presença d'Ele, percebemos o alinhamento de nossos corações.",
+    color: "text-primary",
   },
   {
     icon: Calendar,
@@ -27,7 +34,7 @@ const timeline = [
     color: "text-primary",
   },
   {
-    icon: CircleDot,
+    icon: Rose,
     year: "2024",
     title: "A Primeira Surpresa",
     description: "Descobri que ela teria um treino na minha cidade e decidi aparecer de surpresa. Foi a primeira vez que demonstrei o quanto ela já era importante pra mim.",
@@ -117,10 +124,13 @@ export const NossaHistoria = () => {
             <CardContent className="pt-12 pb-12">
               <Heart className="w-12 h-12 text-primary mx-auto mb-6 animate-pulse fill-primary" />
               <p className="text-xl md:text-2xl font-serif text-foreground mb-4 leading-relaxed">
-                "E agora, estamos prontos para escrever o próximo capítulo da nossa história... juntos, para sempre."
+                &quot;Acima de tudo, porém, revistam-se do amor, que é o elo perfeito.&quot;
+              </p>
+              <p className="mb-3">
+                &quot;A partir de agora nós ajudaremos um ao outro a chegar no céu&quot; <br />
               </p>
               <p className="text-lg playfair-custom text-muted-foreground font-medium">
-                - José Luiz & Márjorie
+                - José Luiz & Márjorie (Colossenses 3:14)
               </p>
             </CardContent>
           </Card>
