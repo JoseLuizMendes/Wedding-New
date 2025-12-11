@@ -1,6 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/_components/ui/card';
+import { Progress } from '@/_components/ui/progress';
+import { Badge } from '@/_components/ui/badge';
+import { Heart, Plane } from 'lucide-react';
+import Image from 'next/image';
 
 interface HoneymoonProgressData {
   targetAmount: number;
@@ -38,13 +43,15 @@ export function HoneymoonProgress() {
 
   if (loading) {
     return (
-      <div className="w-full max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-        <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-          <div className="h-8 bg-gray-200 rounded mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-        </div>
-      </div>
+      <Card className="w-full max-w-8xl mx-auto shadow-romantic">
+        <CardContent className="p-6">
+          <div className="animate-pulse">
+            <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+            <div className="h-8 bg-gray-200 rounded mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 
@@ -53,47 +60,103 @@ export function HoneymoonProgress() {
   }
 
   return (
-    <div className="w-full max-w-8xl mx-auto p-6 bg-gradient-to-br text-foreground bg-white playfair-custom rounded-lg">
-      <div className="mb-4">
-        <h3 className="text-2xl font-semibold mb-2">
+    <Card className="w-full max-w-8xl mx-auto shadow-romantic overflow-hidden">
+      <CardHeader className="px-12">
+        <CardTitle className="playfair-custom text-2xl md:text-3xl flex items-center gap-2">
+          <Plane className="w-6 h-6 text-primary" />
           Nossa Lua de Mel
-        </h3>
-        <p className="font-bold">
+        </CardTitle>
+        <CardDescription className="playfair-custom font-bold text-base">
           Ajude-nos a realizar o sonho da nossa viagem!
-        </p>
-      </div>
+        </CardDescription>
+      </CardHeader>
 
-      <div className="mb-4">
-        <div className="flex justify-between font-semibold items-center mb-2">
-          <span className="text-sm">
-            Progresso: {progress.percentage}%
-          </span>
-          <span className="text-sm">
-            R$ {progress.currentAmount.toFixed(2)} de R${' '}
-            {progress.targetAmount.toFixed(2)}
-          </span>
+      <CardContent className="space-y-6">
+        {/* Card com Imagem e Incentivo */}
+        <div className="grid md:grid-cols-5 gap-0">
+          {/* Lado esquerdo - Imagem (2 colunas) */}
+          <div className="mx-6 my-3 rounded-md md:col-span-2 relative bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-end justify-center py-2">
+            <div className="text-center relative w-full">
+              <Image
+                src="/gifts/honeymoon.png"
+                alt="Lua de Mel"
+                width={256}
+                height={256}
+                className="mx-auto"
+                priority
+              />
+            </div>
+          </div>
+
+          {/* Lado direito - Conteúdo (3 colunas) */}
+          <div className="md:col-span-3 p-2 py-3 flex flex-col justify-center">
+            <div className="flex flex-col gap-4">
+              <div>
+                <h4 className="playfair-custom text-xl md:text-2xl font-bold text-foreground mb-2">
+                  Realize esse sonho conosco!
+                </h4>
+                <Badge variant="outline" className="mb-3">
+                  <Heart className="w-3 h-3 mr-1" />
+                  Contribuição Especial
+                </Badge>
+              </div>
+
+              <div className="space-y-3">
+                <p className="text-base text-muted-foreground leading-relaxed">
+                  Sua contribuição nos ajudará a criar memórias inesquecíveis na nossa lua de mel. 
+                  Cada valor é um pedacinho do nosso sonho se tornando realidade!
+                </p>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary mt-0.5">✓</span>
+                    <span>Contribua com qualquer valor</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary mt-0.5">✓</span>
+                    <span>Pagamento 100% seguro</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary mt-0.5">✓</span>
+                    <span>Faça parte dessa história especial</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Progress Bar */}
-        <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-          <div
-            className="bg-gradient-to-r from-pink-500 to-purple-600 h-full rounded-full transition-all duration-500 ease-out"
-            style={{ width: `${progress.percentage}%` }}
-          ></div>
-        </div>
-      </div>
+        {/* Barra de Progresso */}
+        <div className="space-y-3 px-6">
+          <div className="flex justify-between items-center">
+            <span className="text-sm font-semibold playfair-custom">
+              Progresso: {progress.percentage}%
+            </span>
+            <span className="text-sm font-semibold playfair-custom">
+              R$ {progress.currentAmount.toFixed(2)} de R${' '}
+              {progress.targetAmount.toFixed(2)}
+            </span>
+          </div>
 
-      <div className="text-center text-sm text-gray-600">
-        {progress.contributionsCount > 0 ? (
-          <p>
-            ❤️ {progress.contributionsCount}{' '}
-            {progress.contributionsCount === 1 ? 'contribuição' : 'contribuições'}{' '}
-            recebida{progress.contributionsCount > 1 ? 's' : ''}
-          </p>
-        ) : (
-          <p>Seja o primeiro a contribuir! 💝</p>
-        )}
-      </div>
-    </div>
+          <Progress value={progress.percentage} className="h-4" />
+        </div>
+
+        {/* Contador de Contribuições */}
+        <div className="text-center text-sm text-muted-foreground">
+          {progress.contributionsCount > 0 ? (
+            <p className="flex items-center justify-center gap-2">
+              <Heart className="w-4 h-4 text-primary fill-primary" />
+              {progress.contributionsCount}{' '}
+              {progress.contributionsCount === 1 ? 'contribuição' : 'contribuições'}{' '}
+              recebida{progress.contributionsCount > 1 ? 's' : ''}
+            </p>
+          ) : (
+            <p className="flex items-center justify-center gap-2">
+              <Heart className="w-4 h-4 text-primary" />
+              Seja o primeiro a contribuir!
+            </p>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
