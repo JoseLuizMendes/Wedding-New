@@ -2,6 +2,11 @@
 
 import { useState } from 'react';
 import { useMercadoPago } from '@/hooks/useMercadoPago';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/_components/ui/card';
+import { Button } from '@/_components/ui/button';
+import { Input } from '@/_components/ui/input';
+import { Label } from '@/_components/ui/label';
+import { BadgeDollarSign, Lock } from 'lucide-react';
 
 interface ContributionOption {
   id: string;
@@ -39,70 +44,71 @@ export function HoneymoonContribution() {
       });
     } catch (error) {
       console.error('[HoneymoonContribution] Error:', error);
-      // Error will be shown via loading state reset
-      // In production, consider using a toast notification system
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-full max-w-8xl mx-auto p-6 text-foreground playfair-custom bg-white rounded-lg shadow-lg">
-      <div className="mb-6">
-        <h3 className="text-2xl font-semibold mb-2">
+    <Card className="w-full max-w-8xl mx-auto shadow-romantic">
+      <CardHeader>
+        <CardTitle className="playfair-custom text-2xl md:text-3xl">
           Contribua para Nossa Lua de Mel
-        </h3>
-        <p className="font-bold">
+        </CardTitle>
+        <CardDescription className="playfair-custom font-bold text-base">
           Escolha um valor e nos ajude a realizar o sonho da nossa viagem!
-        </p>
-      </div>
+        </CardDescription>
+      </CardHeader>
 
-      {/* Contributor Name Input */}
-      <div className="mb-6">
-        <label
-          htmlFor="contributor-name"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Seu nome (opcional)
-        </label>
-        <input
-          id="contributor-name"
-          type="text"
-          value={contributorName}
-          onChange={(e) => setContributorName(e.target.value)}
-          placeholder="Digite seu nome"
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-          disabled={loading}
-        />
-      </div>
-
-      {/* Contribution Options Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {CONTRIBUTION_OPTIONS.map((option) => (
-          <button
-            key={option.id}
-            onClick={() => handleContribute(option)}
+      <CardContent className="space-y-6">
+        {/* Contributor Name Input */}
+        <div className="space-y-2">
+          <Label htmlFor="contributor-name">
+            Seu nome (opcional)
+          </Label>
+          <Input
+            id="contributor-name"
+            type="text"
+            value={contributorName}
+            onChange={(e) => setContributorName(e.target.value)}
+            placeholder="Digite seu nome"
             disabled={loading}
-            className="relative p-6 bg-gradient-to-br from-primary/10 via-secondary/20 to-accent/10 hover:from-primary/20 hover:via-secondary/30 hover:to-accent/20 border-2 border-primary/20 hover:border-primary/40 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-          >
-            <div className="text-center">
-              <div className="text-3xl font-bold text-nowrap mb-1">
-                {option.label}
-              </div>
-              <div className="text-sm text-muted-foreground font-medium">Contribuir</div>
-            </div>
-          </button>
-        ))}
-      </div>
-
-      {loading && (
-        <div className="mt-4 text-center text-gray-600">
-          <p>Redirecionando para pagamento...</p>
+          />
         </div>
-      )}
 
-      <div className="mt-6 text-center text-sm text-gray-500">
-        <p>Pagamento seguro via Mercado Pago 🔒</p>
-      </div>
-    </div>
+        {/* Contribution Options Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {CONTRIBUTION_OPTIONS.map((option) => (
+            <Button
+              key={option.id}
+              onClick={() => handleContribute(option)}
+              disabled={loading}
+              variant="secondary"
+              className="group relative h-auto p-6 backdrop-blur-lg"
+            >
+              <div className="text-center align-middle">
+                <div className="text-3xl font-bold text-nowrap mb-2 playfair-custom transition-all duration-300 group-hover:mb-1">
+                  {option.label}
+                </div>
+                <div className="text-sm text-muted-foreground font-medium flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out transform translate-y-1 group-hover:translate-y-0">
+                  <BadgeDollarSign className="w-4 h-4" />
+                  Contribuir
+                </div>
+              </div>
+            </Button>
+          ))}
+        </div>
+
+        {loading && (
+          <div className="text-center text-muted-foreground">
+            <p>Redirecionando para pagamento...</p>
+          </div>
+        )}
+
+        <div className="text-center text-sm text-muted-foreground flex items-center justify-center gap-2">
+          <Lock className="w-4 h-4" />
+          <p>Pagamento seguro via Mercado Pago</p>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
