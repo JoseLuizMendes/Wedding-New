@@ -66,8 +66,8 @@ export const PixContributionCard = ({ tipo, index = 0 }: PixContributionCardProp
         <Card className="overflow-hidden hover:shadow-romantic transition-all duration-300 border-primary/20">
           <div className="grid md:grid-cols-5 gap-0">
             {/* Lado esquerdo - Imagem (2 colunas) */}
-            <div className=" ml-6 rounded-md md:col-span-2 relative bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center p-8 md:p-12">
-              <div className="text-center space-y-4 relative w-full h-full min-h-[300px]">
+            <div className="mx-6 my-3 rounded-md md:col-span-2 relative bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-end justify-center py-2">
+              <div className="text-center relative w-full">
                 <Image
                   src="/gifts/pix-image.png"
                   alt="Contribuição PIX"
@@ -80,54 +80,53 @@ export const PixContributionCard = ({ tipo, index = 0 }: PixContributionCardProp
             </div>
 
             {/* Lado direito - Conteúdo (3 colunas) */}
-            <div className="md:col-span-3 p-6">
-              <div className="h-full flex flex-col justify-between">
-                <div>
-                  <div className="flex items-start justify-between gap-2 mb-4">
-                    <div>
-                      <h3 className="playfair-custom text-2xl md:text-3xl font-bold text-foreground mb-2">
-                        Contribuição PIX
-                      </h3>
-                      <Badge variant="outline" className="mb-3">
-                        <BadgeDollarSign className="w-3 h-3 mr-1" />
-                        Valor Flexível
-                      </Badge>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4 mb-6">
-                    <p className="text-base playfair-custom font-bold leading-relaxed">
-                      Nos ajude a realizar nossos sonhos!
-                    </p>
-                    <p className="text-base text-muted-foreground leading-relaxed">
-                      Sua contribuição é especial para nós. Escolha o valor que desejar 
-                      e nos ajude a construir momentos inesquecíveis juntos.
-                    </p>
-                    <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span>Pagamento instantâneo via PIX</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span>100% seguro pelo Mercado Pago</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span>Você escolhe quanto quer contribuir</span>
-                      </li>
-                    </ul>
+            <div className="md:col-span-3 p-2 py-3 flex flex-col justify-between">
+              <div className="flex flex-col gap-6">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <h3 className="playfair-custom text-2xl md:text-3xl font-bold text-foreground mb-2">
+                      Contribuição PIX
+                    </h3>
+                    <Badge variant="outline" className="mb-3">
+                      <BadgeDollarSign className="w-3 h-3 mr-1" />
+                      Valor Flexível
+                    </Badge>
                   </div>
                 </div>
 
+                <div className="space-y-4">
+                  <p className="text-base playfair-custom font-bold leading-relaxed">
+                    Nos ajude a realizar nossos sonhos!
+                  </p>
+                  <p className="text-base text-muted-foreground leading-relaxed">
+                    Sua contribuição é especial para nós. Escolha o valor que desejar 
+                    e nos ajude a construir momentos inesquecíveis juntos.
+                  </p>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary mt-0.5">✓</span>
+                      <span>Pagamento instantâneo via PIX</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary mt-0.5">✓</span>
+                      <span>100% seguro pelo Mercado Pago</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary mt-0.5">✓</span>
+                      <span>Você escolhe quanto quer contribuir</span>
+                    </li>
+                  </ul>
+                </div>
+
                 <Button 
-                  onClick={() => setShowDialog(true)}
-                  className="w-full h-12 text-base"
-                  variant="default"
-                >
-                  <BadgeDollarSign className="w-5 h-5 mr-2" />
-                  Contribuir Agora
-                </Button>
+                    onClick={() => setShowDialog(true)}
+                    className="h-12 text-base mr-4"
+                    variant="default"
+                  >
+                    <BadgeDollarSign className="w-5 h-5 mr-2" />
+                    Contribuir Agora
+                  </Button>
+
               </div>
             </div>
           </div>
