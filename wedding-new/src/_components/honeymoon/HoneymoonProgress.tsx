@@ -61,7 +61,7 @@ export function HoneymoonProgress() {
 
   return (
     <Card className="w-full max-w-8xl mx-auto shadow-romantic overflow-hidden">
-      <CardHeader className="px-12">
+      <CardHeader className="px-6">
         <CardTitle className="playfair-custom text-2xl md:text-3xl flex items-center gap-2">
           <Plane className="w-6 h-6 text-primary" />
           Nossa Lua de Mel
@@ -71,11 +71,11 @@ export function HoneymoonProgress() {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 px-6">
         {/* Card com Imagem e Incentivo */}
-        <div className="grid md:grid-cols-5 gap-0">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-0 -mx-6">
           {/* Lado esquerdo - Imagem (2 colunas) */}
-          <div className="mx-6 my-3 rounded-md md:col-span-2 relative bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-end justify-center py-2">
+          <div className="mx-6 my-3 rounded-md md:col-span-2 relative bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-end justify-center p-6">
             <div className="text-center relative w-full">
               <Image
                 src="/gifts/honeymoon.png"
@@ -89,7 +89,7 @@ export function HoneymoonProgress() {
           </div>
 
           {/* Lado direito - Conteúdo (3 colunas) */}
-          <div className="md:col-span-3 p-2 py-3 flex flex-col justify-center">
+          <div className="md:col-span-3 px-6 pb-6 md:py-6 md:pr-6 md:pl-0 flex flex-col justify-center">
             <div className="flex flex-col gap-4">
               <div>
                 <h4 className="playfair-custom text-xl md:text-2xl font-bold text-foreground mb-2">
@@ -126,7 +126,7 @@ export function HoneymoonProgress() {
         </div>
 
         {/* Barra de Progresso */}
-        <div className="space-y-3 px-6">
+        <div className="space-y-3">
           <div className="flex justify-between items-center">
             <span className="text-sm font-semibold playfair-custom">
               Progresso: {progress.percentage}%
