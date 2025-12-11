@@ -11,7 +11,7 @@ interface TimeLeft {
   seconds: number;
 }
 
-const WEDDING_DATE = new Date("2026-09-07T16:11:00").getTime();
+const WEDDING_DATE = new Date("2026-09-07T16:00:00").getTime();
 
 const calculateTimeLeft = (): TimeLeft => {
   const difference = WEDDING_DATE - new Date().getTime();
