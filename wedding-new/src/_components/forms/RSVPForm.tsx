@@ -122,7 +122,7 @@ export const RSVPForm = ({ tipo, onSuccess }: RSVPFormProps) => {
           value={formData.contato}
           onChange={handlePhoneChange}
           required
-          placeholder="(XX) XXXXX-XXXX"
+          placeholder="(99) 99999-9999"
           maxLength={15}
         />
       </div>
