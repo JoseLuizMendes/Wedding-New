@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/_components/ui/card';
 import { Button } from '@/_components/ui/button';
 import { Input } from '@/_components/ui/input';
@@ -22,6 +22,19 @@ export const PixContributionCard = ({ tipo, index = 0 }: PixContributionCardProp
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const { createMercadoPagoCheckout } = useMercadoPago();
+
+  // Reset loading and close dialog when user returns to the page
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        setLoading(false);
+        setShowDialog(false);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
 
   const handleContribute = async () => {
     const value = parseFloat(amount.replace(',', '.'));

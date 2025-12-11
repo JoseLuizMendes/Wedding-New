@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMercadoPago } from '@/hooks/useMercadoPago';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/_components/ui/card';
 import { Button } from '@/_components/ui/button';
@@ -31,6 +31,18 @@ export function HoneymoonContribution() {
   const { createMercadoPagoCheckout } = useMercadoPago();
   const [loading, setLoading] = useState(false);
   const [contributorName, setContributorName] = useState('');
+
+  // Reset loading when user returns to the page
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        setLoading(false);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
 
   const handleContribute = async (option: ContributionOption) => {
     try {
