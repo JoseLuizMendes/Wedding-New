@@ -243,7 +243,7 @@ export const Navigation = () => {
               <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-border bg-gradient-to-t from-secondary/30 to-transparent playfair-custom">
                 <div className="text-center space-y-2">
                   <p className="text-sm font-medium text-foreground1">
-                    José Luiz & Márjorie
+                    José & Márjorie
                   </p>
                   <p className="text-xs text-muted-foreground font-bold">
                     💍 07 de Setembro de 2026

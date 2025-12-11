@@ -36,7 +36,7 @@ export const HeroSection = () => {
               <Heart className="w-16 h-16 text-accent mx-auto mb-6 fill-accent animate-pulse" />
 
               <h1 className="playfair-custom text-5xl md:text-7xl lg:text-8xl mb-4 text-background">
-                José Luiz & Márjorie
+                José & Márjorie
               </h1>
 
               <motion.div

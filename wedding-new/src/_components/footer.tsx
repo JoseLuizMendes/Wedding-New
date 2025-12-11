@@ -7,7 +7,7 @@ export const Footer = () => {
         <div className="flex items-center justify-center gap-2 mb-4">
           <Heart className="w-5 h-5 text-primary-foreground fill-primary-foreground" />
           <p className="text-lg playfair-custom text-primary-foreground">
-            José Luiz & Márjorie
+            José & Márjorie
           </p>
           <Heart className="w-5 h-5 text-primary-foreground fill-primary-foreground" />
         </div>
