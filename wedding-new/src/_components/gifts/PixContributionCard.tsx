@@ -64,9 +64,9 @@ export const PixContributionCard = ({ tipo, index = 0 }: PixContributionCardProp
         transition={{ delay: index * 0.1 }}
       >
         <Card className="overflow-hidden hover:shadow-romantic transition-all duration-300 border-primary/20">
-          <div className="grid md:grid-cols-5 gap-0">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
             {/* Lado esquerdo - Imagem (2 colunas) */}
-            <div className="mx-6 my-3 rounded-md md:col-span-2 relative bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-end justify-center py-2">
+            <div className="mx-6 my-3 rounded-md md:col-span-2 relative bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-end justify-center p-6">
               <div className="text-center relative w-full">
                 <Image
                   src="/gifts/pix-image.png"
@@ -80,7 +80,7 @@ export const PixContributionCard = ({ tipo, index = 0 }: PixContributionCardProp
             </div>
 
             {/* Lado direito - Conteúdo (3 colunas) */}
-            <div className="md:col-span-3 p-2 py-3 flex flex-col justify-between">
+            <div className="md:col-span-3 px-6 pb-6 md:py-6 md:pr-6 md:pl-0 flex flex-col justify-between">
               <div className="flex flex-col gap-6">
                 <div className="flex items-start justify-between gap-2">
                   <div>
@@ -120,7 +120,7 @@ export const PixContributionCard = ({ tipo, index = 0 }: PixContributionCardProp
 
                 <Button 
                     onClick={() => setShowDialog(true)}
-                    className="h-12 text-base mr-4"
+                    className="h-12 text-base"
                     variant="default"
                   >
                     <BadgeDollarSign className="w-5 h-5 mr-2" />
