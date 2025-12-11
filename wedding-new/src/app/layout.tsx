@@ -47,13 +47,10 @@ export default function RootLayout({
             
             {/* Componentes de Layout que você tinha no seu roteador antigo */}
             <Navigation />
-            
             <main>
-              {children} 
+              {children}
             </main>
-            
             <Footer />
-            
           </GlobalProviders>
         {/* </ThemeProvider> */}
       </body>
