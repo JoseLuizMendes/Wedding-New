@@ -46,17 +46,17 @@ export const HeroSection = () => {
                 className="w-24 h-1 bg-accent mx-auto mb-8"
               />
 
-              <p className="text-xl md:text-2xl text-background/90 mb-4 font-light">
+              <p className="text-xl md:text-2xl text-background mb-4 font-light">
                 Nós vamos casar!
               </p>
 
-              <p className="text-lg md:text-xl text-background/80 mb-12 max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-zinc-50 mb-12 max-w-2xl mx-auto">
                 Convidamos você para celebrar conosco este momento especial das
                 nossas vidas
               </p>
 
               <Link href="/casamento">
-                <Button variant="default" size="lg" className="text-lg px-8 py-6">
+                <Button variant="default" size="lg" className="text-lg shadow-md px-8 py-6">
                   Ver Detalhes do Casamento
                 </Button>
               </Link>

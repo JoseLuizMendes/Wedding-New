@@ -27,8 +27,8 @@ export const Home = () => {
             <h2 className="playfair-custom text-5xl md:text-6xl mb-4 text-foreground">
               Faltam apenas
             </h2>
-            <p className="text-lg text-muted-foreground">
-              Contagem regressiva para o nosso grande dia
+            <p className="text-lg text-nowrap">
+              Contagem regressiva para o nosso grande dia!
             </p>
           </motion.div>
 
@@ -63,12 +63,12 @@ export const Home = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/casamento#rsvp-form">
-                <Button variant="default" size="lg">
-                  Confirmar Presença
+                <Button size="lg" className="bg-foreground">
+                  Confirmar Presença Agora!
                 </Button>
               </Link>
               <Link href="/nossa-historia">
-                <Button variant="outline" size="lg">
+                <Button variant="secondary" size="lg">
                   Nossa História
                 </Button>
               </Link>
