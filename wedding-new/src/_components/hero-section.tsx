@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, Heart } from "lucide-react";
+import { ArrowDown, EyeIcon, Heart } from "lucide-react";
 
 import { Button } from "./ui/button";
 import { OptimizedImage } from "./ui/OptimizedImage";
@@ -43,10 +43,10 @@ export const HeroSection = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.8 }}
-                className="w-24 h-1 bg-accent mx-auto mb-8"
+                className="w-24 h-1 bg-zinc-50 mx-auto mb-8"
               />
 
-              <p className="text-xl md:text-2xl text-background mb-4 font-light">
+              <p className="text-xl md:text-2xl text-zinc-50 mb-4 font-light">
                 Nós vamos casar!
               </p>
 
@@ -54,10 +54,9 @@ export const HeroSection = () => {
                 Convidamos você para celebrar conosco este momento especial das
                 nossas vidas
               </p>
-
               <Link href="/casamento">
-                <Button variant="default" size="lg" className="text-lg shadow-md px-8 py-6">
-                  Ver Detalhes do Casamento
+                <Button size="lg" className="text-lg shadow-md py-8 bg-foreground whitespace-normal text-center hover:bg-foreground">
+                 Clique aqui para ver mais detalhes do casamento
                 </Button>
               </Link>
             </motion.div>
@@ -67,7 +66,7 @@ export const HeroSection = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
               className="absolute bottom-10 left-1/2 -translate-x-1/2">
-              <ArrowDown className="w-8 h-8 text-background animate-bounce" />
+              <ArrowDown className="w-8 h-8 mb-8 text-background animate-bounce" />
             </motion.div>
           </div>
         </>
