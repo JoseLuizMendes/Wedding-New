@@ -63,7 +63,7 @@ export const Home = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/casamento#rsvp-form">
-                <Button size="lg" className="bg-foreground">
+                <Button size="lg" className="border-primary text-nowrap hover:bg-foreground bg-foreground">
                   Confirmar Presença Agora!
                 </Button>
               </Link>

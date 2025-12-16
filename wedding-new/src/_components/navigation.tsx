@@ -150,13 +150,12 @@ export const Navigation = () => {
 
           {/* Mobile Menu Button */}
           <Button
-            variant="ghost"
             size="icon"
-            className={`md:hidden ${
+            className={`md:hidden w-10 h-10 bg-foreground/40 hover:bg-foreground ${
               isOverlayTop ? "text-white hover:text-white/80" : ""
             }`}
             onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? <X className="w-10 h-10" /> : <Menu className="w-10 h-10" />}
           </Button>
         </div>
 
