@@ -93,14 +93,14 @@ export const PixContributionCard = ({ tipo, index = 0 }: PixContributionCardProp
             </div>
 
             {/* Lado direito - Conteúdo (3 colunas) */}
-            <div className="md:col-span-3 px-6 pb-6 md:py-6 md:pr-6 md:pl-0 flex flex-col justify-between">
+            <div className="md:col-span-2 px-6 pb-2 md:py-2 md:pr-6 md:pl-0 flex flex-col justify-between">
               <div className="flex flex-col gap-6">
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <h3 className="playfair-custom text-2xl md:text-3xl font-bold text-foreground mb-2">
                       Contribuição PIX
                     </h3>
-                    <Badge variant="outline" className="mb-3">
+                    <Badge className="mb-3 bg-amber-600">
                       <BadgeDollarSign className="w-3 h-3 mr-1" />
                       Valor Flexível
                     </Badge>
