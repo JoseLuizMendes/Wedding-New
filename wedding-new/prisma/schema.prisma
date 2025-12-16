@@ -109,15 +109,16 @@ model HoneymoonGoal {
 }
 
 model Contribution {
-  id              String        @id @default(uuid())
-  honeymoonId     Int
-  honeymoon       HoneymoonGoal @relation(fields: [honeymoonId], references: [id])
-  amount          Decimal       @db.Decimal(10, 2)
-  contributorName String?
-  transactionId   String        @unique
-  paymentStatus   String        @default("pending")
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id                      String        @id @default(uuid())
+  honeymoonId             Int
+  honeymoon               HoneymoonGoal @relation(fields: [honeymoonId], references: [id])
+  amount                  Decimal       @db.Decimal(10, 2)
+  contributorName         String?
+  transactionId           String        @unique
+  paymentStatus           String        @default("pending")
+  mercadoPagoPreferenceId String?       @unique
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
 
   @@map("contributions")
 }

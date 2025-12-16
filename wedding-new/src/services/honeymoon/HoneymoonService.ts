@@ -29,13 +29,20 @@ export class HoneymoonService implements IHoneymoonService {
     }
 
     const contributions = await this.honeymoonRepository.getContributions();
-    const contributionsForThisGoal = contributions.filter(
-      (c) => c.honeymoonId === activeGoal.id
+    
+    // Filter only approved contributions for this goal
+    const approvedContributions = contributions.filter(
+      (c) => c.honeymoonId === activeGoal.id && c.paymentStatus === 'approved'
+    );
+
+    // Calculate current amount from approved contributions only
+    const currentAmount = approvedContributions.reduce(
+      (sum, c) => sum + Number(c.amount),
+      0
     );
 
     // Convert Prisma Decimal to number for calculations
     const targetAmount = Number(activeGoal.targetAmount);
-    const currentAmount = Number(activeGoal.currentAmount);
 
     // Calculate percentage, ensuring it doesn't exceed 100%
     let percentage = 0;
@@ -49,7 +56,7 @@ export class HoneymoonService implements IHoneymoonService {
       currentAmount,
       percentage,
       isActive: activeGoal.isActive,
-      contributionsCount: contributionsForThisGoal.length,
+      contributionsCount: approvedContributions.length,
     };
   }
 

@@ -50,17 +50,10 @@ export async function POST(request: NextRequest) {
       id: payment.id,
       status: payment.status,
       external_reference: payment.external_reference,
+      preference_id: payment.additional_info?.items?.[0]?.id,
     });
 
-    // Only process approved payments
-    if (payment.status !== 'approved' && !payment.date_approved) {
-      console.log(
-        `[Webhook /mercadopago] Payment ${payment.id} not approved yet, status: ${payment.status}`
-      );
-      return NextResponse.json({ status: 'pending' }, { status: 200 });
-    }
-
-    // Handle the payment based on type
+    // Handle payment based on status
     await handleMercadoPagoPayment(payment);
 
     const duration = Date.now() - startTime;
@@ -110,6 +103,7 @@ function getContributorName(
 interface MercadoPagoPaymentData {
   id?: number;
   external_reference?: string;
+  status?: string;
   metadata?: {
     contributor_name?: string;
     type?: string;
@@ -120,10 +114,13 @@ interface MercadoPagoPaymentData {
     first_name?: string;
     email?: string;
   };
+  additional_info?: {
+    items?: Array<{ id?: string }>;
+  };
 }
 
 async function handleMercadoPagoPayment(payment: MercadoPagoPaymentData) {
-  const { external_reference, metadata, transaction_amount, payer, id } =
+  const { external_reference, metadata, transaction_amount, payer, id, status } =
     payment;
   
   if (!id || !transaction_amount) {
@@ -131,12 +128,15 @@ async function handleMercadoPagoPayment(payment: MercadoPagoPaymentData) {
   }
   
   const transactionId = id.toString();
+  const preferenceId = payment.additional_info?.items?.[0]?.id;
 
   console.log('[Webhook] Processing payment:', {
     transactionId,
     external_reference,
     metadata,
     amount: transaction_amount,
+    status,
+    preferenceId,
   });
 
   // Determine if this is a honeymoon contribution
@@ -154,15 +154,50 @@ async function handleMercadoPagoPayment(payment: MercadoPagoPaymentData) {
 
     const contributorName = getContributorName(metadata, payer);
 
-    await honeymoonService.processContribution(
-      transaction_amount,
-      transactionId,
-      contributorName
-    );
+    // Handle based on payment status
+    if (status === 'approved') {
+      // Try to approve existing pending contribution first
+      if (preferenceId) {
+        try {
+          await honeymoonRepository.approveContribution(
+            preferenceId,
+            transactionId
+          );
+          console.log(
+            `[Webhook] Honeymoon contribution approved: ${transaction_amount} from ${contributorName}`
+          );
+          return;
+        } catch (error) {
+          console.log(
+            '[Webhook] No pending contribution found, creating new approved contribution'
+          );
+          // Fall through to create new contribution
+        }
+      }
 
-    console.log(
-      `[Webhook] Honeymoon contribution processed: ${transaction_amount} from ${contributorName}`
-    );
+      // If no pending contribution exists, create approved one directly
+      await honeymoonService.processContribution(
+        transaction_amount,
+        transactionId,
+        contributorName
+      );
+
+      console.log(
+        `[Webhook] Honeymoon contribution processed: ${transaction_amount} from ${contributorName}`
+      );
+    } else if (['rejected', 'cancelled', 'refunded'].includes(status || '')) {
+      // Delete pending contribution
+      if (preferenceId) {
+        await honeymoonRepository.deletePendingContribution(preferenceId);
+        console.log(
+          `[Webhook] Pending contribution deleted for preference ${preferenceId}`
+        );
+      }
+    } else {
+      console.log(
+        `[Webhook] Payment ${transactionId} not processed, status: ${status}`
+      );
+    }
   } else {
     // Process physical gift purchase
     console.log('[Webhook] Processing physical gift purchase');

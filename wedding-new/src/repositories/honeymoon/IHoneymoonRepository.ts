@@ -34,4 +34,38 @@ export interface IHoneymoonRepository {
   getContributionByTransactionId(
     transactionId: string
   ): Promise<Contribution | null>;
+
+  /**
+   * Create a pending contribution
+   * @param data - Contribution data including preference ID
+   */
+  createPendingContribution(data: {
+    amount: number;
+    contributorName?: string | null;
+    mercadoPagoPreferenceId: string;
+  }): Promise<Contribution>;
+
+  /**
+   * Approve a contribution by preference ID
+   * @param mercadoPagoPreferenceId - Mercado Pago preference ID
+   * @param transactionId - Mercado Pago transaction ID
+   */
+  approveContribution(
+    mercadoPagoPreferenceId: string,
+    transactionId: string
+  ): Promise<void>;
+
+  /**
+   * Delete a pending contribution
+   * @param mercadoPagoPreferenceId - Mercado Pago preference ID
+   */
+  deletePendingContribution(mercadoPagoPreferenceId: string): Promise<void>;
+
+  /**
+   * Find a contribution by preference ID
+   * @param mercadoPagoPreferenceId - Mercado Pago preference ID
+   */
+  getContributionByPreferenceId(
+    mercadoPagoPreferenceId: string
+  ): Promise<Contribution | null>;
 }

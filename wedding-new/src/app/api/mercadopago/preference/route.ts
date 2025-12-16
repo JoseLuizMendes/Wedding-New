@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { mercadoPagoPreference } from '@/lib/mercado-pago';
+import { prisma } from '@/lib/prisma';
+import { HoneymoonRepository } from '@/repositories/honeymoon/HoneymoonRepository';
 
 /**
  * POST /api/mercadopago/preference
@@ -63,9 +65,9 @@ export async function POST(request: NextRequest) {
     // Mercado Pago doesn't accept localhost URLs
     if (!isLocalhost && baseUrl) {
       preferenceBody.back_urls = {
-        success: `${baseUrl}/casamento?payment=success`,
-        failure: `${baseUrl}/casamento?payment=failure`,
-        pending: `${baseUrl}/casamento?payment=pending`,
+        success: `${baseUrl}/pagamento/resultado?status=success`,
+        failure: `${baseUrl}/pagamento/resultado?status=failure`,
+        pending: `${baseUrl}/pagamento/resultado?status=pending`,
       };
       preferenceBody.auto_return = 'approved';
       preferenceBody.notification_url = `${baseUrl}/api/webhooks/mercadopago`;
@@ -74,6 +76,28 @@ export async function POST(request: NextRequest) {
     const preference = await mercadoPagoPreference.create({
       body: preferenceBody,
     });
+
+    // If honeymoon contribution, create pending contribution
+    if (isHoneymoon) {
+      try {
+        const honeymoonRepository = new HoneymoonRepository(prisma);
+        await honeymoonRepository.createPendingContribution({
+          amount: parseFloat(amount),
+          contributorName: contributor_name || null,
+          mercadoPagoPreferenceId: preference.id!,
+        });
+        console.log(
+          `[API /mercadopago/preference] Pending contribution created for preference ${preference.id}`
+        );
+      } catch (error) {
+        console.error(
+          '[API /mercadopago/preference] Error creating pending contribution:',
+          error
+        );
+        // Don't fail the request if contribution creation fails
+        // The webhook will handle it if needed
+      }
+    }
 
     const duration = Date.now() - startTime;
     console.log(
