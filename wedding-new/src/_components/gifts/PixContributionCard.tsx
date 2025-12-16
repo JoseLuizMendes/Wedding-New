@@ -93,7 +93,7 @@ export const PixContributionCard = ({ tipo, index = 0 }: PixContributionCardProp
             </div>
 
             {/* Lado direito - Conteúdo (3 colunas) */}
-            <div className="md:col-span-2 px-6 pb-2 md:py-2 md:pr-6 md:pl-0 flex flex-col justify-between">
+            <div className="md:col-span-3 px-6 pb-2 md:py-2 md:pr-6 md:pl-0 flex flex-col justify-between">
               <div className="flex flex-col gap-6">
                 <div className="flex items-start justify-between gap-2">
                   <div>
@@ -115,17 +115,17 @@ export const PixContributionCard = ({ tipo, index = 0 }: PixContributionCardProp
                     Sua contribuição é especial para nós. Escolha o valor que desejar 
                     e nos ajude a construir momentos inesquecíveis juntos.
                   </p>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
+                  <ul className="space-y-2 text-sm text-emerald-600">
                     <li className="flex items-start gap-2">
-                      <span className="text-primary mt-0.5">✓</span>
+                      <span className="mt-0.5">✓</span>
                       <span>Pagamento instantâneo via PIX</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-primary mt-0.5">✓</span>
+                      <span className="mt-0.5">✓</span>
                       <span>100% seguro pelo Mercado Pago</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-primary mt-0.5">✓</span>
+                      <span className="mt-0.5">✓</span>
                       <span>Você escolhe quanto quer contribuir</span>
                     </li>
                   </ul>
