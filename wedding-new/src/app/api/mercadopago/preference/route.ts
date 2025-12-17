@@ -71,6 +71,10 @@ export async function POST(request: NextRequest) {
       };
       preferenceBody.auto_return = 'approved';
       preferenceBody.notification_url = `${baseUrl}/api/webhooks/mercadopago`;
+      
+      console.log('[API /mercadopago/preference] Webhook URL configured:', `${baseUrl}/api/webhooks/mercadopago`);
+    } else {
+      console.warn('[API /mercadopago/preference] ⚠️ No webhook URL - localhost or invalid baseUrl');
     }
     
     const preference = await mercadoPagoPreference.create({

@@ -16,7 +16,10 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now();
 
   try {
-    console.log('[Webhook /mercadopago] Notification received');
+    console.log('='.repeat(80));
+    console.log('[Webhook /mercadopago] 🔔 WEBHOOK NOTIFICATION RECEIVED');
+    console.log('[Webhook /mercadopago] Headers:', Object.fromEntries(request.headers));
+    console.log('='.repeat(80));
 
     // Verify webhook signature
     const isValidSignature = await verifyMercadoPagoSignature(request);
