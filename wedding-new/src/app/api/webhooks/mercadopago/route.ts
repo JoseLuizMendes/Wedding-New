@@ -154,7 +154,11 @@ async function handleMercadoPagoPayment(payment: MercadoPagoPaymentData) {
 
     // Handle based on payment status
     if (status === 'approved') {
-      // Try to approve existing pending contribution first
+      console.log('[Webhook] Payment approved, attempting to update contribution');
+      
+      let contributionUpdated = false;
+
+      // Try 1: Approve by preferenceId
       if (preferenceId) {
         try {
           await honeymoonRepository.approveContribution(
@@ -162,27 +166,51 @@ async function handleMercadoPagoPayment(payment: MercadoPagoPaymentData) {
             transactionId
           );
           console.log(
-            `[Webhook] Honeymoon contribution approved: ${transaction_amount} from ${contributorName}`
+            `[Webhook] Contribution approved via preferenceId: ${transaction_amount} from ${contributorName}`
           );
-          return;
+          contributionUpdated = true;
         } catch (error) {
           console.log(
-            '[Webhook] No pending contribution found, creating new approved contribution'
+            `[Webhook] Could not approve via preferenceId: ${error instanceof Error ? error.message : error}`
           );
-          // Fall through to create new contribution
         }
       }
 
-      // If no pending contribution exists, create approved one directly
-      await honeymoonService.processContribution(
-        transaction_amount,
-        transactionId,
-        contributorName
-      );
+      // Try 2: Check if contribution exists with this exact transactionId (already processed)
+      if (!contributionUpdated) {
+        try {
+          const existing = await honeymoonRepository.getContributionByTransactionId(transactionId);
+          if (existing && existing.paymentStatus === 'approved') {
+            console.log(`[Webhook] Contribution already approved (idempotency check)`);
+            contributionUpdated = true;
+          }
+        } catch (error) {
+          console.log(`[Webhook] Error checking existing contribution: ${error}`);
+        }
+      }
 
-      console.log(
-        `[Webhook] Honeymoon contribution processed: ${transaction_amount} from ${contributorName}`
-      );
+      // Try 3: Create new approved contribution
+      if (!contributionUpdated) {
+        try {
+          await honeymoonService.processContribution(
+            transaction_amount,
+            transactionId,
+            contributorName
+          );
+          console.log(
+            `[Webhook] New approved contribution created: ${transaction_amount} from ${contributorName}`
+          );
+          contributionUpdated = true;
+        } catch (error) {
+          console.error(
+            `[Webhook] Failed to create contribution: ${error instanceof Error ? error.message : error}`
+          );
+        }
+      }
+
+      if (!contributionUpdated) {
+        console.error('[Webhook] Failed to process approved payment - manual review needed');
+      }
     } else if (['rejected', 'cancelled', 'refunded'].includes(status || '')) {
       // Delete pending contribution
       if (preferenceId) {
