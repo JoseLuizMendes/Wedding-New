@@ -31,7 +31,7 @@ const chaDetails = [
   {
     icon: MapPin,
     title: "Local",
-    value: "Igreja Casa de Oração e Plenitude - COP",
+    value: "Casa de Oração e Plenitude - COP",
     description: "Rod. Gov. José Henrique Sette, Cariacica - ES",
   },
 ];
@@ -92,10 +92,10 @@ export const ChaDePanela = () => {
                       <CardTitle className="text-2xl">{detail.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-2xl font-bold text-primary mb-2">
+                      <p className="text-2xl font-bold text-foreground mb-2">
                         {detail.value}
                       </p>
-                      <p className="text-muted-foreground">
+                      <p className="font-semibold text-foreground">
                         {detail.description}
                       </p>
                     </CardContent>
@@ -108,10 +108,10 @@ export const ChaDePanela = () => {
                     <CardTitle className="text-2xl">{detail.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-2xl font-bold text-primary mb-2">
+                    <p className="text-2xl font-bold text-foreground mb-2">
                       {detail.value}
                     </p>
-                    <p className="text-muted-foreground">
+                    <p className="font-semibold text-foreground">
                       {detail.description}
                     </p>
                   </CardContent>
