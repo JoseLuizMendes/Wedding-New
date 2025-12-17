@@ -9,7 +9,30 @@ export default function PaymentResultPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const status = searchParams.get('status') || 'pending';
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(10);
+  const [checking, setChecking] = useState(true);
+
+  // Auto-aprovar contribuições pendentes quando chegar nesta página
+  useEffect(() => {
+    if (status === 'success') {
+      console.log('[PaymentResult] Checking pending contributions...');
+      
+      fetch('/api/admin/approve-pending', {
+        method: 'POST',
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          console.log('[PaymentResult] Approval check completed:', data);
+          setChecking(false);
+        })
+        .catch((err) => {
+          console.error('[PaymentResult] Error checking contributions:', err);
+          setChecking(false);
+        });
+    } else {
+      setChecking(false);
+    }
+  }, [status]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -55,6 +78,12 @@ export default function PaymentResultPage() {
         <Icon className={`w-20 h-20 mx-auto mb-6 ${config.color}`} />
         <h1 className="text-3xl font-bold mb-4">{config.title}</h1>
         <p className="text-muted-foreground mb-8">{config.message}</p>
+        
+        {checking && status === 'success' && (
+          <p className="text-sm text-muted-foreground mb-4 animate-pulse">
+            Processando pagamento...
+          </p>
+        )}
         
         <Button onClick={() => router.push('/casamento')} className="mb-4">
           Voltar para o site
