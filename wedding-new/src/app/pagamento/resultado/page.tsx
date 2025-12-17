@@ -10,7 +10,7 @@ export default function PaymentResultPage() {
   const router = useRouter();
   const status = searchParams.get('status') || 'pending';
   const [countdown, setCountdown] = useState(10);
-  const [checking, setChecking] = useState(true);
+  const [checking, setChecking] = useState(status === 'success');
 
   // Auto-aprovar contribuições pendentes quando chegar nesta página
   useEffect(() => {
@@ -29,8 +29,6 @@ export default function PaymentResultPage() {
           console.error('[PaymentResult] Error checking contributions:', err);
           setChecking(false);
         });
-    } else {
-      setChecking(false);
     }
   }, [status]);
 
