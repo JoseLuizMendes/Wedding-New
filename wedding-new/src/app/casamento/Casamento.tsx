@@ -62,9 +62,11 @@ export const Casamento = () => {
                     </CardHeader>
                     <CardContent>
                       <p className="text-2xl font-bold text-foreground mb-2">
+                      <p className="text-2xl font-bold text-foreground mb-2">
                         {detail.value}
                       </p>
                       <p className="text-foreground font-semibold">
+                      <p className="font-semibold text-foreground">
                         {detail.description}
                       </p>
                     </CardContent>
@@ -78,9 +80,11 @@ export const Casamento = () => {
                   </CardHeader>
                   <CardContent>
                     <p className="text-2xl font-bold text-foreground mb-2">
+                    <p className="text-2xl font-bold text-foreground mb-2">
                       {detail.value}
                     </p>
                     <p className="text-foreground font-semibold">
+                    <p className="font-semibold text-foreground">
                       {detail.description}
                     </p>
                   </CardContent>
