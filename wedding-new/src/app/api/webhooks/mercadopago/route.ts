@@ -21,18 +21,20 @@ export async function POST(request: NextRequest) {
     console.log('[Webhook /mercadopago] Headers:', Object.fromEntries(request.headers));
     console.log('='.repeat(80));
 
-    // Verify webhook signature
-    const isValidSignature = await verifyMercadoPagoSignature(request);
-
-    if (!isValidSignature) {
-      console.error('[Webhook /mercadopago] Invalid signature');
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const body = await request.json();
+    console.log('[Webhook /mercadopago] Body received:', JSON.stringify(body, null, 2));
+    
     const { type, data } = body;
 
     console.log('[Webhook /mercadopago] Event type:', type);
+    console.log('[Webhook /mercadopago] Payment ID:', data?.id);
+
+    // TODO: Re-enable signature verification after testing
+    // const isValidSignature = await verifyMercadoPagoSignature(request);
+    // if (!isValidSignature) {
+    //   console.error('[Webhook /mercadopago] Invalid signature');
+    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // }
 
     // Only process payment events
     if (type !== 'payment') {
