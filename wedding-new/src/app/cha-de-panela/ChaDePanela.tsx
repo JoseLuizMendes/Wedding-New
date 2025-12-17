@@ -92,10 +92,10 @@ export const ChaDePanela = () => {
                       <CardTitle className="text-2xl">{detail.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-2xl font-bold text-primary mb-2">
+                      <p className="text-2xl font-bold text-foreground mb-2">
                         {detail.value}
                       </p>
-                      <p className="text-muted-foreground">
+                      <p className="text-foreground font-semibold">
                         {detail.description}
                       </p>
                     </CardContent>
@@ -108,10 +108,10 @@ export const ChaDePanela = () => {
                     <CardTitle className="text-2xl">{detail.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-2xl font-bold text-primary mb-2">
+                    <p className="text-2xl font-bold text-foreground mb-2">
                       {detail.value}
                     </p>
-                    <p className="text-muted-foreground">
+                    <p className="text-foreground font-semibold">
                       {detail.description}
                     </p>
                   </CardContent>
