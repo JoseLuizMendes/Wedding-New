@@ -135,7 +135,7 @@ export const NossaHistoria = () => {
               <p className="text-lg playfair-custom text-muted-foreground font-medium">
                 - José & Márjorie
                 <br />
-                (Colossenses 3:14 e 1 Coríntios 13:4, 7)
+                <span className="whitespace-nowrap">(Colossenses 3:14 e 1 Coríntios 13:4, 7)</span>
               </p>
             </CardContent>
           </Card>
