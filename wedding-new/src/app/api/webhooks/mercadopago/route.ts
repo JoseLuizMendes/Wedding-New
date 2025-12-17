@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       id: payment.id,
       status: payment.status,
       external_reference: payment.external_reference,
-      preference_id: payment.additional_info?.items?.[0]?.id,
+      preference_id: (payment as any).preference_id,
     });
 
     // Handle payment based on status
@@ -104,6 +104,7 @@ interface MercadoPagoPaymentData {
   id?: number;
   external_reference?: string;
   status?: string;
+  preference_id?: string;
   metadata?: {
     contributor_name?: string;
     type?: string;
@@ -114,13 +115,10 @@ interface MercadoPagoPaymentData {
     first_name?: string;
     email?: string;
   };
-  additional_info?: {
-    items?: Array<{ id?: string }>;
-  };
 }
 
 async function handleMercadoPagoPayment(payment: MercadoPagoPaymentData) {
-  const { external_reference, metadata, transaction_amount, payer, id, status } =
+  const { external_reference, metadata, transaction_amount, payer, id, status, preference_id } =
     payment;
   
   if (!id || !transaction_amount) {
@@ -128,7 +126,7 @@ async function handleMercadoPagoPayment(payment: MercadoPagoPaymentData) {
   }
   
   const transactionId = id.toString();
-  const preferenceId = payment.additional_info?.items?.[0]?.id;
+  const preferenceId = preference_id;
 
   console.log('[Webhook] Processing payment:', {
     transactionId,
