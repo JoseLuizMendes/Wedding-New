@@ -46,6 +46,9 @@ export async function POST(request: NextRequest) {
     // Get full payment details from Mercado Pago API
     const payment = await mercadoPagoPayment.get({ id: data.id });
 
+    // Log completo do payment para debug
+    console.log('[Webhook /mercadopago] FULL PAYMENT OBJECT:', JSON.stringify(payment, null, 2));
+
     console.log('[Webhook /mercadopago] Payment details:', {
       id: payment.id,
       status: payment.status,
