@@ -1,6 +1,10 @@
-import { PrismaClient } from '@/generated/prisma';
+import { config } from 'dotenv';
+import { resolve } from 'path';
 
-const prisma = new PrismaClient();
+// Carregar variáveis de ambiente
+config({ path: resolve(__dirname, '../.env') });
+
+import prisma from '../src/lib/prisma';
 
 async function fixHoneymoonData() {
   console.log('🔧 Iniciando correção de dados...');
