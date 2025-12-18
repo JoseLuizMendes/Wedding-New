@@ -50,7 +50,7 @@ export const ChaDePanela = () => {
             fill
             priority
             className="object-cover object-center"
-            quality={90}
+            style={{ objectFit: 'cover' }}
           />
           {/* Gradiente escuro no topo para dar contraste com navegação */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-background/90" />
