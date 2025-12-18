@@ -21,7 +21,6 @@ export const HeroSection = () => {
               fill
               priority
               className="object-cover object-center"
-              quality={90}
               sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
@@ -90,7 +89,6 @@ export const HeroSection = () => {
               fill
               priority
               className="object-cover object-center"
-              quality={90}
               sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
@@ -121,7 +119,6 @@ export const HeroSection = () => {
               fill
               priority
               className="object-cover object-center"
-              quality={90}
               sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
