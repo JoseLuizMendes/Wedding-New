@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, EyeIcon, Heart } from "lucide-react";
+import { ArrowDown, EyeIcon, Heart, MousePointerClick } from "lucide-react";
 
 import { Button } from "./ui/button";
 import { OptimizedImage } from "./ui/OptimizedImage";
@@ -54,11 +54,22 @@ export const HeroSection = () => {
                 Convidamos você para celebrar conosco este momento especial das
                 nossas vidas
               </p>
-              <Link href="/casamento">
-                <Button size="lg" className="text-lg shadow-md py-8 bg-foreground whitespace-normal text-center hover:bg-foreground">
-                 Clique aqui para ver mais detalhes do casamento
-                </Button>
-              </Link>
+              <motion.div
+                className="flex flex-row justify-center items-center"
+                whileHover={{ scale: 1.01, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
+                <Link href="/casamento">
+                  <Button
+                    size="lg"
+                    className="group text-lg shadow-xl py-8 px-12 mt-6 bg-foreground whitespace-normal text-center hover:bg-foreground/90 transition-colors duration-300"
+                  >
+                    Clique aqui para ver mais detalhes do casamento
+                    <MousePointerClick className="size-5 ml-3 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
+                  </Button>
+                </Link>
+              </motion.div>
             </motion.div>
 
             <motion.div
@@ -66,7 +77,7 @@ export const HeroSection = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
               className="absolute bottom-10 left-1/2 -translate-x-1/2">
-              <ArrowDown className="w-8 h-8 mb-8 text-background animate-bounce" />
+              <ArrowDown className="w-8 h-8 mb-8 text-zinc-50 animate-bounce" />
             </motion.div>
           </div>
         </>
