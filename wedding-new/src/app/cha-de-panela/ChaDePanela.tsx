@@ -31,7 +31,7 @@ const chaDetails = [
   {
     icon: MapPin,
     title: "Local",
-    value: "Igreja Casa de Oração e Plenitude - COP",
+    value: "Casa de Oração e Plenitude - COP",
     description: "Rod. Gov. José Henrique Sette, Cariacica - ES",
   },
 ];
@@ -88,11 +88,11 @@ export const ChaDePanela = () => {
                 <div onClick={() => setShowLocationDialog(true)}>
                   <Card className="text-center h-full shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-romantic)] transition-all duration-300 border-primary/10 cursor-pointer">
                     <CardHeader>
-                      <detail.icon className="w-12 h-12 text-primary mx-auto mb-4" />
+                      <detail.icon className="w-12 h-12 text-foreground mx-auto mb-4" />
                       <CardTitle className="text-2xl">{detail.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-2xl font-bold text-foreground mb-2">
+
                       <p className="text-2xl font-bold text-foreground mb-2">
                         {detail.value}
                       </p>
@@ -105,11 +105,10 @@ export const ChaDePanela = () => {
               ) : (
                 <Card className="text-center h-full shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-romantic)] transition-all duration-300 border-primary/10">
                   <CardHeader>
-                    <detail.icon className="w-12 h-12 text-primary mx-auto mb-4" />
+                    <detail.icon className="w-12 h-12 text-foreground mx-auto mb-4" />
                     <CardTitle className="text-2xl">{detail.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-2xl font-bold text-foreground mb-2">
                     <p className="text-2xl font-bold text-foreground mb-2">
                       {detail.value}
                     </p>
