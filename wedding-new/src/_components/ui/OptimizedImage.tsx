@@ -59,7 +59,6 @@ export const OptimizedImage = ({
     <Image
       src={src}
       alt={alt}
-      quality={quality}
       sizes={responsiveSizes}
       priority={priority}
       className={className}
