@@ -66,7 +66,7 @@ export function HoneymoonContribution() {
         <CardTitle className="playfair-custom text-2xl md:text-3xl">
           Contribua para Nossa Lua de Mel
         </CardTitle>
-        <CardDescription className="playfair-custom font-bold text-base">
+        <CardDescription className="font-medium text-base">
           Escolha um valor e nos ajude a realizar o sonho da nossa viagem!
         </CardDescription>
       </CardHeader>
