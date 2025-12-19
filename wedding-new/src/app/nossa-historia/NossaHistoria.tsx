@@ -72,7 +72,7 @@ const timeline = [
 
 export const NossaHistoria = () => {
   return (
-    <div className="min-h-screen pb-12">
+    <div className="min-h-screen pb-12 overflow-x-hidden w-full">
       <HeroSection/>
       <div className="container mx-auto px-4 pt-20">
         {/* Timeline */}
