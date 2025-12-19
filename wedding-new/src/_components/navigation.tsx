@@ -11,7 +11,7 @@ import {
   Church,
   UtensilsCrossed,
   Image as ImageIcon,
-  Mail,
+  MessageCircleQuestionMark,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,7 +23,7 @@ const navItems = [
   { name: "Casamento", path: "/casamento", icon: Church },
   { name: "Chá de Panela", path: "/cha-de-panela", icon: UtensilsCrossed },
   { name: "Galeria", path: "/galeria", icon: ImageIcon },
-  { name: "Contato", path: "/contato", icon: Mail },
+  { name: "Dúvidas?", path: "/duvidas", icon: MessageCircleQuestionMark },
 ];
 
 // Routes that should have transparent overlay navigation at top
@@ -39,7 +39,7 @@ export const Navigation = () => {
   const isOverlayRoute = overlayRoutes.includes(path as string);
   const isOverlayTop = isOverlayRoute && !scrolled;
 
-  useEffect(() => {}, [path]);
+  useEffect(() => { }, [path]);
 
   // Scroll detection
   useEffect(() => {
@@ -99,29 +99,33 @@ export const Navigation = () => {
   return (
     <nav
       ref={navRef}
-      className={`fixed top-0 left-0 right-0 z-40 h-20 transition-all duration-300 ${
-        isOverlayTop
-          ? "bg-transparent"
-          : "bg-background/95 backdrop-blur-md shadow-sm"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-40 w-full h-20 transition-all duration-300 ${isOverlayTop
+        ? "bg-transparent"
+        : "bg-background/95 backdrop-blur-md shadow-sm"
+        }`}
     >
-      <div className="container mx-auto px-4">
+      <div className="w-full px-4 md:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <Heart
-              className={`w-6 h-6 group-hover:scale-110 transition-all duration-300 ${
-                isOverlayTop ? "text-white" : "text-primary"
-              }`}
-            />
-            <span
-              className={`playfair-custom text-xl md:text-2xl font-bold transition-colors duration-300 ${
-                isOverlayTop ? "text-white" : "text-foreground"
-              }`}
-            >
-              José & Márjorie
-            </span>
-          </Link>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <Link href="/" className="flex items-center gap-2 group">
+              <Heart
+                className={`w-6 h-6 group-hover:scale-110 transition-all duration-1000 animate-pulse  ${isOverlayTop ? "text-white" : "text-foreground"
+                  }`}
+              />
+              <span
+                className={`playfair-custom text-xl md:text-2xl font-bold transition-colors duration-300 ${isOverlayTop ? "text-white" : "text-foreground"
+                  }`}
+              >
+                José & Márjorie
+              </span>
+            </Link>
+          </motion.div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
@@ -129,23 +133,21 @@ export const Navigation = () => {
               <Link
                 key={item.path}
                 href={item.path}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group ${
-                  path === item.path
-                    ? isOverlayTop
-                      ? "text-white"
-                      : "text-primary"
-                    : isOverlayTop
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group ${path === item.path
+                  ? isOverlayTop
+                    ? "text-white"
+                    : "text-primary"
+                  : isOverlayTop
                     ? "text-white/85 hover:text-white"
-                    : "text-foreground/70 hover:text-primary"
-                }`}
+                    : "text-foreground/90 hover:text-primary"
+                  }`}
               >
                 {item.name}
                 {path === item.path && (
                   <motion.div
                     layoutId="activeNav"
-                    className={`absolute bottom-0 left-0 right-0 h-0.5 ${
-                      isOverlayTop ? "bg-white" : "bg-primary"
-                    }`}
+                    className={`absolute bottom-0 left-0 right-0 h-0.5 ${isOverlayTop ? "bg-white" : "bg-primary"
+                      }`}
                     initial={false}
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
@@ -157,9 +159,8 @@ export const Navigation = () => {
           {/* Mobile Menu Button */}
           <Button
             size="icon"
-            className={`md:hidden w-10 h-10 bg-foreground/40 hover:bg-foreground ${
-              isOverlayTop ? "text-white hover:text-white/80" : ""
-            }`}
+            className={`md:hidden w-10 h-10 bg-foreground/40 hover:bg-foreground ${isOverlayTop ? "text-white hover:text-white/80" : ""
+              }`}
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? (
@@ -224,11 +225,10 @@ export const Navigation = () => {
                         <Link
                           href={item.path}
                           onClick={() => setIsOpen(false)}
-                          className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group relative overflow-hidden ${
-                            path === item.path
-                              ? "bg-primary text-zinc-50 shadow-lg shadow-primary/20"
-                              : "text-foreground/90 hover:bg-secondary"
-                          }`}
+                          className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group relative overflow-hidden ${path === item.path
+                            ? "bg-primary text-zinc-50 shadow-lg shadow-primary/20"
+                            : "text-foreground/90 hover:bg-secondary"
+                            }`}
                         >
                           {/* Background hover effect */}
                           <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity" />
