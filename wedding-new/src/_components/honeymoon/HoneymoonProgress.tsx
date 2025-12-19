@@ -95,7 +95,7 @@ export function HoneymoonProgress() {
                 <h4 className="playfair-custom text-xl md:text-2xl font-bold text-foreground mb-2">
                   Realize esse sonho conosco!
                 </h4>
-                <Badge variant="outline" className="mb-3">
+                <Badge variant="outline" className="mb-3 bg-amber-600 text-zinc-50">
                   <Heart className="w-3 h-3 mr-1" />
                   Contribuição Especial
                 </Badge>
