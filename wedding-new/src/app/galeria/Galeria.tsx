@@ -6,18 +6,18 @@ import Image from "next/image";
 // Fotos do casal - adicione suas imagens em public/assetsGaleria
 // Nomeie as imagens como: foto-1.jpg, foto-2.jpg, foto-3.jpg, etc.
 const photos = [
-  { id: 1, src: "/assetsGaleria/foto-1.jpg", alt: "José Luiz e Márjorie - Foto 1" },
-  { id: 2, src: "/assetsGaleria/foto-2.jpg", alt: "José Luiz e Márjorie - Foto 2" },
-  { id: 3, src: "/assetsGaleria/foto-3.jpg", alt: "José Luiz e Márjorie - Foto 3" },
-  { id: 4, src: "/assetsGaleria/foto-4.jpg", alt: "José Luiz e Márjorie - Foto 4" },
-  { id: 5, src: "/assetsGaleria/foto-5.jpg", alt: "José Luiz e Márjorie - Foto 5" },
-  { id: 6, src: "/assetsGaleria/foto-6.jpg", alt: "José Luiz e Márjorie - Foto 6" },
-  { id: 7, src: "/assetsGaleria/foto-7.jpg", alt: "José Luiz e Márjorie - Foto 7" },
-  { id: 8, src: "/assetsGaleria/foto-8.jpg", alt: "José Luiz e Márjorie - Foto 8" },
-  { id: 9, src: "/assetsGaleria/foto-9.jpg", alt: "José Luiz e Márjorie - Foto 9" },
-  { id: 10, src: "/assetsGaleria/foto-10.jpg", alt: "José Luiz e Márjorie - Foto 10" },
-  { id: 11, src: "/assetsGaleria/foto-11.jpg", alt: "José Luiz e Márjorie - Foto 11" },
-  { id: 12, src: "/assetsGaleria/foto-12.jpg", alt: "José Luiz e Márjorie - Foto 12" },
+  { id: 1, src: "/assetsGaleria/foto-1.jpeg", alt: "José Luiz e Márjorie - Foto 1" },
+  // { id: 2, src: "/assetsGaleria/foto-2.png", alt: "José Luiz e Márjorie - Foto 2" },
+  // { id: 3, src: "/assetsGaleria/foto-3.png", alt: "José Luiz e Márjorie - Foto 3" },
+  // { id: 4, src: "/assetsGaleria/foto-4.png", alt: "José Luiz e Márjorie - Foto 4" },
+  // { id: 5, src: "/assetsGaleria/foto-5.png", alt: "José Luiz e Márjorie - Foto 5" },
+  // { id: 6, src: "/assetsGaleria/foto-6.png", alt: "José Luiz e Márjorie - Foto 6" },
+  // { id: 7, src: "/assetsGaleria/foto-7.png", alt: "José Luiz e Márjorie - Foto 7" },
+  // { id: 8, src: "/assetsGaleria/foto-8.png", alt: "José Luiz e Márjorie - Foto 8" },
+  // { id: 9, src: "/assetsGaleria/foto-9.png", alt: "José Luiz e Márjorie - Foto 9" },
+  // { id: 10, src: "/assetsGaleria/foto-10.png", alt: "José Luiz e Márjorie - Foto 10" },
+  // { id: 11, src: "/assetsGaleria/foto-11.png", alt: "José Luiz e Márjorie - Foto 11" },
+  // { id: 12, src: "/assetsGaleria/foto-12.png", alt: "José Luiz e Márjorie - Foto 12" },
 ];
 
 export const Galeria = () => {
@@ -57,11 +57,10 @@ export const Galeria = () => {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <ImageIcon className="w-12 h-12 text-muted-foreground/30" />
                   </div>
-                  <Image
+                  {/* Use standard img tag to debug loading issues */}
+                  <img
                     src={photo.src}
                     alt={photo.alt}
-                    width={800}
-                    height={800}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
@@ -83,7 +82,7 @@ export const Galeria = () => {
           <Card className="bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20 shadow-[var(--shadow-romantic)] p-8">
             <Camera className="w-10 h-10 text-primary mx-auto mb-4" />
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Estamos ansiosos para adicionar ainda mais momentos memoráveis à nossa coleção. 
+              Estamos ansiosos para adicionar ainda mais momentos memoráveis à nossa coleção.
               Mal podemos esperar para compartilhar nosso dia especial com você!
             </p>
           </Card>
