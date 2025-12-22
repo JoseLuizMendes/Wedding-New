@@ -65,7 +65,6 @@ export const ChaDePanela = () => {
             <h1 className="playfair-custom text-5xl md:text-7xl lg:text-8xl mb-4 text-background">
               Chá de Panela
             </h1>
-            <div className="w-24 h-1 bg-accent mx-auto mb-6" />
             <p className="text-xl md:text-2xl text-background/90 max-w-2xl mx-auto">
               Venha celebrar conosco esta etapa especial antes do grande dia!
               Será uma tarde recheada de amor, risadas e muita alegria.

@@ -30,7 +30,6 @@ export const Contato = () => {
           <h1 className="font-serif text-5xl md:text-6xl font-bold mb-4 text-foreground">
             Entre em Contato
           </h1>
-          <div className="w-24 h-1 bg-primary mx-auto mb-6" />
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Ficou com alguma dúvida? Quer enviar uma mensagem especial? 
             Estamos aqui para conversar com você!
