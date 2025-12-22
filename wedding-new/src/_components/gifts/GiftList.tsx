@@ -40,12 +40,14 @@ import {
   ExternalLink,
   Filter,
   Gift as GiftIcon,
+  MapPin,
   ShoppingCart,
   X,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useGiftReservation } from "../../hooks/useGiftReservation";
 import { CodeValidationDialog } from "./CodeValidationDialog";
+import { DeliveryAddressDialog } from "./DeliveryAddressDialog";
 import { GiftListSkeleton } from "./GiftListSkeleton";
 import { IdentificationDialog } from "./IdentificationDialog";
 import { PixContributionCard } from "./PixContributionCard";
@@ -287,6 +289,8 @@ const GiftCard = ({ gift, status, tipo, index, onUpdate }: GiftCardProps) => {
   const [showMarkPurchasedDialog, setShowMarkPurchasedDialog] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [showDeliveryAddressDialog, setShowDeliveryAddressDialog] =
+    useState(false);
   const [reservationData, setReservationData] = useState<{
     giftName: string;
     accessCode: string;
@@ -312,7 +316,7 @@ const GiftCard = ({ gift, status, tipo, index, onUpdate }: GiftCardProps) => {
         setShowIdentificationDialog(false);
         setShowSuccessDialog(true);
       }
-    } catch (error) {
+    } catch {
       // Error handling is done in the hook
     }
   };
@@ -362,6 +366,20 @@ const GiftCard = ({ gift, status, tipo, index, onUpdate }: GiftCardProps) => {
   const config = getStatusConfig();
   const StatusIcon = config.icon;
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Não abrir o dialog se o clique foi em um botão ou link
+    const target = e.target as HTMLElement;
+    if (
+      target.closest("button") ||
+      target.closest("a") ||
+      target.tagName === "BUTTON" ||
+      target.tagName === "A"
+    ) {
+      return;
+    }
+    setShowDeliveryAddressDialog(true);
+  };
+
   return (
     <>
       <motion.div
@@ -369,8 +387,13 @@ const GiftCard = ({ gift, status, tipo, index, onUpdate }: GiftCardProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.1 }}>
         <Card
-          className={`h-full flex flex-col hover:shadow-romantic transition-all duration-300 ${config.cardClass}`}>
-          <CardHeader className="flex-shrink-0">
+          onClick={handleCardClick}
+          className={`h-full flex flex-col hover:shadow-romantic hover:border-primary/50 transition-all duration-300 cursor-pointer group ${config.cardClass}`}>
+          <CardHeader className="flex-shrink-0 relative pt-6 ">
+            {/* Indicador visual de que é clicável */}
+            <div className="absolute -top-4 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary/10 rounded-full p-2 z-10">
+              <MapPin className="w-4 h-4 text-primary" />
+            </div>
             {gift.imagem?.trim() && (
               <div className="mb-4 -mx-6 -mt-6 relative h-48">
                 <OptimizedImage
@@ -384,9 +407,9 @@ const GiftCard = ({ gift, status, tipo, index, onUpdate }: GiftCardProps) => {
                 />
               </div>
             )}
-            <div className="flex items-start justify-between gap-2 mb-2">
-              <CardTitle className="text-xl flex-1">{gift.nome}</CardTitle>
-              <div className="flex items-center gap-2">
+            <div className="mb-2 relative">
+              {/* Badge do status em posição absoluta no canto superior esquerdo */}
+              <div className="absolute -top-9 -left-2 flex items-center gap-2 z-10">
                 <StatusIcon
                   className={`w-5 h-5 ${config.iconColor} ${
                     isExpiringSoon ? "animate-pulse" : ""
@@ -396,21 +419,31 @@ const GiftCard = ({ gift, status, tipo, index, onUpdate }: GiftCardProps) => {
                   {config.badge.label}
                 </Badge>
               </div>
+              <CardTitle className="text-xl">{gift.nome}</CardTitle>
             </div>
             {config.showWarning && (
-              <div className="flex items-center gap-2 text-orange-500 text-sm mt-2">
+              <div className="flex items-center gap-2 text-orange-500 text-sm mt-2 mb-2">
                 <AlertCircle className="w-4 h-4" />
                 <span>Reserva expirando em breve!</span>
               </div>
             )}
             {gift.descricao && (
-              <CardDescription>{gift.descricao}</CardDescription>
+              <CardDescription className="mb-2">
+                {gift.descricao}
+              </CardDescription>
             )}
             {status === "reserved" && gift.reserved_phone_display && (
               <div className="text-sm text-muted-foreground mt-2">
                 Reservado por: {gift.reserved_phone_display}
               </div>
             )}
+            {/* Dica visual de que o card é clicável */}
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-3 pt-3 border-t border-border/50">
+              <MapPin className="w-3.5 h-3.5 text-primary opacity-60" />
+              <span className="group-hover:text-primary transition-colors">
+                Clique para ver o endereço de entrega
+              </span>
+            </div>
           </CardHeader>
           <CardContent className="flex flex-col flex-grow">
             <div className="mt-auto space-y-3">
@@ -494,6 +527,12 @@ const GiftCard = ({ gift, status, tipo, index, onUpdate }: GiftCardProps) => {
           accessCode={reservationData.accessCode}
         />
       )}
+
+      <DeliveryAddressDialog
+        open={showDeliveryAddressDialog}
+        onOpenChange={setShowDeliveryAddressDialog}
+        giftName={gift.nome}
+      />
 
       <CodeValidationDialog
         open={showMarkPurchasedDialog}
