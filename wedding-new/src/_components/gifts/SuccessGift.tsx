@@ -76,8 +76,8 @@ export const SuccessGift = ({
             <Card className="w-full">
               <CardHeader className="flex flex-col items-center">
                 <CardTitle className="text-center">
+                <h3 className="text-center font-bold">Endereço do Presente:</h3>
                   <p className="flex flex-col items-center">
-                    <h3 className="text-center font-bold">Endereço do Presente:</h3>
                     <p className="text-sm">Ladeira Doutor Bezerra de Menezes - Vitória, ES</p>
                     <p className="text-sm">CEP: 29032-159</p>
                   </p>
