@@ -38,13 +38,6 @@ export const HeroSection = () => {
                 José & Márjorie
               </h1>
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-                className="w-24 h-1 bg-zinc-50 mx-auto mb-8"
-              />
-
               <p className="text-xl md:text-2xl text-zinc-50 mb-4 font-light">
                 Nós vamos casar!
               </p>
@@ -87,7 +80,6 @@ export const HeroSection = () => {
               src="/assets/Wedding.png"
               alt="Casamento"
               fill
-              priority
               className="object-cover object-center"
               sizes="100vw"
             />
@@ -103,39 +95,8 @@ export const HeroSection = () => {
               <h1 className="playfair-custom text-5xl md:text-7xl lg:text-8xl mb-4 text-white">
                 Nosso Grande Dia
               </h1>
-              <div className="w-24 h-1 bg-white mx-auto mb-6" />
               <p className="text-xl text-white max-w-2xl mx-auto">
                 Será um prazer compartilhar este momento especial com você
-              </p>
-            </motion.div>
-          </div>
-        </>
-      ) : pathname === "/cha-de-panela" ? (
-        <>
-          <div className="absolute inset-0">
-            <OptimizedImage
-              src="/assets/cha-de-panela-bg.jpg"
-              alt="Chá de Panela"
-              fill
-              priority
-              className="object-cover object-center"
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-primary/40 to-background/90" />
-          </div>
-          {/* Content */}
-          <div className="relative z-10 container mx-auto px-4 text-center mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <h1 className="playfair-custom text-5xl md:text-7xl lg:text-8xl mb-4 text-white">
-                Chá de Panela
-              </h1>
-              <div className="w-24 h-1 bg-white mx-auto mb-6" />
-              <p className="text-xl text-white max-w-2xl mx-auto">
-                Celebre conosco esse momento especial
               </p>
             </motion.div>
           </div>
@@ -147,7 +108,6 @@ export const HeroSection = () => {
               src="/assets/Valentines.jpg"
               alt="Nossa História"
               fill
-              priority
               className="object-cover object-center"
               quality={90}
               sizes="100vw"
@@ -165,14 +125,6 @@ export const HeroSection = () => {
               <h1 className="playfair-custom text-5xl md:text-7xl lg:text-8xl mb-4 text-background">
                 Nossa História
               </h1>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-                className="w-24 h-1 bg-white mx-auto mb-8"
-              />
-
               <p className="text-xl text-white max-w-2xl mx-auto">
                 Uma jornada de amor, cumplicidade e sonhos compartilhados
               </p>
