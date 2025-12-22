@@ -92,9 +92,12 @@ export const IdentificationDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-center">Reservar Presente</DialogTitle>
-          <DialogDescription>
-            Você está reservando: <strong>{giftName}</strong>
+          <DialogTitle className="text-center text-xl">
+            Reservar Presente
+          </DialogTitle>
+          <DialogDescription className="text-center">
+            Você está reservando:{" "}
+            <strong className="text-foreground">{giftName}</strong>
           </DialogDescription>
         </DialogHeader>
 
