@@ -128,6 +128,10 @@ export const PixContributionCard = ({ tipo, index = 0 }: PixContributionCardProp
                       <span className="mt-0.5">✓</span>
                       <span>Você escolhe quanto quer contribuir</span>
                     </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-0.5">✓</span>
+                      <span>Pagamento 100% transparente</span>
+                    </li>
                   </ul>
                 </div>
 
