@@ -3,12 +3,9 @@
 import { useState } from "react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogOverlay,
-  DialogPortal,
   DialogTitle,
 } from "@/_components/ui/dialog";
 import { Button } from "@/_components/ui/button";
@@ -16,7 +13,6 @@ import { Input } from "@/_components/ui/input";
 import { Label } from "@/_components/ui/label";
 import { formatPhoneNumber, isValidPhoneNumber } from "../../lib/phoneUtils";
 import { Loader2 } from "lucide-react";
-import { AlertDialog } from "@/_components/ui/alert-dialog";
 
 interface IdentificationDialogProps {
   open: boolean;
@@ -96,7 +92,7 @@ export const IdentificationDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Reservar Presente</DialogTitle>
+          <DialogTitle className="text-center">Reservar Presente</DialogTitle>
           <DialogDescription>
             Você está reservando: <strong>{giftName}</strong>
           </DialogDescription>
@@ -122,7 +118,7 @@ export const IdentificationDialog = ({
             <Label htmlFor="phone">Telefone com DDD *</Label>
             <Input
               id="phone"
-              placeholder="(XX) XXXXX-XXXX"
+              placeholder="(99) 99999-9999"
               value={phone}
               onChange={handlePhoneChange}
               disabled={loading}
@@ -132,7 +128,7 @@ export const IdentificationDialog = ({
             {errors.phone && (
               <p className="text-sm text-red-500">{errors.phone}</p>
             )}
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-red-500 font-semibold">
               Você receberá um código de 6 caracteres para gerenciar sua reserva
             </p>
           </div>
