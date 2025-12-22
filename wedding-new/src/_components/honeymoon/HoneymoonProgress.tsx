@@ -1,11 +1,17 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/_components/ui/card';
-import { Progress } from '@/_components/ui/progress';
-import { Badge } from '@/_components/ui/badge';
-import { Heart, Plane } from 'lucide-react';
-import Image from 'next/image';
+import { Badge } from "@/_components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/_components/ui/card";
+import { Progress } from "@/_components/ui/progress";
+import { Heart, Plane } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface HoneymoonProgressData {
   targetAmount: number;
@@ -26,13 +32,13 @@ export function HoneymoonProgress() {
   useEffect(() => {
     async function fetchProgress() {
       try {
-        const response = await fetch('/api/honeymoon/status');
+        const response = await fetch("/api/honeymoon/status");
         if (response.ok) {
           const data = await response.json();
           setProgress(data);
         }
       } catch (error) {
-        console.error('[HoneymoonProgress] Error fetching progress:', error);
+        console.error("[HoneymoonProgress] Error fetching progress:", error);
       } finally {
         setLoading(false);
       }
@@ -73,7 +79,7 @@ export function HoneymoonProgress() {
 
       <CardContent className="space-y-6 px-6">
         {/* Card com Imagem e Incentivo */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-0 -mx-6">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
           {/* Lado esquerdo - Imagem (2 colunas) */}
           <div className="mx-6 my-3 rounded-md md:col-span-2 relative bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-end justify-center p-6">
             <div className="text-center relative w-full">
@@ -89,22 +95,27 @@ export function HoneymoonProgress() {
           </div>
 
           {/* Lado direito - Conteúdo (3 colunas) */}
-          <div className="md:col-span-3 px-6 pb-6 md:py-6 md:pr-6 md:pl-0 flex flex-col justify-center">
-            <div className="flex flex-col gap-4">
-              <div>
-                <h4 className="playfair-custom text-xl md:text-2xl font-bold text-foreground mb-2">
-                  Realize esse sonho conosco!
-                </h4>
-                <Badge variant="outline" className="mb-3 bg-amber-600 text-zinc-50">
-                  <Heart className="w-3 h-3 mr-1" />
-                  Contribuição Especial
-                </Badge>
+          <div className="md:col-span-3 px-6 pb-2 md:py-2 md:pr-6 md:pl-0 flex flex-col justify-between">
+            <div className="flex flex-col gap-6">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <h4 className="playfair-custom text-xl md:text-2xl font-bold text-foreground mb-2">
+                    Realize esse sonho conosco!
+                  </h4>
+                  <Badge
+                    variant="outline"
+                    className="mb-3 bg-amber-600 text-zinc-50">
+                    <Heart className="w-3 h-3 mr-1" />
+                    Contribuição Especial
+                  </Badge>
+                </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  Sua contribuição nos ajudará a criar memórias inesquecíveis na nossa lua de mel. 
-                  Cada valor é um pedacinho do nosso sonho se tornando realidade!
+                  Sua contribuição nos ajudará a criar memórias inesquecíveis na
+                  nossa lua de mel. Cada valor é um pedacinho do nosso sonho se
+                  tornando realidade!
                 </p>
                 <ul className="space-y-2 text-sm text-emerald-600">
                   <li className="flex items-start gap-2">
@@ -132,7 +143,7 @@ export function HoneymoonProgress() {
               Progresso: {progress.percentage}%
             </span>
             <span className="text-sm font-semibold playfair-custom">
-              R$ {progress.currentAmount.toFixed(2)} de R${' '}
+              R$ {progress.currentAmount.toFixed(2)} de R${" "}
               {progress.targetAmount.toFixed(2)}
             </span>
           </div>
@@ -145,9 +156,11 @@ export function HoneymoonProgress() {
           {progress.contributionsCount > 0 ? (
             <p className="flex items-center justify-center gap-2">
               <Heart className="w-4 h-4 text-primary fill-primary" />
-              {progress.contributionsCount}{' '}
-              {progress.contributionsCount === 1 ? 'contribuição' : 'contribuições'}{' '}
-              recebida{progress.contributionsCount > 1 ? 's' : ''}
+              {progress.contributionsCount}{" "}
+              {progress.contributionsCount === 1
+                ? "contribuição"
+                : "contribuições"}{" "}
+              recebida{progress.contributionsCount > 1 ? "s" : ""}
             </p>
           ) : (
             <p className="flex items-center justify-center gap-2">
