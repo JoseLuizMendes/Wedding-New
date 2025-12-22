@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
-import { giftsApi, EventType } from "@/lib/api/gifts";
 import { useToast } from "@/hooks/use-toast";
+import { EventType, giftsApi } from "@/lib/api/gifts";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface UseGiftReservationProps {
   giftId: string;
@@ -34,7 +34,7 @@ export const useGiftReservation = ({
       // For now, we'll just trigger a refresh
       onReservationChange();
     } catch (error) {
-      console.error('Erro ao limpar reserva:', error);
+      console.error("Erro ao limpar reserva:", error);
     }
   }, [onReservationChange]);
 
@@ -56,7 +56,7 @@ export const useGiftReservation = ({
 
       const hours = Math.floor(diff / (1000 * 60 * 60));
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      
+
       setTimeRemaining(`${hours}h ${minutes}m`);
     };
 
@@ -73,27 +73,33 @@ export const useGiftReservation = ({
     }
   }, [isExpired, reservedUntil, isBought, clearReservation]);
 
-  const reserveGift = async (name: string, phone: string) => {
+  const reserveGift = async (
+    name: string,
+    phone: string
+  ): Promise<{ success: true; accessCode: string } | undefined> => {
     try {
       const response = await giftsApi.reserve({ giftId, tipo, name, phone });
 
-      toast({
-        title: "Presente reservado!",
-        description: `Seu código de acesso: ${response.accessCode || '****'}. Guarde este código para gerenciar sua reserva.`,
-        variant: "success",
-      });
-
       // Optionally save name in localStorage for convenience
       if (name) {
-        localStorage.setItem('gift_reservation_name', name);
+        localStorage.setItem("gift_reservation_name", name);
       }
 
       onReservationChange();
+
+      // Return reservation data instead of showing toast
+      return {
+        success: true,
+        accessCode: response.accessCode || "****",
+      };
     } catch (error) {
-      console.error('Erro ao reservar presente:', error);
+      console.error("Erro ao reservar presente:", error);
       toast({
         title: "Erro ao reservar",
-        description: error instanceof Error ? error.message : "Tente novamente mais tarde.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Tente novamente mais tarde.",
         variant: "destructive",
       });
       throw error;
@@ -121,10 +127,13 @@ export const useGiftReservation = ({
         return false;
       }
     } catch (error) {
-      console.error('Erro ao marcar como comprado:', error);
+      console.error("Erro ao marcar como comprado:", error);
       toast({
         title: "Erro ao confirmar compra",
-        description: error instanceof Error ? error.message : "Tente novamente mais tarde.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Tente novamente mais tarde.",
         variant: "destructive",
       });
       return false;
@@ -152,10 +161,13 @@ export const useGiftReservation = ({
         return false;
       }
     } catch (error) {
-      console.error('Erro ao cancelar reserva:', error);
+      console.error("Erro ao cancelar reserva:", error);
       toast({
         title: "Erro ao cancelar reserva",
-        description: error instanceof Error ? error.message : "Tente novamente mais tarde.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Tente novamente mais tarde.",
         variant: "destructive",
       });
       return false;

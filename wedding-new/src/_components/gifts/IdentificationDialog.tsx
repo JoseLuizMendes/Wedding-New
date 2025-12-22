@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Button } from "@/_components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/_components/ui/dialog";
-import { Button } from "@/_components/ui/button";
 import { Input } from "@/_components/ui/input";
 import { Label } from "@/_components/ui/label";
-import { formatPhoneNumber, isValidPhoneNumber } from "../../lib/phoneUtils";
 import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { formatPhoneNumber, isValidPhoneNumber } from "../../lib/phoneUtils";
 
 interface IdentificationDialogProps {
   open: boolean;
@@ -79,10 +79,10 @@ export const IdentificationDialog = ({
       setName("");
       setPhone("");
       setErrors({ name: "", phone: "" });
-      // Close dialog automatically after successful submission
-      onOpenChange(false);
+      // Dialog will be closed by parent component after showing success dialog
     } catch (error) {
       console.error("Error confirming reservation:", error);
+      // Keep dialog open on error so user can try again
     } finally {
       setLoading(false);
     }
