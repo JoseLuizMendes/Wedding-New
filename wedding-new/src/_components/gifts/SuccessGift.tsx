@@ -8,10 +8,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/_components/ui/dialog";
-import { Separator } from "@radix-ui/react-dropdown-menu";
-import { CheckCircle, Copy } from "lucide-react";
+import { CheckCircle, Copy, MapPin } from "lucide-react";
 import { useState } from "react";
-import { Card, CardHeader, CardTitle } from "../ui/card";
+import { DeliveryAddressDialog } from "./DeliveryAddressDialog";
 
 interface SuccessGiftProps {
   open: boolean;
@@ -27,6 +26,7 @@ export const SuccessGift = ({
   accessCode,
 }: SuccessGiftProps) => {
   const [copied, setCopied] = useState(false);
+  const [showAddressDialog, setShowAddressDialog] = useState(false);
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(accessCode);
@@ -72,19 +72,13 @@ export const SuccessGift = ({
             )}
           </div>
 
-          <div className="flex justify-center">
-            <Card className="w-full">
-              <CardHeader className="flex flex-col items-center">
-                <CardTitle className="text-center">
-                <h3 className="text-center font-bold">Endereço do Presente:</h3>
-                  <p className="text-sm">
-                    Ladeira Doutor Bezerra de Menezes - Vitória, ES<br />
-                    CEP: 29032-159
-                  </p>
-                </CardTitle>
-              </CardHeader>
-            </Card>
-          </div>
+          <Button
+            onClick={() => setShowAddressDialog(true)}
+            variant="outline"
+            className="w-full group">
+            <MapPin className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+            Ver endereço de entrega
+          </Button>
 
           <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
             <p className="text-xs text-amber-800 dark:text-amber-200 text-center">
@@ -101,6 +95,12 @@ export const SuccessGift = ({
           </Button>
         </div>
       </DialogContent>
+
+      <DeliveryAddressDialog
+        open={showAddressDialog}
+        onOpenChange={setShowAddressDialog}
+        giftName={giftName}
+      />
     </Dialog>
   );
 };
